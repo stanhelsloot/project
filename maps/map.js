@@ -1,4 +1,4 @@
-var requests = [d3.json("geoData.geojson"), [d3.json("data.json")]];
+var requests = [d3.json("geoData.geojson"), d3.json("data.json")];
 
 
 window.onload = function() {

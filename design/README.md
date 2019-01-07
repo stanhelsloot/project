@@ -16,18 +16,24 @@ The goal of this project is to show the relation (or lack of) between fracking
 and seismic activity for people who want evidence for the claims made by
 media outlets.
 
+Several notes: before 2015 only earthquakes with a magnitude higher of
+1.5 were measurable.
+
 Summary:
 Provide a tool to see the relation between the extraction of natural gas
-in Groningen and seismic activity in the area.
+in Dutch gas fields and induced seismic activity in throughout the country.
 
 Main features:
 (See picture in this folder for sketches)
 1)
-- A map of the Netherlands. Seismic activity in circles per year.
+- A map of the Netherlands on which earthquakes are represented using circles.
+  Magnitude determines circle area.
   Slider to change year
-- (Bar)graph of (seismic activity/extraction totals) per (10?)year.
-- Information of the seismic data (strength & radius)
-- General information of the gas extraction
+- Stacked histogram to clearly show different ranges of magnitudes.
+- Histogram of amount of gas extraction. If clicked on certain year,
+  show earthquakes of that year in map.
+- Information of the seismic data, gas extraction and relation to other years
+  in multiple donuts.
 
 2)
 - For the map: hovering over the circles to see the date/strength/radius
