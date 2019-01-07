@@ -16,7 +16,7 @@ def converter(filename):
 
     # event type gives insight on the type of earthquake (1 = induced)
     event_type = (df.variables["event_type"][:])
-    id = (df.variables["id"][:])
+    # id = (df.variables["id"][:])
     time = (df.variables["time"][:])
     lat = (df.variables["lat"][:])
     lon = (df.variables["lon"][:])
@@ -41,13 +41,15 @@ def converter(filename):
         time_date.append(t_str)
 
     # print(time_date)
-    dataset = pd.DataFrame({"id": id, "time": time_date, "location": location, "lat": lat, "lon": lon, "magnitude": magnitude, "event_type": event_type})
+    dataset = pd.DataFrame({"time": time_date, "location": location, "lon": lon, "lat": lat, "magnitude": magnitude, "event_type": event_type})
     # select data on induced earthquakes
     dataset = dataset.loc[dataset['event_type'] == 1]
     # select (only dutch) cities
     dataset = dataset.loc[dataset["location"].isin(location_groningen)]
     # drop event_type column
     dataset = dataset.drop(columns=["event_type"])
+    # drop location column
+    dataset = dataset.drop(columns=["location"])
 
     # convert dataset to dictionary to be able to remove the index
     dict = dataset.to_dict(orient="split")

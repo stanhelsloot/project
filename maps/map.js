@@ -1,4 +1,4 @@
-var requests = [d3.json("geoData.geojson")];
+var requests = [d3.json("geoData.geojson"), [d3.json("data.json")]];
 
 
 window.onload = function() {
@@ -11,6 +11,7 @@ window.onload = function() {
 
 function worldMaker(data) {
 
+  console.log(data)
   // set width, height, padding and margins
   var w = 1300;
   var h = 600;
