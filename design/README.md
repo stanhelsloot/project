@@ -37,9 +37,12 @@ Main features:
 
 2)
 - For the map: hovering over the circles to see the date/strength/radius
-- Show effect of rules/laws imposed by the government on the seismic activity.
-- When hovering over bar graph, display average strength of the earthquakes
+- Hover over histogram to highlight information in donuts
 
 Data Sources:
 KNMI seismic: https://data.knmi.nl/datasets/aardbevingen_catalogus/1?bbox=53.7,7.4,50.6,3.2&dtend=2018-11-24T22:59Z&dtstart=2018-11-17T23:00Z
 NAM gas extraction: https://www.nam.nl/feiten-en-cijfers/gaswinning.html#iframe=L2VtYmVkL2NvbXBvbmVudC8/aWQ9Z2Fzd2lubmluZyN0YWItdGFiLWluZm8tOGNkN2RlOGRmMTg4NDU3YTk0NzFhYzVkZGZmMThlMmU=
+Wikipedia list of cities/vilages in Netherlands: https://nl.wikipedia.org/wiki/Lijst_van_Nederlandse_plaatsen
+
+external sources: I am not sure on which functionalities I'll require, expect slider, tooltip, pandas.
+hardest parts: making animations when clicking on nice.
