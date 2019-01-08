@@ -22,3 +22,14 @@ both the monthly and yearly totals of gas extraction. Two json
 files were made using this data with excelconverter.py; one
 containing the yearly data of total gas extracted, the other the
 monthly total of extracted gas. Both files were added to the maps folder.
+
+Actual design:
+see diagram.
+
+For the maps I need the geodata of the Netherlands (see maps folder, geodat.geojson)
+for all other components: just the data.
+
+The slider and the calendar are things I might put in, not sure
+yet.
+
+Furthermore I need the d3.tooltip plugin (and one for the slider)

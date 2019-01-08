@@ -32,13 +32,11 @@ Main features:
 - Stacked histogram to clearly show different ranges of magnitudes.
 - Histogram of amount of gas extraction. If clicked on certain year,
   show earthquakes of that year in map.
-- Information of the seismic data, gas extraction and relation to other years
-  in multiple donuts, such as relative strength of average earthquake,
-  percentage of total amount of gas won per year, frequency.
+- Bar charts on the monthly data, for the functionality see the
+  diagram.
 
 2)
 - For the map: hovering over the circles to see the date/strength/radius
-- Hover over histogram to highlight information in donuts
 
 Data Sources:
 KNMI seismic: https://data.knmi.nl/datasets/aardbevingen_catalogus/1?bbox=53.7,7.4,50.6,3.2&dtend=2018-11-24T22:59Z&dtstart=2018-11-17T23:00Z
@@ -46,4 +44,6 @@ NAM gas extraction: https://www.nam.nl/feiten-en-cijfers/gaswinning.html#iframe=
 Wikipedia list of cities/vilages in Netherlands: https://nl.wikipedia.org/wiki/Lijst_van_Nederlandse_plaatsen
 
 external sources: I am not sure on which functionalities I'll require, expect slider, tooltip, pandas.
-hardest parts: making animations when clicking on nice.
+hardest parts: making the interactions between the different
+charts and maps work smoothly (because it are many intertwined
+maps/charts)
