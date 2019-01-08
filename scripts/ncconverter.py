@@ -1,3 +1,4 @@
+# Stan Helsloot, 10762388
 import pandas as pd
 import netCDF4
 import re
@@ -48,8 +49,6 @@ def converter(filename):
     dataset = dataset.loc[dataset["location"].isin(location_groningen)]
     # drop event_type column
     dataset = dataset.drop(columns=["event_type"])
-    # drop location column
-    dataset = dataset.drop(columns=["location"])
 
     # convert dataset to dictionary to be able to remove the index
     dict = dataset.to_dict(orient="split")
