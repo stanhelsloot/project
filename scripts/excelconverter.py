@@ -20,8 +20,6 @@ def read_write_file(filename):
     df = df.loc[df[0] != 0]
     # making 2 json files, one contains only yearly data and the other only
     # monthly data
-    # print(df["jaar"])
-
     years = {}
     months = {}
 
@@ -30,16 +28,22 @@ def read_write_file(filename):
             if (i.startswith("Jaar")):
                 # add a dictionary node with the date/key pair of the year
                 spliced = i.split()
-                # print(spliced[2])
+                # two mistakes were found in the dataset; 1987 is in reality 1978
+                # and the first 1999 is 1989 in reality
+                if spliced[2] == "1987":
+                    spliced[2] = "1978"
+                if spliced[2] == "1999":
+                    spliced[2] = "1989"
+                # print(i)
                 years[int(float(spliced[2]))] = (df[0][i])
         except Exception as e:
-            key = i.year + i.month/100
+            key = i.year + (i.month/120*10 - 1/12)
             # add a dictionary node with the date/key pair of the monts
             months[key] = (df[0][i])
 
-    with open('data_years.json', 'w') as outfile:
-        json.dump(years, outfile)
-
+    # with open('data_years.json', 'w') as outfile:
+    #     json.dump(years, outfile)
+    #
     with open('data_months.json', 'w') as outfile:
         json.dump(months, outfile)
 

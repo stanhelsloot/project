@@ -1,7 +1,12 @@
+// Stan Helsloot, 10762388
+// renders a map of the Netherlands
+
 var requests = [d3.json("geoData.geojson"), d3.json("data.json")];
+console.log("ik ben map")
 
 
 window.onload = function() {
+  console.log("ik ben map")
   Promise.all(requests).then(function(response) {
     let draw = worldMaker(response)
 
@@ -11,9 +16,9 @@ window.onload = function() {
 
 function worldMaker(data) {
 
-  console.log(data)
+  // console.log(data)
   // set width, height, padding and margins
-  var w = 1300;
+  var w = 400;
   var h = 600;
   var padding = 30;
   var margin = {top: 80, right: 120, bottom: 20, left: 50}
@@ -27,8 +32,8 @@ function worldMaker(data) {
 
   // create projection
   var projection = d3.geoMercator()
-                     .scale(5400)
-                     .translate( [w / 10, h / 0.1]);
+                     .scale(240)
+                     .translate( [w / 2 , h /2]);
 
   // create path
   var path = d3.geoPath().projection(projection);
