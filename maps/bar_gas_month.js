@@ -1,18 +1,17 @@
 // Stan Helsloot, 10762388
 // Renders a histogram of the yearly gas extraction by NAM
-var requests = [d3.json("data_months.json")]
+var requests_bar_month = [d3.json("data_months.json")]
 
-window.onload = function() {
-  Promise.all(requests).then(function(response) {
-    let draw = barMaker(response)
+var bar_month = function() {
+  Promise.all(requests_bar_month).then(function(response) {
+    let draw = barMakerMonth(response)
 
   })
 
 }
 
 // creates a histogram :)
-function barMaker(data) {
-  console.log(data)
+function barMakerMonth(data) {
   // size margin etc.
   var w = 600;
   var h = 400;
@@ -20,6 +19,7 @@ function barMaker(data) {
 
   // creating a svg object
   var svg = d3.select("body")
+              .attr("id", 1)
               .append("svg")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
@@ -30,6 +30,15 @@ function barMaker(data) {
   data_refined = []
   extraction_data = []
   keys = Object.keys(data)
+  keys_2018 = []
+  // first display 2018 as standardiced year
+  for (i = 0; i < keys.length; i++){
+    if (parseInt(keys[i]) == 2018){
+      keys_2018.push(keys[i])
+    }
+  }
+  keys = keys_2018
+
   for (i = 0; i < keys.length; i ++){
     // j = "" + i
     // j = data[i]
@@ -39,7 +48,7 @@ function barMaker(data) {
     extraction_data.push(data[keys[i]])
   }
   data = data_refined
-  console.log(extraction_data)
+
   // setting the y-scale
   var yScale = d3.scaleLinear()
                 .domain([Math.min(...extraction_data), Math.max(...extraction_data)])
@@ -55,6 +64,7 @@ function barMaker(data) {
        .data(data)
        .enter()
        .append("rect")
+       .attr("id", "rect")
        .attr("width", w / data.length)
        .attr("transform", "translate(" + margin.left + ",0)")
        .attr("x", function(d, i) {
@@ -124,7 +134,7 @@ function barMaker(data) {
            .attr("transform", "translate(" + (w/2) + " ," +
                               (h + margin.top) + ")")
            .style("text-anchor", "middle")
-           .text("Year")
+           .text("Month")
            .style("font-size", "17px");
 
        // Append yAxis text
@@ -152,4 +162,21 @@ function convertData(data) {
     extraction_data.push(data[keys[i]])
   }
   return data_refined
+}
+
+function set_year(year) {
+  svg = d3.selectAll(1)
+  console.log(year)
+  //
+  // for (i = 0; i < 12; i ++){
+  //
+  // }
+  svg.selectAll("#rect")
+     .transition()
+     .duration(750)
+     .attr("height", function (d) {
+       return h - yScale(d[1])
+     })
+
+
 }

@@ -1,20 +1,17 @@
 // Stan Helsloot, 10762388
 // Renders a histogram of the yearly gas extraction by NAM
-var requests = [d3.json("data_years.json")]
-console.log("ik ben bar")
+var requests_bar_year = [d3.json("data_years.json")]
 
-
-window.onload = function() {
-  console.log("ik ben bar")
-  Promise.all(requests).then(function(response) {
-    let draw = barMaker(convertData(response))
+var bar_year = function() {
+  Promise.all(requests_bar_year).then(function(response) {
+    let draw = barMakerYear(convertData(response))
 
   })
 
 }
 
 // creates a histogram :)
-function barMaker(data) {
+function barMakerYear(data) {
   // size margin etc.
   var w = 600;
   var h = 400;
@@ -22,6 +19,7 @@ function barMaker(data) {
 
   // creating a svg object
   var svg = d3.select("body")
+              .attr("id", 0)
               .append("svg")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
@@ -76,6 +74,10 @@ function barMaker(data) {
             .transition()
             .duration(500)
             .style('opacity', 0);
+        })
+        .on("click", function (d) {
+          set_year(d[0])
+
         });
 
     // appending axii

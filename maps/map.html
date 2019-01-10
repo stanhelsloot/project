@@ -8,6 +8,9 @@
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="d3-tooltip.js"></script>
+    <script src="map.js" charset="utf-8"></script>
+    <script src="bar_gas_month.js" charset="utf-8"></script>
+    <script src="bar_gas.js" charset="utf-8"></script>
     <link rel="stylesheet" href="navigation.css">
   </head>
   <body>
@@ -21,8 +24,15 @@
     });
     </script>
 
-    <!-- <script src="bar_gas_month.js" charset="utf-8"></script> -->
-    <script src="bar_gas.js" charset="utf-8"></script>
-    <script src="map.js" charset="utf-8"></script>
+    <!-- loading multiple charts -->
+    <script>
+    window.onload = function() {
+       map()
+       bar_year()
+       bar_month()
+    }
+
+    </script>
+
   </body>
 </html>
