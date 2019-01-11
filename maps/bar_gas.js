@@ -19,8 +19,9 @@ function barMakerYear(data) {
 
   // creating a svg object
   var svg = d3.select("body")
-              .attr("id", 0)
+
               .append("svg")
+              .attr("id", "year")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 

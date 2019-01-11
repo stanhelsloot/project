@@ -1,6 +1,9 @@
 // Stan Helsloot, 10762388
 // Renders a histogram of the yearly gas extraction by NAM
+
 var requests_bar_month = [d3.json("data_months.json")]
+
+barDims = {}
 
 var bar_month = function() {
   Promise.all(requests_bar_month).then(function(response) {
@@ -16,35 +19,43 @@ function barMakerMonth(data) {
   var w = 600;
   var h = 400;
   var margin = {top: 80, right: 50, bottom: 20, left: 50}
+  barDims.w = w
+  barDims.h = h
+  barDims.margin = margin
 
   // creating a svg object
   var svg = d3.select("body")
-              .attr("id", 1)
+
               .append("svg")
+              .attr("id", "month")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
+  barDims.svg = svg
 
   // converting data into two different arrays
 
   data = data[0]
-  data_refined = []
+
   extraction_data = []
   keys = Object.keys(data)
-  keys_2018 = []
-  // first display 2018 as standardiced year
-  for (i = 0; i < keys.length; i++){
-    if (parseInt(keys[i]) == 2018){
-      keys_2018.push(keys[i])
+
+  // first display 2018 as standardiced year and make data of all years
+  for (var j = 1971; j < 2019; j++) {
+    data_refined = []
+    temp = []
+    for (i = 0; i < keys.length; i++){
+      if (parseInt(keys[i]) == j){
+        temp.push(keys[i])
+        data_refined.push([keys[i], data[keys[i]]])
+      }
+      barDims[j] = data_refined
     }
   }
-  keys = keys_2018
+
+  keys = temp
 
   for (i = 0; i < keys.length; i ++){
-    // j = "" + i
-    // j = data[i]
-    // j = (j/1e9)
-    // console.log(j )
-    data_refined.push([keys[i], data[keys[i]]])
+
     extraction_data.push(data[keys[i]])
   }
   data = data_refined
@@ -60,7 +71,7 @@ function barMakerMonth(data) {
                 .style('opacity', 0);
 
     // creating the bars for the bargraph
-    svg.selectAll("rect")
+       svg.selectAll("rect")
        .data(data)
        .enter()
        .append("rect")
@@ -92,7 +103,7 @@ function barMakerMonth(data) {
             .duration(500)
             .style('opacity', 0);
         });
-
+// console.log(rect);
     // appending axii
 
     // appending title
@@ -102,10 +113,13 @@ function barMakerMonth(data) {
          .attr("y", margin.top / 2)
          .style("text-anchor", "middle")
          .text("Yearly total of gas extacted, measured at standard conditions");
+    for (i = 0; i < keys.length; i ++){
+      keys[i] = parseFloat(keys[i])
+    }
 
      var xScale = d3.scaleLinear()
                       .range([0, w])
-                      .domain([1971, 2018]);
+                      .domain([Math.min(...keys), Math.max(...keys)]);
 
          // setting y axis
      var yAxis = d3.axisLeft()
@@ -165,18 +179,32 @@ function convertData(data) {
 }
 
 function set_year(year) {
-  svg = d3.selectAll(1)
-  console.log(year)
-  //
-  // for (i = 0; i < 12; i ++){
-  //
-  // }
-  svg.selectAll("#rect")
+  // select
+  svg = d3.selectAll("#month")
+  // console.log(svg);
+  data = barDims[year]
+  // console.log(data);
+  extraction_data = []
+  for (i = 0; i < data.length; i ++){
+    // data_refined.push([keys[i], data[keys[i]]])
+    extraction_data.push(data[i][1])
+  }
+  // data = data_refined
+  // console.log(extraction_data);
+  // setting the y-scale
+  var yScale = d3.scaleLinear()
+                .domain([Math.min(...extraction_data), Math.max(...extraction_data)])
+                .range([barDims.h, barDims.margin.top]);
+  console.log(barDims.h - yScale(data[0][1]));
+  rect = svg.selectAll("#rect")
+     // .data(data)
      .transition()
      .duration(750)
+
      .attr("height", function (d) {
-       return h - yScale(d[1])
+       return barDims.h - yScale(d[1])
      })
-
-
+     .attr("y", function(d) {
+       return yScale(d[1]);
+     });
 }
