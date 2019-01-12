@@ -13,3 +13,5 @@
 - Worked on making functions and variables more global so they could be used in
   various functions; was more of an obstacle then expected.
 - Worked on interaction between bar graphs
+- Ran into problems with using the yScale functions resulting in the barchart not
+  properly updating
