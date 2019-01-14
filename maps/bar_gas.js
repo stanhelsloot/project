@@ -78,7 +78,7 @@ function barMakerYear(data) {
         })
         .on("click", function (d) {
           set_year(d[0])
-
+          set_map(d[0])
         });
 
     // appending axii
@@ -93,7 +93,7 @@ function barMakerYear(data) {
 
      var xScale = d3.scaleLinear()
                       .range([0, w])
-                      .domain([1971, 2018]);
+                      .domain([1971, 2019]);
 
          // setting y axis
      var yAxis = d3.axisLeft()

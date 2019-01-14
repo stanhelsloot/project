@@ -15,3 +15,12 @@
 - Worked on interaction between bar graphs
 - Ran into problems with using the yScale functions resulting in the barchart not
   properly updating
+# Monday week 2
+- Fixed interaction between bar_year and bar_month! Can now click on a year to display
+  the monthly gas extraction.
+- Started working on adding epicenters into the mix.
+- And it works! clicking on a year in the year bar chart displays the bar stuff
+  and the map stuff. A wait time was implemented to make sure all circles were
+  removed (which also uses transitions (looks better)) but this looks a tad
+  too slow.
+  

@@ -4,6 +4,7 @@
 var requests_bar_month = [d3.json("data_months.json")]
 
 barDims = {}
+var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 var bar_month = function() {
   Promise.all(requests_bar_month).then(function(response) {
@@ -46,23 +47,20 @@ function barMakerMonth(data) {
     for (i = 0; i < keys.length; i++){
       if (parseInt(keys[i]) == j){
         temp.push(keys[i])
-        data_refined.push([keys[i], data[keys[i]]])
+        data_refined.push([month[i], data[keys[i]]/1e9])
       }
       barDims[j] = data_refined
     }
   }
 
-  keys = temp
+  for (i = 0; i < barDims[2018].length; i ++){
 
-  for (i = 0; i < keys.length; i ++){
-
-    extraction_data.push(data[keys[i]])
+    extraction_data.push(barDims[2018][i][1])
   }
   data = data_refined
-
   // setting the y-scale
   var yScale = d3.scaleLinear()
-                .domain([Math.min(...extraction_data), Math.max(...extraction_data)])
+                .domain([0, Math.max(...extraction_data)])
                 .range([h, margin.top]);
 
   const div = d3.select('body')
@@ -117,9 +115,10 @@ function barMakerMonth(data) {
       keys[i] = parseFloat(keys[i])
     }
 
-     var xScale = d3.scaleLinear()
-                      .range([0, w])
-                      .domain([Math.min(...keys), Math.max(...keys)]);
+     var xScale = d3.scaleBand()
+                      .rangeRound([0, w])
+                      .padding(0.1)
+                      .domain(month);
 
          // setting y axis
      var yAxis = d3.axisLeft()
@@ -132,6 +131,7 @@ function barMakerMonth(data) {
 
      svg.append("g")
           .attr("class", "yaxis")
+          .attr("id", "month_y")
           .attr("transform", "translate(" + margin.left + ",0)")
           .call(yAxis)
           .style("font-size", "12px");
@@ -139,8 +139,9 @@ function barMakerMonth(data) {
        // appending axis
        svg.append("g")
           .attr("class", "xaxis")
+          .attr("id", "month_x")
           .attr("transform", "translate(" + margin.left + "," + h + ")")
-          .call(xAxis.tickFormat(d3.format(".4")))
+          .call(xAxis)
           .style("font-size", "12px");
 
        // append xAxis text
@@ -168,10 +169,6 @@ function convertData(data) {
 
   keys = Object.keys(data)
   for (i = 0; i < keys.length; i ++){
-    // j = "" + i
-    // j = data[i]
-    // j = (j/1e9)
-    // console.log(j )
     data_refined.push([keys[i], data[keys[i]]])
     extraction_data.push(data[keys[i]])
   }
@@ -189,15 +186,16 @@ function set_year(year) {
     // data_refined.push([keys[i], data[keys[i]]])
     extraction_data.push(data[i][1])
   }
-  // data = data_refined
-  // console.log(extraction_data);
+
   // setting the y-scale
   var yScale = d3.scaleLinear()
-                .domain([Math.min(...extraction_data), Math.max(...extraction_data)])
+                .domain([0, Math.max(...extraction_data)])
                 .range([barDims.h, barDims.margin.top]);
-  console.log(barDims.h - yScale(data[0][1]));
+
+  // changing the rectangles to fit the new data, making sure to input the data
+  // as data
   rect = svg.selectAll("#rect")
-     // .data(data)
+     .data(data)
      .transition()
      .duration(750)
 
@@ -207,4 +205,12 @@ function set_year(year) {
      .attr("y", function(d) {
        return yScale(d[1]);
      });
+
+  // updating x and y scale accordingly
+  var yAxis = d3.axisLeft()
+                .scale(yScale)
+                .ticks(5);
+
+  d3.selectAll("#month_y")
+    .call(yAxis)
 }

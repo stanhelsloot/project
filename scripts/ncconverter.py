@@ -47,6 +47,8 @@ def converter(filename):
     dataset = dataset.loc[dataset['event_type'] == 1]
     # select (only dutch) cities
     dataset = dataset.loc[dataset["location"].isin(location_groningen)]
+    # select all events with a magnitude north of 1.5 on the Richter scale
+    dataset = dataset.loc[dataset["magnitude"] > 1.5]
     # drop event_type column
     dataset = dataset.drop(columns=["event_type"])
 
