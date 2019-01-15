@@ -80,11 +80,9 @@ function barMakerMonth(data) {
           return i * (w / data.length);
         })
         .attr("y", function(d) {
-          // console.log(yScale(d[1]))
           return yScale(d[1]);
         })
         .attr("height", function(d) {
-          // console.log(h - yScale(d[1]))
           return h - yScale(d[1]);
         })
         .on('mouseover', d => {
@@ -101,8 +99,6 @@ function barMakerMonth(data) {
             .duration(500)
             .style('opacity', 0);
         });
-// console.log(rect);
-    // appending axii
 
     // appending title
     svg.append("text")
@@ -178,9 +174,7 @@ function convertData(data) {
 function set_year(year) {
   // select
   svg = d3.selectAll("#month")
-  // console.log(svg);
   data = barDims[year]
-  // console.log(data);
   extraction_data = []
   for (i = 0; i < data.length; i ++){
     // data_refined.push([keys[i], data[keys[i]]])

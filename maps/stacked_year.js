@@ -1,17 +1,18 @@
+// makes a stacked barchart for total years n stuff
 // Stan Helsloot, 10762388
-// Renders a histogram of the yearly gas extraction by NAM
-var requests_bar_year = [d3.json("data_years.json")]
+var requests_stacked = [d3.json("data.json")];
 
-var bar_year = function() {
-  Promise.all(requests_bar_year).then(function(response) {
-    let draw = barMakerYear(convertData(response))
-
+var stacked_year = function() {
+  Promise.all(requests_stacked).then(function(response) {
+    let draw = stackedMakerYear(response)
   })
 
 }
 
 // creates a histogram :)
-function barMakerYear(data) {
+function stackedMakerYear(data) {
+  data = data[0].data
+  console.log(data);
   // size margin etc.
   var w = 600;
   var h = 400;
@@ -21,7 +22,7 @@ function barMakerYear(data) {
   var svg = d3.select("body")
 
               .append("svg")
-              .attr("id", "year")
+              .attr("id", "stacked_year")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
@@ -29,20 +30,52 @@ function barMakerYear(data) {
   extraction_data = []
   for (i = 1971; i < 2019; i ++){
     // if (!(isNaN(data[- 1963 + i][1]))){
-    extraction_data.push(data[- 1971 + i][1])
+    extraction_data.push(data[- 1971 + i][4])
     // }
 
   }
-
+  console.log(extraction_data);
   // setting the y-scale
   var yScale = d3.scaleLinear()
                 .domain([Math.min(...extraction_data), Math.max(...extraction_data)])
                 .range([h, margin.top]);
 
-  const div = d3.select('body')
-                .append('div')
-                .attr('class', 'tooltip')
-                .style('opacity', 0);
+  // const div = d3.select('body')
+  //               .append('div')
+  //               .attr('class', 'tooltip')
+  //               .style('opacity', 0);
+
+  var stack = d3.stack()
+
+  for (var i = 0; i < data.length; i++) {
+    if (data[i][0] == year){
+      if (data[4] ) {
+
+      }
+    }
+  }
+
+  svg.append("g")
+    .selectAll("g")
+    .data(data)
+    .enter().append("g")
+      // .attr("fill", (d, i) => color(data.keys[i]))
+    .selectAll("rect")
+    .data(function (d) {
+      return d[4]
+    })
+    .enter().append("rect")
+      .attr("x", function (d) {
+        return d[0]
+      }
+      .attr("y", function (d) {
+        return yScale(d[4])
+      })
+      .attr("height", function (d) {
+        return yScale(d[4])
+      })
+      .attr("width", w/years.length);
+
 
     // creating the bars for the bargraph
     svg.selectAll("rect")
@@ -55,29 +88,31 @@ function barMakerYear(data) {
           return i * (w / data.length);
         })
         .attr("y", function(d) {
+          // console.log(yScale(d[1]))
           return yScale(d[1]);
         })
         .attr("height", function(d) {
+          // console.log(h - yScale(d[1]))
           return h - yScale(d[1]);
-        })
-        .on('mouseover', d => {
-            div.transition()
-             .duration(100)
-             .style('opacity', 0.9);
-            div.html(Math.round(d[1] * 100) / 100)
-             .style('left', d3.event.pageX + "px")
-             .style('top', d3.event.pageY - 20 + "px");
-        })
-        .on('mouseout', () => {
-            div
-            .transition()
-            .duration(500)
-            .style('opacity', 0);
-        })
-        .on("click", function (d) {
-          set_year(d[0])
-          set_map(d[0])
         });
+        // .on('mouseover', d => {
+        //     div.transition()
+        //      .duration(100)
+        //      .style('opacity', 0.9);
+        //     div.html(Math.round(d[1] * 100) / 100)
+        //      .style('left', d3.event.pageX + "px")
+        //      .style('top', d3.event.pageY - 20 + "px");
+        // })
+        // .on('mouseout', () => {
+        //     div
+        //     .transition()
+        //     .duration(500)
+        //     .style('opacity', 0);
+        // })
+        // .on("click", function (d) {
+        //   set_year(d[0])
+        //   set_map(d[0])
+        // });
 
     // appending axii
 
@@ -132,15 +167,3 @@ function barMakerYear(data) {
           .text("Average BMI")
           .style("font-size", "17px");
   };
-
-function convertData(data) {
-  // converts the dict format to an array
-  data = data[0]
-  data_refined = []
-  for (i = 1971; i < 2019; i ++){
-    j = data["" + i]
-    j = (j/1e9)
-    data_refined.push([i, j])
-  }
-  return data_refined
-}

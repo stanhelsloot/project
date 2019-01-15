@@ -23,4 +23,7 @@
   and the map stuff. A wait time was implemented to make sure all circles were
   removed (which also uses transitions (looks better)) but this looks a tad
   too slow.
-  
+# Tuesday week 2
+- Discovered the stacked bar chart requires the data in a different format,
+  so a new file (stacked_data.json) was made using the stacked_converter.py
+  script. 

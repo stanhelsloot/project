@@ -12,7 +12,6 @@ var map = function() {
 
 }
 function worldMaker(data) {
-  console.log(data  )
   // set width, height, padding and margins
   var w = 400;
   var h = 600;
@@ -94,7 +93,6 @@ function worldMaker(data) {
 
 function set_map(year) {
   svg = d3.selectAll("#map")
-  console.log(mapDims[year]);
   var circle = svg.selectAll("circle");
   circle.transition().duration(500).attr("r", 0).remove();
   var data = mapDims[year];
