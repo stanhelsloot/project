@@ -32,17 +32,22 @@ def converter(filename):
             if row in location:
                 location_groningen.append(row[0])
 
+    year = []
     time_date = []
     for i in range(len(time)):
         g = (time[i] - 2208988800)
         # g = (time[i])
         t = str((pd.to_datetime(g, unit="s")))
+        p = t.split()
+        month = p[0].split("-")
+        print(month[1])
         t_digits = (re.findall(r"\d", t))
         t_str = "".join(t_digits[0 : 4])
-        time_date.append(t_str)
+        year.append(t_str)
+        time_date.append(p[0])
 
     # print(time_date)
-    dataset = pd.DataFrame({"time": time_date, "location": location, "lon": lon, "lat": lat, "magnitude": magnitude, "event_type": event_type})
+    dataset = pd.DataFrame({"year": year, "location": location, "lon": lon, "lat": lat, "magnitude": magnitude, "event_type": event_type, "time_data": time_date})
     # select data on induced earthquakes
     dataset = dataset.loc[dataset['event_type'] == 1]
     # select (only dutch) cities
@@ -55,14 +60,14 @@ def converter(filename):
     # create dict to which to add: keys as years, amount of earthquakes per mag.
     data = []
     for year in range(1986, 2019):
-        dataset_year = dataset.loc[dataset["time"] == str(year)]
+        dataset_year = dataset.loc[dataset["year"] == str(year)]
         dataset_year_15 = dataset_year.loc[dataset["magnitude"] < 2.0]
         dataset_year_20 = dataset_year.loc[(dataset["magnitude"] > 2.0) & (dataset["magnitude"] < 2.5)]
         dataset_year_25 = dataset_year.loc[(dataset["magnitude"] > 2.5) & (dataset["magnitude"] < 3.0)]
         dataset_year_30 = dataset_year.loc[dataset["magnitude"] > 3.0]
         data.append([[year, dataset_year_15.shape[0], "1.5", dataset_year_15.shape[0]], [year, dataset_year_20.shape[0], "2.0", dataset_year_20.shape[0] + dataset_year_15.shape[0]], [year, dataset_year_25.shape[0], "2.5", dataset_year_25.shape[0] + dataset_year_15.shape[0] + dataset_year_20.shape[0]], [year, dataset_year_30.shape[0], "3.0", dataset_year_30.shape[0] + dataset_year_15.shape[0] + dataset_year_20.shape[0] + dataset_year_25.shape[0]]])
 
-    print(data)
+    # print(data)
 
     # ready = json.dumps(data, )
 
@@ -70,9 +75,9 @@ def converter(filename):
     # dict = dataset.to_dict(orient="split")
     # # removing index
     # dict.pop("index")
-    # # write json file
-    with open(OUTPUT_JSON, 'w') as outfile:
-        json.dump(data, outfile)
+    # # # write json file
+    # with open(OUTPUT_JSON, 'w') as outfile:
+    #     json.dump(data, outfile)
 
 
 if __name__ == '__main__':

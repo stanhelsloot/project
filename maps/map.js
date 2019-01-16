@@ -163,11 +163,6 @@ svg.call(tip);
       circle.transition().duration(500).attr("r", function (d) {
         return d[4]*8
       })
-
     }
-
   }
-
-
-
 }

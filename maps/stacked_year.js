@@ -140,4 +140,13 @@ svg.call(tip);
           .style("text-anchor", "middle")
           .text("Amount of earthquakes")
           .style("font-size", "17px");
+
+      svg.append("g")
+         .attr("class", "legend")
+         .append("rect")
+         .attr("x", 100)
+         .attr("y", 100)
+         .attr("width", 100)
+         .attr("h")
+
   };

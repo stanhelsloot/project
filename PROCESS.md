@@ -35,4 +35,8 @@
   - Hovering over bars in gas.histo should display numeric values (year, ###).
   - Hovering over earthquakes should display magnitude, location, date.
   - When clicking on a year in gas.histo, if no earthquakes, should tell.
-  
+- Lo and behold the tooltips (exept for mag.histogram, cause it be done with
+  a click in the legend/dropdown menu).
+- Started on legends for all the figures
+- Dropped the monthly stacked histogram idea because it does not feel like
+  it adds any value to the current visualizations.
