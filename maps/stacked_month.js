@@ -1,22 +1,21 @@
-// makes a stacked barchart for total years n stuff
+// makes a stacked barchart for total Months n stuff
 // Stan Helsloot, 10762388
 var requests_stacked = [d3.json("stacked_data.json")];
-
+var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 // stackedDims = {}
 
-var stacked_year = function() {
+var stacked_month = function() {
   Promise.all(requests_stacked).then(function(response) {
-    let draw = stackedMakerYear(response)
+    let draw = stackedMakerMonth(response)
   })
 
 }
 
 // creates a histogram :)
-function stackedMakerYear(data) {
-  // tooltip of stacked_year
-  var tip = d3.tip()
-            .attr('class', 'd3-tip')
-            .offset([- 100, 0]);
+function stackedMakerMonth(data) {
+  console.log(data[0]);
+
+
   // size margin etc.
   var w = 600;
   var h = 400;
@@ -26,10 +25,13 @@ function stackedMakerYear(data) {
   var svg = d3.select("body")
 
               .append("svg")
-              .attr("id", "stacked_year")
+              .attr("id", "stacked_month")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
+  // keys = Object.keys(data[0])
+  //
+  // console.log(data[0][i]);
   range_data = []
   for (var i = 0; i < data[0].length; i++) {
     len = (data[0][i][0][1] + data[0][i][1][1] + data[0][i][2][1] +data[0][i][3][1])
@@ -67,27 +69,14 @@ color = {"1.5": "rgb(255, 0, 0)", "2.0": "rgb(0, 0, 255)", "2.5": "rgb(0, 255, 0
       return  yScale(d[3])
     })
     .attr("height", function (d) {
+      console.log(yScale(d[3]));
       return h - yScale(d[1])
     })
     .attr("width", w / data[0].length)
     .style("fill", function (d) {
       return (color[d[2]]);
     })
-    .attr("transform", "translate(" + 30 + ",0)")
-    .on('mouseover',function(d){
-      // make a banner with the location and magnitude of the earthquake
-      tip.html(function () {
-       return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ d[2] +"</span>"})
-      tip.show();
-      d3.select(this)
-        .style("opacity", 0.3)
-     })
-    .on('mouseout', function(d){
-      tip.hide();
-      d3.select(this)
-        .style("opacity", 1)
-      });
-svg.call(tip);
+    .attr("transform", "translate(" + 30 + ",0)");
 
 
     // appending title
@@ -96,7 +85,7 @@ svg.call(tip);
          .attr("class", "title")
          .attr("y", margin.top / 2)
          .style("text-anchor", "middle")
-         .text("Yearly total of gas extacted, measured at standard conditions");
+         .text("Monthly total of gas extacted, measured at standard conditions");
 
      var xScale = d3.scaleLinear()
                       .range([0, w])
@@ -129,7 +118,7 @@ svg.call(tip);
            .attr("transform", "translate(" + (w/2) + " ," +
                               (h + margin.top) + ")")
            .style("text-anchor", "middle")
-           .text("Year")
+           .text("Month")
            .style("font-size", "17px");
 
        // Append yAxis text

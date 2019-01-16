@@ -12,6 +12,12 @@ var bar_year = function() {
 
 // creates a histogram :)
 function barMakerYear(data) {
+
+  // tooltip of bar_year
+  var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([- 100, 0]);
+
   // size margin etc.
   var w = 600;
   var h = 400;
@@ -60,26 +66,26 @@ function barMakerYear(data) {
         .attr("height", function(d) {
           return h - yScale(d[1]);
         })
-        .on('mouseover', d => {
-            div.transition()
-             .duration(100)
-             .style('opacity', 0.9);
-            div.html(Math.round(d[1] * 100) / 100)
-             .style('left', d3.event.pageX + "px")
-             .style('top', d3.event.pageY - 20 + "px");
-        })
-        .on('mouseout', () => {
-            div
-            .transition()
-            .duration(500)
-            .style('opacity', 0);
-        })
+        .on('mouseover',function(d){
+          // make a banner with the location and magnitude of the earthquake
+          tip.html(function () {
+           return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Gas in billion Nm^3: </strong><span class='details'>"+ Math.round(d[1] * 100) / 10+"</span>"})
+          tip.show();
+          d3.select(this)
+            .style("fill", "rgba(180, 0, 0, 0.6)")
+         })
+        .on('mouseout', function(d){
+          tip.hide();
+          d3.select(this)
+            .style("fill", "rgba(0, 0, 0, 1)")
+          })
         .on("click", function (d) {
           set_year(d[0])
           set_map(d[0])
         });
 
-    // appending axii
+    // calling tip
+    svg.call(tip);
 
     // appending title
     svg.append("text")

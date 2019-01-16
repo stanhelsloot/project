@@ -53,16 +53,16 @@ def converter(filename):
     dataset = dataset.drop(columns=["event_type"])
 
     # create dict to which to add: keys as years, amount of earthquakes per mag.
-    data = {}
+    data = []
     for year in range(1986, 2019):
         dataset_year = dataset.loc[dataset["time"] == str(year)]
         dataset_year_15 = dataset_year.loc[dataset["magnitude"] < 2.0]
         dataset_year_20 = dataset_year.loc[(dataset["magnitude"] > 2.0) & (dataset["magnitude"] < 2.5)]
         dataset_year_25 = dataset_year.loc[(dataset["magnitude"] > 2.5) & (dataset["magnitude"] < 3.0)]
         dataset_year_30 = dataset_year.loc[dataset["magnitude"] > 3.0]
-        data[year] = {"1.5": dataset_year_15.shape[0], "2.0": dataset_year_20.shape[0] , "2.5": dataset_year_25.shape[0] , "3.0":dataset_year_30.shape[0] }
+        data.append([[year, dataset_year_15.shape[0], "1.5", dataset_year_15.shape[0]], [year, dataset_year_20.shape[0], "2.0", dataset_year_20.shape[0] + dataset_year_15.shape[0]], [year, dataset_year_25.shape[0], "2.5", dataset_year_25.shape[0] + dataset_year_15.shape[0] + dataset_year_20.shape[0]], [year, dataset_year_30.shape[0], "3.0", dataset_year_30.shape[0] + dataset_year_15.shape[0] + dataset_year_20.shape[0] + dataset_year_25.shape[0]]])
 
-    # print(data[2011])
+    print(data)
 
     # ready = json.dumps(data, )
 

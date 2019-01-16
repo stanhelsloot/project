@@ -26,4 +26,13 @@
 # Tuesday week 2
 - Discovered the stacked bar chart requires the data in a different format,
   so a new file (stacked_data.json) was made using the stacked_converter.py
-  script. 
+  script. Stacked data was made. Having doubts on doing monthly earthquake data
+  due to limited amount of sample (maybe for a select time window??)
+# Wednesday week 2
+- For the tooltips (which all have to be made still):
+  - Hovering over a certain magnitude part in the mag.histogram should high-
+    light all earthquakes with that magnitude.
+  - Hovering over bars in gas.histo should display numeric values (year, ###).
+  - Hovering over earthquakes should display magnitude, location, date.
+  - When clicking on a year in gas.histo, if no earthquakes, should tell.
+  

@@ -12,6 +12,11 @@ var map = function() {
 
 }
 function worldMaker(data) {
+  // tooltip of map
+  var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([0, 0]);
+
   // set width, height, padding and margins
   var w = 400;
   var h = 600;
@@ -88,10 +93,32 @@ function worldMaker(data) {
        return d[4] * 8
      })
      .style("fill", "rgba(255, 255, 0, 0.3)")
-      .attr("transform", "translate(0, " + margin.top + ")");
+     .attr("transform", "translate(0, " + margin.top + ")")
+     .on('mouseover',function(d){
+       // make a banner with the location and magnitude of the earthquake
+       tip.html(function () {
+        return "<strong>Location: </strong><span class='details'>"+ d[1] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ Math.round(d[4] * 100) / 100 +"</span>"+ "<strong>Date: </strong><span class='details'>" + d[5] + "</span>";       })
+       tip.show();
+       d3.select(this)
+         .style("fill", "rgba(180, 0, 0, 0.6)")
+      })
+     .on('mouseout', function(d){
+       tip.hide();
+       d3.select(this)
+         .style("fill", "rgba(255, 255, 0, 0.3)")
+       });
+
+       // activate tip
+     svg.call(tip);
+
 }
 
 function set_map(year) {
+  // make tip again so it works on the new circles
+  var tip = d3.tip()
+            .attr('class', 'd3-tip')
+            .offset([0, 0]);
+
   svg = d3.selectAll("#map")
   var circle = svg.selectAll("circle");
   circle.transition().duration(500).attr("r", 0).remove();
@@ -117,8 +144,22 @@ function set_map(year) {
            return 0
          })
          .style("fill", "rgba(255, 255, 0, 0.3)")
-          .attr("transform", "translate(0, " + mapDims.margin.top + ")");
-
+          .attr("transform", "translate(0, " + mapDims.margin.top + ")")
+          .on('mouseover',function(d){
+            // make a banner with the location and magnitude of the earthquake
+            tip.html(function () {
+              return "<strong>Location: </strong><span class='details'>"+ d[1] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ Math.round(d[4] * 100) / 100 +"</span>"+ "<strong>Date: </strong><span class='details'>" + d[5] + "</span>";
+            })
+            tip.show(d);
+            d3.select(this)
+              .style("fill", "rgba(180, 0, 0, 0.6)")
+           })
+          .on('mouseout', function(d){
+            tip.hide(d);
+            d3.select(this)
+              .style("fill", "rgba(255, 255, 0, 0.3)")
+            });
+svg.call(tip);
       circle.transition().duration(500).attr("r", function (d) {
         return d[4]*8
       })

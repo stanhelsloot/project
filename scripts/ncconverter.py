@@ -32,17 +32,20 @@ def converter(filename):
             if row in location:
                 location_groningen.append(row[0])
 
+    year = []
     time_date = []
     for i in range(len(time)):
         g = (time[i] - 2208988800)
         # g = (time[i])
         t = str((pd.to_datetime(g, unit="s")))
+        p = t.split()
         t_digits = (re.findall(r"\d", t))
         t_str = "".join(t_digits[0 : 4])
-        time_date.append(t_str)
+        year.append(t_str)
+        time_date.append(p[0])
 
     # print(time_date)
-    dataset = pd.DataFrame({"time": time_date, "location": location, "lon": lon, "lat": lat, "magnitude": magnitude, "event_type": event_type})
+    dataset = pd.DataFrame({"year": year, "location": location, "lon": lon, "lat": lat, "magnitude": magnitude, "event_type": event_type, "time_date": time_date})
     # select data on induced earthquakes
     dataset = dataset.loc[dataset['event_type'] == 1]
     # select (only dutch) cities
