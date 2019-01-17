@@ -19,12 +19,12 @@ function barMakerYear(data) {
             .offset([- 100, 0]);
 
   // size margin etc.
-  var w = 600;
-  var h = 400;
+  var w = 400;
+  var h = 300;
   var margin = {top: 80, right: 50, bottom: 20, left: 50}
 
   // creating a svg object
-  var svg = d3.select("body")
+  var svg = d3.select("div#extraction_year")
 
               .append("svg")
               .attr("id", "year")
@@ -42,13 +42,8 @@ function barMakerYear(data) {
 
   // setting the y-scale
   var yScale = d3.scaleLinear()
-                .domain([Math.min(...extraction_data), Math.max(...extraction_data)])
+                .domain([0, Math.max(...extraction_data)])
                 .range([h, margin.top]);
-
-  const div = d3.select('body')
-                .append('div')
-                .attr('class', 'tooltip')
-                .style('opacity', 0);
 
     // creating the bars for the bargraph
     svg.selectAll("rect")
@@ -69,7 +64,7 @@ function barMakerYear(data) {
         .on('mouseover',function(d){
           // make a banner with the location and magnitude of the earthquake
           tip.html(function () {
-           return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Gas in billion Nm^3: </strong><span class='details'>"+ Math.round(d[1] * 100) / 10+"</span>"})
+           return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Gas in billion Nm^3: </strong><span class='details'>"+ Math.round(d[1] * 100) / 100+"</span>"})
           tip.show();
           d3.select(this)
             .style("fill", "rgba(180, 0, 0, 0.6)")
@@ -93,7 +88,7 @@ function barMakerYear(data) {
          .attr("class", "title")
          .attr("y", margin.top / 2)
          .style("text-anchor", "middle")
-         .text("Yearly total of gas extacted, measured at standard conditions");
+         .text("Yearly total of gas extacted");
 
      var xScale = d3.scaleLinear()
                       .range([0, w])
@@ -111,32 +106,28 @@ function barMakerYear(data) {
      svg.append("g")
           .attr("class", "yaxis")
           .attr("transform", "translate(" + margin.left + ",0)")
-          .call(yAxis)
-          .style("font-size", "12px");
+          .call(yAxis);
 
        // appending axis
        svg.append("g")
           .attr("class", "xaxis")
           .attr("transform", "translate(" + margin.left + "," + h + ")")
-          .call(xAxis.tickFormat(d3.format(".4")))
-          .style("font-size", "12px");
+          .call(xAxis.tickFormat(d3.format(".4")));
 
-       // append xAxis text
-       svg.append("text")
-           .attr("transform", "translate(" + (w/2) + " ," +
-                              (h + margin.top) + ")")
-           .style("text-anchor", "middle")
-           .text("Year")
-           .style("font-size", "17px");
+          // append xAxis text
+          svg.append("text")
+              .attr("transform", "translate(" + (w/2) + " ," +
+                                 (h + margin.top / 1.5) + ")")
+              .style("text-anchor", "start")
+              .text("Year");
 
-       // Append yAxis text
-       svg.append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("x", - h/2 + 30)
-          .attr("y", margin.left / 2)
-          .style("text-anchor", "middle")
-          .text("Average BMI")
-          .style("font-size", "17px");
+           // Append yAxis text
+           svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("x", - h/2 + 30)
+              .attr("y", margin.left / 3)
+              .style("text-anchor", "end")
+              .text("Gas extraction in Nm^3")
   };
 
 function convertData(data) {

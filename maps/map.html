@@ -2,6 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AAH EARTHQUAKES</title>
     <script src="https://d3js.org/d3.v5.min.js"></script>
     <script src="http://d3js.org/queue.v1.min.js"></script>
@@ -12,12 +13,20 @@
     <script src="bar_gas_month.js" charset="utf-8"></script>
     <script src="bar_gas.js" charset="utf-8"></script>
     <script src="stacked_year.js" charset="utf-8"></script>
-    <!-- <script src="stacked_month.js" charset="utf-8"></script> -->
     <link rel="stylesheet" href="navigation.css">
-    <!-- <link rel="stylesheet" href="map.css"> -->
+    <link rel="stylesheet" href="tip.css">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+
   </head>
   <body>
-    <!--navigation bar-->
+    <!-- calls the banner for navigation   -->
     <div id="navigation_bar">
     </div>
 
@@ -27,6 +36,55 @@
     });
     </script>
 
+    <div class="container">
+      <h1>Induced earthquakes in the Netherlands as a result of gas extraction</h1>
+      <p>By Stan Helsloot hallo</p>
+        <h3>Gasfield</h3>
+        <p>In 1959 one of the worlds largest gas reserves was discovered in
+          Groningen, a province in the
+          northeast of the Netherlands. Four years after its discovery, gas
+          extraction begun. Earthquakes have since causes large amounts of
+          structural damages.[1] To show the relation between the earthquakes and
+          the gas extraction, this page provides several visualizations to
+          clarify the situation.</p>
+    </div>
+    <div class="container">
+      <h3>Extraction</h3>
+      <p>Over the past "two decades" gas extraction has been heavily reduced
+        due to demages caused by induced earthquakes.[2] The current goal is to
+        keep reducing gas extraction and to lower the total extraction to
+        less then five billion Nm^3 in 2023.[3] Several measures are taken
+        to speed up the reduction, such as limiting export to neighbouring
+        countries and building a nitrogen factory which can be used to convert
+        highly caloric types of gas to the low caloric type.</p>
+        <div class="row">
+          <div class="col" id="extraction_year"></div>
+          <div class="col" id="extraction_month"></div>
+        </div>
+    </div>
+    <div class="container">
+      <h3>Earthquakes</h3>
+      <p>Starting in 1911, the KNMI (Royal Netherlands Meteorological Institute)
+        has been keeping a record of earthquakes occuring or affecting the
+        Netherlands. The first earthquake caused by gas extraction was
+        detected in Assen in 1986 and had a magnitude of 2.8 on the Richter
+        scale.[4] After this, the amount of earthquakes has increased significantly
+        in quantity as can be seen in figure "stacked_year". These earthquakes,
+        refered to as induced earthquakes, differ from tectonic earthquakes
+        mainly in the depth of occurence. Induced earthquakes have an approximate
+        depth of 3 km, whilst naturally occuring earthquake occur between
+        20 and 100 km depth.
+        In 2015 extra seismographs have been installed throughout the Netherlands,
+        allowing for detection of earthquakes with magnitudes of below 1.5 on
+        the Richter scale. These earthquakes were not used in the visualizations
+        on this page.</p>
+        <div class="row">
+          <div class="col" id="earthquake_map"></div>
+          <div class="col" id="earthquake_stacked"></div>
+        </div>
+
+    </div>
+
     <!-- loading multiple charts -->
     <script>
     window.onload = function() {
@@ -34,10 +92,15 @@
        bar_year()
        bar_month()
        stacked_year()
-       // stacked_month()
     }
-
     </script>
+
+    <div class="container">
+      <h4>References</h4>
+      <p>List of references</p>
+      <a href="https://www.rijksoverheid.nl/onderwerpen/gaswinning-in-groningen/nieuws/2018/12/03/afbouw-gaswinning-groningen-op-koers">3: Reduction of gas extraction.</a>
+      <a href="https://www.knmi.nl/kennis-en-datacentrum/uitleg/aardbevingen-door-gaswinning">4: Information on earthquakes in the Netherlands.</a>
+    </div>
 
   </body>
 </html>

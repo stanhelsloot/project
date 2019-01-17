@@ -40,3 +40,13 @@
 - Started on legends for all the figures
 - Dropped the monthly stacked histogram idea because it does not feel like
   it adds any value to the current visualizations.
+# Thursday week 3
+- Tooltip for mag.histo show amount of earthquakes in that year + the year itself.
+- And when clicked on, show the year with amount of earthquakes of "that"
+  magnitude.
+- Started with designing the page layout + adding text. Noticed that the amount
+  of graphs were difficult to relate without text so a change was made:
+  the onclick of gas.histo.year was removed and added to the stacked. The
+  original onclick of the stacked was removed and replaced, the functionality
+  was inplemented into a mouseover.
+  

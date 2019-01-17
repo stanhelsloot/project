@@ -21,15 +21,15 @@ function barMakerMonth(data) {
             .attr('class', 'd3-tip')
             .offset([- 100, 0]);
   // size margin etc.
-  var w = 600;
-  var h = 400;
+  var w = 400;
+  var h = 300;
   var margin = {top: 80, right: 50, bottom: 20, left: 50}
   barDims.w = w
   barDims.h = h
   barDims.margin = margin
 
   // creating a svg object
-  var svg = d3.select("body")
+  var svg = d3.select("div#extraction_month")
 
               .append("svg")
               .attr("id", "month")
@@ -67,11 +67,6 @@ function barMakerMonth(data) {
                 .domain([0, Math.max(...extraction_data)])
                 .range([h, margin.top]);
 
-  const div = d3.select('body')
-                .append('div')
-                .attr('class', 'tooltip')
-                .style('opacity', 0);
-
     // creating the bars for the bargraph
        svg.selectAll("rect")
        .data(data)
@@ -92,7 +87,7 @@ function barMakerMonth(data) {
         .on('mouseover',function(d){
           // make a banner with the location and magnitude of the earthquake
           tip.html(function () {
-           return "<strong>Month: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Gas in billion Nm^3: </strong><span class='details'>"+ Math.round(d[1] * 100) / 10+"</span>"})
+           return "<strong>Month: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Gas in billion Nm^3: </strong><span class='details'>"+ Math.round(d[1] * 100) / 100+"</span>"})
           tip.show();
           d3.select(this)
             .style("fill", "rgba(180, 0, 0, 0.6)")
@@ -109,7 +104,7 @@ function barMakerMonth(data) {
          .attr("class", "title")
          .attr("y", margin.top / 2)
          .style("text-anchor", "middle")
-         .text("Yearly total of gas extacted, measured at standard conditions");
+         .text("Monthly total of gas extracted");
     for (i = 0; i < keys.length; i ++){
       keys[i] = parseFloat(keys[i])
     }
@@ -132,33 +127,29 @@ function barMakerMonth(data) {
           .attr("class", "yaxis")
           .attr("id", "month_y")
           .attr("transform", "translate(" + margin.left + ",0)")
-          .call(yAxis)
-          .style("font-size", "12px");
+          .call(yAxis);
 
        // appending axis
        svg.append("g")
           .attr("class", "xaxis")
           .attr("id", "month_x")
           .attr("transform", "translate(" + margin.left + "," + h + ")")
-          .call(xAxis)
-          .style("font-size", "12px");
+          .call(xAxis);
 
        // append xAxis text
        svg.append("text")
            .attr("transform", "translate(" + (w/2) + " ," +
-                              (h + margin.top) + ")")
-           .style("text-anchor", "middle")
-           .text("Month")
-           .style("font-size", "17px");
+                              (h + margin.top / 1.5) + ")")
+           .style("text-anchor", "start")
+           .text("Month");
 
-       // Append yAxis text
-       svg.append("text")
-          .attr("transform", "rotate(-90)")
-          .attr("x", - h/2 + 30)
-          .attr("y", margin.left / 2)
-          .style("text-anchor", "middle")
-          .text("Average BMI")
-          .style("font-size", "17px");
+           // Append yAxis text
+           svg.append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("x", - h/2 + 30)
+              .attr("y", margin.left / 3)
+              .style("text-anchor", "end")
+              .text("Gas extraction in Nm^3")
   };
 
 function convertData(data) {

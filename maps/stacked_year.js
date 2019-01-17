@@ -18,13 +18,12 @@ function stackedMakerYear(data) {
             .attr('class', 'd3-tip')
             .offset([- 100, 0]);
   // size margin etc.
-  var w = 600;
-  var h = 400;
+  var w = 400;
+  var h = 300;
   var margin = {top: 80, right: 50, bottom: 20, left: 50}
 
   // creating a svg object
-  var svg = d3.select("body")
-
+  var svg = d3.select("div#earthquake_stacked")
               .append("svg")
               .attr("id", "stacked_year")
               .attr("width", w + margin.left + margin.right)
@@ -73,11 +72,11 @@ color = {"1.5": "rgb(255, 0, 0)", "2.0": "rgb(0, 0, 255)", "2.5": "rgb(0, 255, 0
     .style("fill", function (d) {
       return (color[d[2]]);
     })
-    .attr("transform", "translate(" + 30 + ",0)")
+    .attr("transform", "translate(" + 39+ ",0)")
     .on('mouseover',function(d){
       // make a banner with the location and magnitude of the earthquake
       tip.html(function () {
-       return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ d[2] +"</span>"})
+       return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ d[2] +"<br></span>" + "<strong>Amount of Earthquakes: </strong><span class='details'>"+ d[1] +"</span>"})
       tip.show();
       d3.select(this)
         .style("opacity", 0.3)
@@ -86,6 +85,9 @@ color = {"1.5": "rgb(255, 0, 0)", "2.0": "rgb(0, 0, 255)", "2.5": "rgb(0, 255, 0
       tip.hide();
       d3.select(this)
         .style("opacity", 1)
+      })
+      .on("click", function (d) {
+        set_map_mag_range(d[0], d[2])
       });
 svg.call(tip);
 
@@ -114,39 +116,63 @@ svg.call(tip);
      svg.append("g")
           .attr("class", "yaxis")
           .attr("transform", "translate(" + margin.left + ",0)")
-          .call(yAxis)
-          .style("font-size", "12px");
+          .call(yAxis);
 
        // appending axis
        svg.append("g")
           .attr("class", "xaxis")
           .attr("transform", "translate(" + margin.left + "," + h + ")")
-          .call(xAxis.tickFormat(d3.format(".4")))
-          .style("font-size", "12px");
+          .call(xAxis.tickFormat(d3.format(".4")));
 
        // append xAxis text
        svg.append("text")
            .attr("transform", "translate(" + (w/2) + " ," +
                               (h + margin.top) + ")")
-           .style("text-anchor", "middle")
-           .text("Year")
-           .style("font-size", "17px");
+           .style("text-anchor", "start")
+           .text("Year");
 
        // Append yAxis text
        svg.append("text")
           .attr("transform", "rotate(-90)")
           .attr("x", - h/2 + 30)
-          .attr("y", margin.left / 2)
-          .style("text-anchor", "middle")
-          .text("Amount of earthquakes")
-          .style("font-size", "17px");
+          .attr("y", margin.left / 3)
+          .style("text-anchor", "end")
+          .text("Amount of earthquakes");
 
-      svg.append("g")
-         .attr("class", "legend")
-         .append("rect")
-         .attr("x", 100)
-         .attr("y", 100)
-         .attr("width", 100)
-         .attr("h")
+      // make legend for stacked_year (horizontal, located right of chart)
+        makeLegend(data)
+
+      function makeLegend(data) {
+        data = data[0][0]
+        var legend = svg.append("g")
+            .attr("font-family", "sans-serif")
+            .attr("font-size", 10)
+            .attr("text-anchor", "end")
+            .selectAll("g")
+            .data(data)
+            .enter().append("g")
+            .attr("transform", function(d, i) {
+              return "translate(0," + i * 20 + ")";
+            });
+
+          //append legend colour blocks
+          legend.append("rect")
+            .attr("x", w + 55)
+            .attr("width", 19)
+            .attr("height", 19)
+            .style("fill", function (d) {
+              return color[d[2]]
+            });
+
+          //append legend texts
+          legend.append("text")
+            .attr("x", w + 50)
+            .attr("y", 9.5)
+            .attr("dy", "0.32em")
+            .text(function(d) {
+              return d[2];
+            });
+
+      }
 
   };
