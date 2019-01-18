@@ -40,13 +40,8 @@ function stackedMakerYear(data) {
                 .domain([0, Math.max(...range_data)])
                 .range([h, margin.top]);
 
-  // const div = d3.select('body')
-  //               .append('div')
-  //               .attr('class', 'tooltip')
-  //               .style('opacity', 0);
+color = {"1.5": "rgb(186,228,179)", "2.0": "rgb(116,196,118)", "2.5": "rgb(49,163,84)", "3.0": "rgb(0,109,44)" }
 
-  // var stack = d3.stack()
-color = {"1.5": "rgb(255, 0, 0)", "2.0": "rgb(0, 0, 255)", "2.5": "rgb(0, 255, 0)", "3.0": "rgb(0, 0, 0)" }
 
   var groups = svg.append("g")
     .selectAll("g")
@@ -79,15 +74,17 @@ color = {"1.5": "rgb(255, 0, 0)", "2.0": "rgb(0, 0, 255)", "2.5": "rgb(0, 255, 0
        return "<strong>Year: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ d[2] +"<br></span>" + "<strong>Amount of Earthquakes: </strong><span class='details'>"+ d[1] +"</span>"})
       tip.show();
       d3.select(this)
-        .style("opacity", 0.3)
+        .style("fill", "rgba(123,50,148, 0.6)")
      })
     .on('mouseout', function(d){
       tip.hide();
       d3.select(this)
-        .style("opacity", 1)
+      .style("fill", function (d) {
+        return (color[d[2]]);
+      })
       })
       .on("click", function (d) {
-        set_map_mag_range(d[0], d[2])
+        set_map(d[0])
       });
 svg.call(tip);
 
@@ -153,6 +150,9 @@ svg.call(tip);
             .enter().append("g")
             .attr("transform", function(d, i) {
               return "translate(0," + i * 20 + ")";
+            })
+            .on("click", function (d) {
+              set_map_mag_range(d[2])
             });
 
           //append legend colour blocks

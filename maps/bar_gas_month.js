@@ -84,27 +84,29 @@ function barMakerMonth(data) {
         .attr("height", function(d) {
           return h - yScale(d[1]);
         })
+        .style("fill", "rgba(150,150,150, 1)")
         .on('mouseover',function(d){
           // make a banner with the location and magnitude of the earthquake
           tip.html(function () {
            return "<strong>Month: </strong><span class='details'>"+ d[0] +"<br></span>" + "<strong>Gas in billion Nm^3: </strong><span class='details'>"+ Math.round(d[1] * 100) / 100+"</span>"})
           tip.show();
           d3.select(this)
-            .style("fill", "rgba(180, 0, 0, 0.6)")
+            .style("fill", "rgba(123,50,148, 1)")
          })
         .on('mouseout', function(d){
           tip.hide();
           d3.select(this)
-            .style("fill", "rgba(0, 0, 0, 1)")
+            .style("fill", "rgba(150,150,150, 1)")
           });
     svg.call(tip)
     // appending title
     svg.append("text")
          .attr("x", w / 2)
+         .attr("id", "bar_month_title")
          .attr("class", "title")
          .attr("y", margin.top / 2)
          .style("text-anchor", "middle")
-         .text("Monthly total of gas extracted");
+         .text("Monthly total of gas extracted in 2018");
     for (i = 0; i < keys.length; i ++){
       keys[i] = parseFloat(keys[i])
     }
@@ -166,6 +168,9 @@ function convertData(data) {
 }
 
 function set_year(year) {
+  // select title
+  d3.selectAll("#bar_month_title")
+    .text("Monthly total of gas extracted in " + year + "");
   // select
   svg = d3.selectAll("#month")
   data = barDims[year]

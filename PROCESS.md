@@ -40,13 +40,21 @@
 - Started on legends for all the figures
 - Dropped the monthly stacked histogram idea because it does not feel like
   it adds any value to the current visualizations.
-# Thursday week 3
+# Thursday week 2
 - Tooltip for mag.histo show amount of earthquakes in that year + the year itself.
 - And when clicked on, show the year with amount of earthquakes of "that"
   magnitude.
 - Started with designing the page layout + adding text. Noticed that the amount
   of graphs were difficult to relate without text so a change was made:
   the onclick of gas.histo.year was removed and added to the stacked. The
-  original onclick of the stacked was removed and replaced, the functionality
-  was inplemented into a mouseover.
-  
+  original onclick of the stacked was removed and replaced, tried to implement
+  the functionality into a mouseover.
+# Friday week 2
+- Last part of Thursday week 2 seemed harder than expected, therefore changed
+  it to being able to select the magnitude by clicking on the correlating
+  legend block.
+- Started adding text to the other html pages and choosing color schemes etc.
+- Made some headway with the layout and the text of the pages but not yet
+  satisfied so will continue on that coming Monday.
+- Also cleaning up code and data structure coming Monday.
+- Question for Monday: d3 titles of charts centering/multiple lines.

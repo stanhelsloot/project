@@ -12,7 +12,6 @@ var map = function() {
 
 }
 function worldMaker(data) {
-  console.log(data[0]);
   // tooltip of map
   var tip = d3.tip()
             .attr('class', 'd3-tip')
@@ -34,7 +33,7 @@ function worldMaker(data) {
 
   // create projection
   var projection = d3.geoMercator()
-                     .scale(10000)
+                     .scale(9500)
                      .center([5.953193, 52.793096])
                      .translate( [w/1.4, h/2]);
   mapDims.projection = projection
@@ -60,9 +59,9 @@ function worldMaker(data) {
      .append("path")
      .attr("d", path)
      .style("stroke", "white")
-     .style("stroke-width", 0.3)
+     .style("stroke-width", 0.5)
      .attr("transform", "translate(0, " + margin.top + ")")
-     .style("fill", "rgba(80, 0, 0, 0.5)")
+     .style("fill", "rgba(204,204,204, 1)")
      .style("opacity", 0.8)
      .style("stroke","white")
      .style('stroke-width', 1);
@@ -95,7 +94,7 @@ function worldMaker(data) {
      .attr("r", function (d) {
        return d[4] * 8
      })
-     .style("fill", "rgba(255, 255, 0, 0.3)")
+     .style("fill", "rgba(0,109,44, 0.5)")
      .attr("transform", "translate(0, " + margin.top + ")")
      .on('mouseover',function(d){
        // make a banner with the location and magnitude of the earthquake
@@ -103,20 +102,25 @@ function worldMaker(data) {
         return "<strong>Location: </strong><span class='details'>"+ d[1] +"<br></span>" + "<strong>Magnitude: </strong><span class='details'>"+ Math.round(d[4] * 100) / 100 +"</span>"+ "<br><strong>Date: </strong><span class='details'>" + d[5] + "</span>";       })
        tip.show();
        d3.select(this)
-         .style("fill", "rgba(180, 0, 0, 0.6)")
+         .style("fill", "rgba(123,50,148, 0.6)")
       })
      .on('mouseout', function(d){
        tip.hide();
        d3.select(this)
-         .style("fill", "rgba(255, 255, 0, 0.3)")
+         .style("fill", "rgba(0,109,44, 0.5)")
        });
 
        // activate tip
      svg.call(tip);
 
+     // save the global year as the currently displayed year
+     mapDims.year = 2018
+
 }
 
 function set_map(year) {
+  // save the year as a global variable for usage in magnitude selection
+  mapDims.year = year
   // update title name
   d3.selectAll("#mapTitle")
     .text("Earthquakes throughout the Netherlands in "+ year +"");
@@ -149,7 +153,7 @@ function set_map(year) {
          .attr("r", function (d) {
            return 0
          })
-         .style("fill", "rgba(255, 255, 0, 0.3)")
+         .style("fill", "rgba(0,109,44, 0.5)")
           .attr("transform", "translate(0, " + mapDims.margin.top + ")")
           .on('mouseover',function(d){
             // make a banner with the location and magnitude of the earthquake
@@ -158,12 +162,12 @@ function set_map(year) {
             })
             tip.show(d);
             d3.select(this)
-              .style("fill", "rgba(180, 0, 0, 0.6)")
+              .style("fill", "rgba(123,50,148, 0.6)")
            })
           .on('mouseout', function(d){
             tip.hide(d);
             d3.select(this)
-              .style("fill", "rgba(255, 255, 0, 0.3)")
+              .style("fill", "rgba(0,109,44, 0.5)")
             });
 svg.call(tip);
       circle.transition().duration(500).attr("r", function (d) {
@@ -173,7 +177,8 @@ svg.call(tip);
   }
 }
 
-function set_map_mag_range(year, range) {
+function set_map_mag_range(range) {
+  year = mapDims.year
   // update title name
   d3.selectAll("#mapTitle")
     .text("Earthquakes throughout the Netherlands in "+ year +" with a magnitude between "+ range +" and "+ (parseFloat(range) + 0.5)+"");
@@ -213,7 +218,7 @@ function set_map_mag_range(year, range) {
          .attr("r", function (d) {
            return 0
          })
-         .style("fill", "rgba(255, 255, 0, 0.3)")
+         .style("fill", "rgba(0,109,44, 0.5)")
           .attr("transform", "translate(0, " + mapDims.margin.top + ")")
           .on('mouseover',function(d){
             // make a banner with the location and magnitude of the earthquake
@@ -222,12 +227,12 @@ function set_map_mag_range(year, range) {
             })
             tip.show(d);
             d3.select(this)
-              .style("fill", "rgba(180, 0, 0, 0.6)")
+              .style("fill", "rgba(123,50,148, 0.6)")
            })
           .on('mouseout', function(d){
             tip.hide(d);
             d3.select(this)
-              .style("fill", "rgba(255, 255, 0, 0.3)")
+              .style("fill", "rgba(10,109,44, 0.5)")
             });
 svg.call(tip);
       circle.transition().duration(500).attr("r", function (d) {

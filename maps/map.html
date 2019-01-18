@@ -8,6 +8,9 @@
     <script src="http://d3js.org/queue.v1.min.js"></script>
     <script src="http://d3js.org/topojson.v1.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script src="d3-tooltip.js"></script>
     <script src="map.js" charset="utf-8"></script>
     <script src="bar_gas_month.js" charset="utf-8"></script>
@@ -15,15 +18,6 @@
     <script src="stacked_year.js" charset="utf-8"></script>
     <link rel="stylesheet" href="navigation.css">
     <link rel="stylesheet" href="tip.css">
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
   </head>
   <body>
     <!-- calls the banner for navigation   -->
@@ -38,7 +32,8 @@
 
     <div class="container">
       <h1>Induced earthquakes in the Netherlands as a result of gas extraction</h1>
-      <p>By Stan Helsloot hallo</p>
+      <p>By Stan Helsloot</p>
+      <p>Any questions on usage of the page? Visit the <a href="about.html">about</a> page!</p>
         <h3>Gasfield</h3>
         <p>In 1959 one of the worlds largest gas reserves was discovered in
           Groningen, a province in the
@@ -58,8 +53,8 @@
         countries and building a nitrogen factory which can be used to convert
         highly caloric types of gas to the low caloric type.</p>
         <div class="row">
-          <div class="col" id="extraction_year"></div>
           <div class="col" id="extraction_month"></div>
+          <div class="col" id="extraction_year"></div>
         </div>
     </div>
     <div class="container">
@@ -98,8 +93,11 @@
     <div class="container">
       <h4>References</h4>
       <p>List of references</p>
-      <a href="https://www.rijksoverheid.nl/onderwerpen/gaswinning-in-groningen/nieuws/2018/12/03/afbouw-gaswinning-groningen-op-koers">3: Reduction of gas extraction.</a>
-      <a href="https://www.knmi.nl/kennis-en-datacentrum/uitleg/aardbevingen-door-gaswinning">4: Information on earthquakes in the Netherlands.</a>
+      <ul>
+        <li><a href="https://www.rijksoverheid.nl/onderwerpen/gaswinning-in-groningen/nieuws/2018/12/03/afbouw-gaswinning-groningen-op-koers">3: Reduction of gas extraction.</a></li>
+        <li><a href="https://www.knmi.nl/kennis-en-datacentrum/uitleg/aardbevingen-door-gaswinning">4: Information on earthquakes in the Netherlands.</a></li>
+      </ul>
+
     </div>
 
   </body>

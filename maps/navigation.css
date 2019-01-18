@@ -1,17 +1,17 @@
 /* Stan Helsloot, 10762388 */
-ul {
+#navbar {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333;
+  background-color: rgb(66, 66, 66);
 }
 
-li {
+#navli {
   float: left;
 }
 
-li a {
+#navli a {
   display: block;
   color: white;
   text-align: center;
@@ -19,6 +19,7 @@ li a {
   text-decoration: none;
 }
 
-li a:hover {
-  background-color: #444;
+#navli a:hover {
+  background-color: rgb(123,50,148);
+  color: white;
 }
