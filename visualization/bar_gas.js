@@ -85,10 +85,9 @@ function barMakerYear(data) {
 
     // appending title
     svg.append("text")
-         .attr("x", w / 2)
          .attr("class", "title")
          .attr("y", margin.top / 2)
-         .style("text-anchor", "middle")
+         .style("text-anchor", "start")
          .text("Yearly total of gas extacted");
 
      var xScale = d3.scaleLinear()

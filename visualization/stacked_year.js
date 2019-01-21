@@ -2,7 +2,6 @@
 // Stan Helsloot, 10762388
 var requests_stacked = [d3.json("../../data/data_refined/stacked_data.json")];
 
-// stackedDims = {}
 
 var stacked_year = function() {
   Promise.all(requests_stacked).then(function(response) {
@@ -20,7 +19,7 @@ function stackedMakerYear(data) {
   // size margin etc.
   var w = 400;
   var h = 300;
-  var margin = {top: 80, right: 50, bottom: 20, left: 50}
+  var margin = {top: 100, right: 50, bottom: 20, left: 50}
 
   // creating a svg object
   var svg = d3.select("div#earthquake_stacked")
@@ -91,11 +90,10 @@ svg.call(tip);
 
     // appending title
     svg.append("text")
-         .attr("x", w / 2)
          .attr("class", "title")
-         .attr("y", margin.top / 2)
-         .style("text-anchor", "middle")
-         .text("Yearly total of gas extacted, measured at standard conditions");
+         .attr("y", margin.top / 6)
+         .style("text-anchor", "start")
+         .text("Total amount of earthquakes per year and magnitude");
 
      var xScale = d3.scaleLinear()
                       .range([0, w])
@@ -140,6 +138,7 @@ svg.call(tip);
         makeLegend(data)
 
       function makeLegend(data) {
+        legendPadding = 20
         data = data[0][0]
         var legend = svg.append("g")
             .attr("font-family", "sans-serif")
@@ -157,17 +156,18 @@ svg.call(tip);
 
           //append legend colour blocks
           legend.append("rect")
-            .attr("x", w + 55)
-            .attr("width", 19)
-            .attr("height", 19)
+            .attr("x", w + margin.left * 1.5)
+            .attr("y", margin.bottom)
+            .attr("width", legendPadding)
+            .attr("height", legendPadding)
             .style("fill", function (d) {
               return color[d[2]]
             });
 
           //append legend texts
           legend.append("text")
-            .attr("x", w + 50)
-            .attr("y", 9.5)
+            .attr("x", w + margin.left * 1.4)
+            .attr("y", margin.bottom * 1.4)
             .attr("dy", "0.32em")
             .text(function(d) {
               return d[2];

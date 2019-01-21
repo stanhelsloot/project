@@ -101,11 +101,10 @@ function barMakerMonth(data) {
     svg.call(tip)
     // appending title
     svg.append("text")
-         .attr("x", w / 2)
          .attr("id", "bar_month_title")
          .attr("class", "title")
          .attr("y", margin.top / 2)
-         .style("text-anchor", "middle")
+         .style("text-anchor", "start")
          .text("Monthly total of gas extracted in 2018");
     for (i = 0; i < keys.length; i ++){
       keys[i] = parseFloat(keys[i])

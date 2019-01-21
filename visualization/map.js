@@ -21,7 +21,7 @@ function worldMaker(data) {
   var w = 300;
   var h = 300;
   var padding = 30;
-  var margin = {top: 80, right: 50, bottom: 20, left: 50}
+  var margin = {top: 100, right: 50, bottom: 20, left: 50}
   mapDims.margin = margin
 
   // create svg canvas
@@ -43,10 +43,9 @@ function worldMaker(data) {
 
   // append title of worldmap
   svg.append("text")
-    .attr("x", w / 2)
     .attr("class", "title")
     .attr("id", "mapTitle")
-    .attr("y", margin.top / 3)
+    .attr("y", margin.top / 6)
     .style("text-anchor", "center")
     .text("Earthquakes throughout the Netherlands in 2018");
 
@@ -119,17 +118,24 @@ function worldMaker(data) {
 }
 
 function set_map(year) {
+
+
   // save the year as a global variable for usage in magnitude selection
   mapDims.year = year
   // update title name
   d3.selectAll("#mapTitle")
     .text("Earthquakes throughout the Netherlands in "+ year +"");
+
+
   // make tip again so it works on the new circles
   var tip = d3.tip()
             .attr('class', 'd3-tip')
             .offset([0, 0]);
 
   svg = d3.selectAll("#map")
+  // remove the richter scale banner
+  svg.selectAll("#richter")
+     .remove()
   var circle = svg.selectAll("circle");
   circle.transition().duration(500).attr("r", 0).remove();
   var data = mapDims[year];
@@ -180,8 +186,8 @@ svg.call(tip);
 function set_map_mag_range(range) {
   year = mapDims.year
   // update title name
-  d3.selectAll("#mapTitle")
-    .text("Earthquakes throughout the Netherlands in "+ year +" with a magnitude between "+ range +" and "+ (parseFloat(range) + 0.5)+"");
+  // d3.selectAll("#mapTitle")
+
   data_refined = []
   for (var i = 0; i < mapDims[year].length; i++) {
     if (mapDims[year][i][4] > parseFloat(range) && mapDims[year][i][4] < (parseFloat(range) + 0.5)){
@@ -195,6 +201,15 @@ function set_map_mag_range(range) {
             .offset([0, 0]);
 
   svg = d3.selectAll("#map")
+  svg.selectAll("#richter")
+     .remove()
+
+  svg.append("text")
+    .attr("id", "richter")
+    .attr("y", mapDims.margin.top / 2.5)
+    .style("text-anchor", "center")
+    .text("between "+ range +" and "+ (parseFloat(range) + 0.5)+" on the Richter scale");
+
   var circle = svg.selectAll("circle");
   circle.transition().duration(500).attr("r", 0).remove();
   // var data = mapDims[year];
