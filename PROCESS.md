@@ -62,4 +62,6 @@
 - Fixed the data structure
 - Finalized the code of the scripts + added readme file.
 - Fixed titles and placement
-- TODO: fix tooltip
+- Made Github page!
+- Fixed tooltip
+- Cleaned up all .js code

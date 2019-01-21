@@ -5,7 +5,7 @@ Every dot on same row.
 Not to much global variables.
 Static .style in CSS, not in D3.
 Consistency with camelCase vs snake_case.
-Indentation.
+Indentation, 2 spaces.
 Opening bracket on function.def line, closing on new line..
 Empty line above comments, and comment every block (minimum).
 Separate code per functions.
