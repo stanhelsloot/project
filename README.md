@@ -1,6 +1,6 @@
 research proposal by Stan Helsloot, student number 10762388
 
-Link to site:
+Link to site
 https://stanhelsloot.github.io/project/
 
 From 1911 the KNMI collects seismic data throughout the Netherlands.
