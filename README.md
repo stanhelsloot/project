@@ -1,5 +1,8 @@
 research proposal by Stan Helsloot, student number 10762388
 
+Link to site:
+https://stanhelsloot.github.io/project/
+
 From 1911 the KNMI collects seismic data throughout the Netherlands.
 Whilst the Netherlands is not located near any tectonic plates, earthquakes,
 however small, are still a common occurrence. These earthquakes mainly occur
