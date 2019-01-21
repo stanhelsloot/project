@@ -19,7 +19,7 @@ function barMakerMonth(data) {
   // tooltip of bar_month
   var tip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([- 100, 0]);
+            .offset([- 10, 0]);
   // size margin etc.
   var w = 400;
   var h = 300;
@@ -104,7 +104,7 @@ function barMakerMonth(data) {
          .attr("id", "bar_month_title")
          .attr("class", "title")
          .attr("y", margin.top / 2)
-         .style("text-anchor", "start")
+         .attr("x", margin.left)
          .text("Monthly total of gas extracted in 2018");
     for (i = 0; i < keys.length; i ++){
       keys[i] = parseFloat(keys[i])

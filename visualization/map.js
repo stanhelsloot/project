@@ -15,7 +15,7 @@ function worldMaker(data) {
   // tooltip of map
   var tip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([-30, 0]);
+            .offset([- 10, 0]);
 
   // set width, height, padding and margins
   var w = 300;
@@ -130,7 +130,7 @@ function set_map(year) {
   // make tip again so it works on the new circles
   var tip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([0, 0]);
+            .offset([- 10, 0]);
 
   svg = d3.selectAll("#map")
   // remove the richter scale banner
@@ -198,7 +198,7 @@ function set_map_mag_range(range) {
   // make tip again so it works on the new circles
   var tip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([0, 0]);
+            .offset([- 10, 0]);
 
   svg = d3.selectAll("#map")
   svg.selectAll("#richter")

@@ -15,10 +15,10 @@ function stackedMakerYear(data) {
   // tooltip of stacked_year
   var tip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([- 100, 0]);
+            .offset([- 10, 0]);
   // size margin etc.
   var w = 400;
-  var h = 300;
+  var h = 400;
   var margin = {top: 100, right: 50, bottom: 20, left: 50}
 
   // creating a svg object
@@ -121,9 +121,9 @@ svg.call(tip);
 
        // append xAxis text
        svg.append("text")
-           .attr("transform", "translate(" + (w/2) + " ," +
-                              (h + margin.top) + ")")
-           .style("text-anchor", "start")
+          .attr("x", (w + margin.left + margin.right)/2)
+           .attr("transform", "translate(0," +
+                              (h + margin.top - margin.bottom) + ")")
            .text("Year");
 
        // Append yAxis text

@@ -16,7 +16,7 @@ function barMakerYear(data) {
   // tooltip of bar_year
   var tip = d3.tip()
             .attr('class', 'd3-tip')
-            .offset([- 100, 0]);
+            .offset([-10, 0]);
 
   // size margin etc.
   var w = 400;
@@ -77,7 +77,6 @@ function barMakerYear(data) {
           })
         .on("click", function (d) {
           set_year(d[0])
-          set_map(d[0])
         });
 
     // calling tip
@@ -87,7 +86,7 @@ function barMakerYear(data) {
     svg.append("text")
          .attr("class", "title")
          .attr("y", margin.top / 2)
-         .style("text-anchor", "start")
+         .attr("x", margin.left)
          .text("Yearly total of gas extacted");
 
      var xScale = d3.scaleLinear()
