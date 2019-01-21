@@ -1,7 +1,7 @@
 // Stan Helsloot, 10762388
 // renders a map of the Netherlands
 
-var requests_map = [d3.json("nederland.json"), d3.json("data.json")];
+var requests_map = [d3.json("../../data/data_refined/nederland.json"), d3.json("../../data/data_refined/data.json")];
 mapDims = {}
 
 var map = function() {

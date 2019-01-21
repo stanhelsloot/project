@@ -1,7 +1,7 @@
 // Stan Helsloot, 10762388
 // Renders a histogram of the yearly gas extraction by NAM
 
-var requests_bar_month = [d3.json("data_months.json")]
+var requests_bar_month = [d3.json("../../data/data_refined/data_months.json")]
 
 barDims = {}
 var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]

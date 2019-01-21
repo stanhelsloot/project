@@ -57,4 +57,7 @@
 - Made some headway with the layout and the text of the pages but not yet
   satisfied so will continue on that coming Monday.
 - Also cleaning up code and data structure coming Monday.
-- Question for Monday: d3 titles of charts centering/multiple lines.
+- Question for Monday: d3 titles of charts centering/multiple lines.  
+# Monday week 3
+- Fixed the data structure
+- Finalized the code of the scripts + added readme file.

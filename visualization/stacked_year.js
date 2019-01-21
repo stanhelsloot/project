@@ -1,6 +1,6 @@
 // makes a stacked barchart for total years n stuff
 // Stan Helsloot, 10762388
-var requests_stacked = [d3.json("stacked_data.json")];
+var requests_stacked = [d3.json("../../data/data_refined/stacked_data.json")];
 
 // stackedDims = {}
 
