@@ -3,9 +3,10 @@
 import pandas as pd
 import json
 
-INPUT = "../data/data_refined/Gaswinning-totaal-1963-2015-maandelijks.xlsx"
-OUTPUT_MONTH = "../data/data_refined/data_years.json"
+INPUT = "../data/data_raw/Gaswinning-totaal-1963-2015-maandelijks.xlsx"
+OUTPUT_MONTH = "../data/data_refined/data_months.json"
 OUTPUT_YEAR = "../data/data_refined/data_years.json"
+OUTPUT_TOT = "../data/data_refined/data_tot.json"
 
 
 def read_write_file(filename):
@@ -28,6 +29,11 @@ def read_write_file(filename):
     # monthly data
     years = {}
     months = {}
+    month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
+                 "Oct", "Nov", "Dec"]
+    tot = {}
+    for i in month:
+        tot[i] = 0
 
     # select, convert and correct data and add them to the dictionaries
     for i in df["jaar"]:
@@ -49,8 +55,14 @@ def read_write_file(filename):
             # saving the key as year.mo, with mo from 0 to 11/12
             key = i.year + (i.month/120*10 - 1/12)
 
+            # collect the totals of each month
+            tot[month[i.month - 1]] += (df[0][i])
+
             # add a dictionary node with the date/key pair of the monts
             months[key] = (df[0][i])
+
+    with open(OUTPUT_TOT, "w") as outfile:
+        json.dump(tot, outfile)
 
     # writing yearly data in json file
     with open(OUTPUT_YEAR, 'w') as outfile:

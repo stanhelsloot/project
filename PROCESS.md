@@ -65,3 +65,8 @@
 - Made Github page!
 - Fixed tooltip
 - Cleaned up all .js code
+# Tuesday week 3
+- More was added to the story as a start for extra visualizations.
+- Decided to make some extra plots. These plots will be an attempt to show
+  whether there is a direct relation between gas extraction and earthquakes.
+  

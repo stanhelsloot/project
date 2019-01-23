@@ -2,6 +2,7 @@
 // Renders a histogram of the yearly gas extraction by NAM
 var requests_bar_year = [d3.json("../../data/data_refined/data_years.json")];
 
+
 // main function for creating a yearly extraction histogram
 var bar_year = function() {
   Promise.all(requests_bar_year)
@@ -36,16 +37,19 @@ function barMakerYear(data) {
               .attr("height", h + margin.top + margin.bottom);
 
   // merging extraction data for determination of maximum extraction
+  var gasYearInitial = 1971;
+  var gasYearFinal = 2019;
   var extraction_data = [];
   for (i = gasYearInitial; i < gasYearFinal; i++) {
+    console.log(i);
     extraction_data.push(data[-gasYearInitial + i][1]);
   }
-
+  console.log("fish");
   // setting the y-scale
   var yScale = d3.scaleLinear()
                  .domain([0, Math.max(...extraction_data)])
                  .range([h, margin.top]);
-                 
+
   // creating the bars for the histogram
   svg.selectAll("rect")
      .data(data)
@@ -131,10 +135,9 @@ function barMakerYear(data) {
   // Append yAxis text
   svg.append("text")
      .attr("transform", "rotate(-90)")
-     .attr("x", -h / 2 + 30)
+     .attr("x", -h)
      .attr("y", margin.left / 3)
-     .style("text-anchor", "end")
-     .text("Gas extraction in Nm^3");
+     .text("Gas extraction in billion Nm^3");
 }
 
 function convertData(data) {

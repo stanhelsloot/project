@@ -9,6 +9,7 @@ import json
 NCFILE = "../data/data_raw/data.nc"
 CITIES = "../data/data_raw/cities.csv"
 OUTPUT_JSON = "../data/data_refined/stacked_data.json"
+OUTPUT_TOT = "../data/data_refined/stacked_tot.json"
 UNIX_BASE = 2208988800
 YEAR_INITIAL = 1986
 YEAR_FINAL = 2019
@@ -39,6 +40,11 @@ def converter(filename):
 
     # convert the time from unix time to year-mo-day and to year only
     year = []
+    month = []
+    month_list = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
+                 "Oct", "Nov", "Dec"]
+
+
     for i in range(len(time)):
         # correct the time to fit from 1900-01-01 instead of 1970-01-01
         seconds_corrected = (time[i] - UNIX_BASE)
@@ -48,17 +54,20 @@ def converter(filename):
 
         # select all digitst from the raw datetime format
         time_digits = (re.findall(r"\d", time_raw))
-
+        month_str = "".join(time_digits[4: 6])
         # select the year (first 4 digits)
         time_str = "".join(time_digits[0: 4])
 
         # append the cleaned data to the corresponding arrays
         year.append(time_str)
 
+        # added a month part for new chart
+        month.append(month_list[(int(month_str) - 1) % 12])
+
     # put all data into a dataframe for easy cleaning and selection
     dataset = pd.DataFrame({"year": year, "location": location,
                             "magnitude": magnitude, "event_type":
-                            event_type})
+                            event_type, "month": month})
 
     # select data on induced earthquakes and drop the row afterwards
     dataset = dataset.loc[dataset['event_type'] == 1]
@@ -92,10 +101,17 @@ def converter(filename):
                      d20.shape[0]], [year, d30.shape[0], "3.0", d30.shape[0] +
                      d15.shape[0] + d20.shape[0] + d25.shape[0]]])
 
+    # select the total amount of earthquakes per month
+    data_total = []
+    for i in month_list:
+        data_total.append([i, dataset.loc[dataset["month"] == i].shape[0]])
+
     # write json file
     with open(OUTPUT_JSON, 'w') as outfile:
         json.dump(data, outfile)
 
+    with open(OUTPUT_TOT, "w") as outfile:
+        json.dump(data_total, outfile)
 
 if __name__ == '__main__':
     converter(NCFILE)

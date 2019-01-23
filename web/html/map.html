@@ -16,6 +16,9 @@
     <script src="../../visualization/bar_gas_month.js" charset="utf-8"></script>
     <script src="../../visualization/bar_gas.js" charset="utf-8"></script>
     <script src="../../visualization/stacked_year.js" charset="utf-8"></script>
+    <script src="../../visualization/month_total_extr.js" charset="utf-8"></script>
+    <script src="../../visualization/month_earthquake_tot.js" charset="utf-8"></script>
+    <script src="../../visualization/linegraph.js" charset="utf-8"></script>
     <link rel="stylesheet" href="../css/navigation.css">
     <link rel="stylesheet" href="../css/tip.css">
   </head>
@@ -77,7 +80,27 @@
           <div class="col" id="earthquake_map"></div>
           <div class="col" id="earthquake_stacked"></div>
         </div>
+    </div>
+    <div class="container">
+      <h3>Investigating relations</h3>
+      <p>Now that we have some insight on the amounts of gas extracted and the
+        locations and magnitudes of the earthquakes we can investigate this
+        problem more excessive. The data on monthly gas extraction shows
+        that most gas is extracted between October and March. Do most earthquakes
+        also occur in this time period?</p>
+        <div class="row">
+          <div class="col" id="extraction_total"></div>
+            <div class="col" id="earth_total"></div>
+        </div>
+    </div>
+    <div class="container">
+      <h3>Conclusion</h3>
+      <p>As can be seen in the charts above, there is no clear correlation
+        between the time of extraction and the time at which earthquakes occur.
+        </p>
+        <div class="col" id="line_plot">
 
+        </div>
     </div>
 
     <!-- loading multiple charts -->
@@ -87,6 +110,9 @@
        bar_year()
        bar_month()
        stacked_year()
+       tot_month()
+       tot_month_earth()
+       line()
     }
     </script>
 
