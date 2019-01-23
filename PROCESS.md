@@ -62,11 +62,31 @@
 - Fixed the data structure
 - Finalized the code of the scripts + added readme file.
 - Fixed titles and placement
-- Made Github page!
+- Made Github pages page!
 - Fixed tooltip
 - Cleaned up all .js code
 # Tuesday week 3
 - More was added to the story as a start for extra visualizations.
 - Decided to make some extra plots. These plots will be an attempt to show
   whether there is a direct relation between gas extraction and earthquakes.
-  
+# Wednesday week 3
+- Two extra bar charts regarding the relation between earthquakes and extraction
+  were added. These do not yet have any interactions, so an attempt on
+  using a dual tooltip will be made (hovering over one of the bars will also
+    highlight this bar in the other bar chart)
+- A line plot with the accumulative gas extraction and total amount of earth
+  quakes was made. To improve on this chart, the tooltip will be mirrored so
+  it can be read throughouth the entire plot. Also, the tooltips converge
+  on the top right corner so this will be adjusted so they do not overlap
+  any longer.
+# TD
+- Smooth transitions of axis bar_gas_month
+- Dual tooltip @ "investigating relations"
+- Replace tooltip dynamically in line plot
+- set axis titles properly
+- Color scheme for all svgs
+- set tick thing on bottom axis line plot
+- add references bottom map.html page
+- make width of svgs column dependable
+- code of linegraph, total barcharts
+- If any more time left, make checkbox to view all magnitude ranges of quakes

@@ -41,10 +41,8 @@ function barMakerYear(data) {
   var gasYearFinal = 2019;
   var extraction_data = [];
   for (i = gasYearInitial; i < gasYearFinal; i++) {
-    console.log(i);
     extraction_data.push(data[-gasYearInitial + i][1]);
   }
-  console.log("fish");
   // setting the y-scale
   var yScale = d3.scaleLinear()
                  .domain([0, Math.max(...extraction_data)])

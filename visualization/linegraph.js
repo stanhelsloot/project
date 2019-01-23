@@ -3,7 +3,7 @@
 var requests_line = [d3.json("../../data/data_refined/stacked_data.json"),
                      d3.json("../../data/data_refined/data_years.json")];
 
-var mapDims = {};
+var lineDims = {};
 
 var earthquakeYearInitial = 1986;
 var earthquakeYearFinal = 2019;
@@ -55,10 +55,12 @@ function linePlot(data) {
   var yScale1 = d3.scaleLinear()
                 .domain([0, earth_data[earth_data.length - 1].value])
                 .range([h, margin.top]);
+  lineDims.yScale1 = yScale1
 
   var yScale2 = d3.scaleLinear()
                   .domain([0, extr_data[extr_data.length - 1].value])
                   .range([h, margin.top])
+  lineDims.yScale2 = yScale2
 
   // create svg canvas
   var svg = d3.select("div#line_plot")
@@ -167,11 +169,9 @@ function linePlot(data) {
   // define valueline, used for creating the points between which will be drawn
   var valueline2 = d3.line()
       .x(function(d) {
-        // console.log(xScale(d.year));
         return xScale(d.year);
       })
       .y(function(d) {
-        // console.log(yScale2(d.value));
         return yScale2(d.value);
       });
 
@@ -202,36 +202,38 @@ function linePlot(data) {
                     .attr("width", w + margin.left + margin.right)
                     .attr("height", h + margin.top + margin.bottom)
                     .style("opacity", 0)
+                    .attr("transform", "translate(" + margin.left + ", 0)")
                     .on("mousemove", function (){
                       // convert pixel data to year data
                       var year = xScale.invert(d3.mouse(rect.node())[0]);
                       // try fitting the data between two existing points
-                      var i = bisectDate(data, year, 1);
+                      var i = bisectDate(yearValues, year, 1);
                       // used to correct the use of margins
-                      i = i - 2;
+                      i = i - 1;
                       // draw tooltipline + display data of pointed to point
-                      toolTipLine(earth_data, year, h, xScale)
+                      toolTipLine(earth_data, yearValues[i], h, xScale, extr_data)
                      })
                     .on("mouseout", function() {
                       // remove the tooltip + data
                       removeTooltip()
                     });
 
-                    svg.append("line").attr("id", "tipline");
+    svg.append("line").attr("id", "tipline");
+    svg.append("circle").attr("id", "circle1").attr("r", 7);
+    svg.append("circle").attr("id", "circle2").attr("r", 7);
+
 
      // add text (withouth text) to the plot
      svg.append("text")
-        .attr("id", "updatableText")
-        .attr("y", margin.top)
-        .attr("x", w/2)
-        .style("text-anchor", "middle")
-        .style("font-size", "17px");
+        .attr("id", "text_1");
+
+        svg.append("text")
+           .attr("id", "text_2");
 
   //
-  function toolTipLine(earth_data, year, h, xScale) {
+  function toolTipLine(earth_data, year, h, xScale, extr_data) {
         // select the tipline of the svg
         var  tipLine = d3.selectAll("#tipline")
-        console.log(year);
         // draw the line
         tipLine.attr('stroke', 'black')
                .attr('x1', xScale(year) + margin.left)
@@ -240,16 +242,53 @@ function linePlot(data) {
                .attr('y2', h)
 
         // update the data which is displayed
-        d3.selectAll("#updatableText").text(function (data) {
+        // d3.selectAll("#updatableText").text(function (data) {
           for (let i = 0; i < earth_data.length; i ++){
-            // convert year data to nuymer year witch getyear +1900
-             // and compare with inputted year
-            if (earth_data[i].Year == year) {
+            // compare with inputted year and select choosen value
+            if (earth_data[i].year == year) {
               value = earth_data[i].value
+              break
+            }
+            else if (i == earth_data.length - 1) {
+              value = 0
             }
           }
-          return ("Year: "+ year + " BMI: " + value + "")
-        });
+          for (let i = 0; i < extr_data.length; i ++){
+            // compare with inputted year and select choosen value
+            if (extr_data[i].year == year) {
+              value2 = extr_data[i].value
+            }
+          }
+          // return ("Year: "+ year + " Earthquakes: " + value + " Extracted: "+ Math.round(value2 / 10e9) +"")
+          // select circles
+
+          d3.selectAll("#circle2")
+            .attr("cx", xScale(year) + margin.left)
+            .attr("cy", lineDims.yScale2(value2))
+
+          if (value != 0) {
+            circle1 = d3.selectAll("#circle1")
+              .attr("cx", xScale(year) + margin.left)
+              .attr("cy", lineDims.yScale1(value))
+              .attr("r", 7)
+            text1 = d3.selectAll("#text_1")
+              .attr("x", xScale(year) + margin.left)
+              .attr("y", lineDims.yScale1(value))
+              .text("Year: " + year + " Total Earthquakes: " + value + "")
+              .attr("transform", "translate(" + 20 + ", 0)")
+          } else {
+            // remove the tipcircle & text
+            circle1.attr("r", 0)
+            text1.text("")
+          }
+
+          d3.selectAll("#text_2")
+            .attr("x", xScale(year) + margin.left)
+            .attr("y", lineDims.yScale2(value2))
+            .text("Year: " + year + " Gas extracted in billion Nm^3: " + Math.round(value2 / 10e9) + " ")
+            .attr("transform", "translate(" + 20  + ", 0)")
+
+        // });
       }
 
       function removeTooltip() {
