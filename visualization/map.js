@@ -238,6 +238,7 @@ function set_map_mag_range(range) {
 
   // update "richter banner"
   svg = d3.selectAll("#map");
+
   svg.selectAll("#richter")
      .remove();
 

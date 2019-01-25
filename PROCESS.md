@@ -79,14 +79,31 @@
   it can be read throughouth the entire plot. Also, the tooltips converge
   on the top right corner so this will be adjusted so they do not overlap
   any longer.
+- Added smooth transitions of axis bar_gas_month
+# Thursday week 3
+- Worked on dual tooltips; currently selecting both "month_total" bars with id selector
+  Also fixed data display
+  Biggest problem is that d3.tooltip requires a tip to be actually present so now trying
+  to circumvent this problem by appending and removing rectangles, which will be placed
+  based on relative width etc.
+# Friday week 3
+- Fixed the dual tooltip, except for the triangle and some cutoff.
+- Fixed the title names and axis labels of both the linegraph and the two barcharts
+- Completed the dual tooltip (cutoff issues + super hacky triangle:))
+- added the tooltip to the linechart, layed the selection rectangle
+  over it to ensure smooth functionality. Only problem is that both lines
+  intersect at the same location of the graph.
+
 # TD
-- Smooth transitions of axis bar_gas_month
-- Dual tooltip @ "investigating relations"
-- Replace tooltip dynamically in line plot
-- set axis titles properly
+<!-- - Smooth transitions of axis bar_gas_month -->
+<!-- - Match smooth transitions of map titles ?not going to do this. -->
+<!-- - Dual tooltip @ "investigating relations" + title names -->
+<!-- - Replace tooltip dynamically in line plot -->
+<!-- - set axis titles properly -->
 - Color scheme for all svgs
-- set tick thing on bottom axis line plot
+<!-- - set tick thing on bottom axis line plot -->
 - add references bottom map.html page
-- make width of svgs column dependable
+- make width of svgs column dependable?
 - code of linegraph, total barcharts
+- remove hardcoding
 - If any more time left, make checkbox to view all magnitude ranges of quakes

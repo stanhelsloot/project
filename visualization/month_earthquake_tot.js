@@ -4,7 +4,7 @@
 var request_month_earth = [d3.json("../../data/data_refined/stacked_tot.json")];
 
 // for storage of global variables in update functions
-var barDims = {};
+var totDimsEarth = {};
 
 var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
              "Oct", "Nov", "Dec"];
@@ -34,11 +34,12 @@ function barMakerTotEarth(data) {
     bottom: 20,
     left: 50
   };
+  totDimsEarth.w = w;
 
   // creating a svg object and adding it to an specified element on the page
   var svg = d3.select("div#earth_total")
               .append("svg")
-              .attr("id", "month")
+              .attr("id", "earth_total_month")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
@@ -47,21 +48,24 @@ function barMakerTotEarth(data) {
   var extraction_data = [];
   // collect, process and save data of all years
   for (var i = 0; i < data.length; i++) {
-     // convert the numeric data to [data] billion m^3
      extraction_data.push(data[i][1]);
   }
+  totDimsEarth.data_refined = data;
 
   // setting the yScale and making it global for use in update function
   var yScale = d3.scaleLinear()
                  .domain([0, Math.max(...extraction_data)])
                  .range([h, margin.top]);
+  totDimsEarth.yScale = yScale;
 
   // creating the bars for the histogram
   svg.selectAll("rect")
      .data(data)
      .enter()
      .append("rect")
-     .attr("id", "rect_tot")
+     .attr("id", function (d) {
+       return d[0];
+     })
      .attr("width", w / data.length)
      .attr("transform", "translate(" + margin.left + ",0)")
      .attr("x", function(d, i) {
@@ -80,16 +84,21 @@ function barMakerTotEarth(data) {
        tip.html(function() {
          return "<strong>Month: </strong><span class='details'>" + d[0] +
                 "<br></span>" +
-                "<strong>Gas in billion Nm^3: </strong><span class='details'>" +
-                Math.round(d[1] * 100) / 100 + "</span>";
+                "<strong>Earthquakes: </strong><span class='details'>" +
+                Math.round(d[1]) + "</span>";
        });
        tip.show();
-       d3.select(this)
+
+       id = this.id
+       tip_other(id);
+       d3.selectAll("#"+id+"")
        .style("fill", "rgba(123,50,148, 1)");
      })
      .on('mouseout', function(d) {
+       removeTipOther()
        tip.hide();
-       d3.select(this)
+       id = this.id
+       d3.selectAll("#"+id+"")
        .style("fill", "rgba(150,150,150, 1)");
      });
 
@@ -102,7 +111,7 @@ function barMakerTotEarth(data) {
      .attr("class", "title")
      .attr("y", margin.top / 2)
      .attr("x", margin.left)
-     .text("Total gas extracted per month between 1971 and 2018");
+     .text("Total earthquakes per month between 1986 and 2018");
 
   // set xScale using the name abbreviation per month
   var xScale = d3.scaleBand()
@@ -145,5 +154,69 @@ function barMakerTotEarth(data) {
      .attr("transform", "rotate(-90)")
      .attr("x", -h)
      .attr("y", margin.left / 3)
-     .text("Gas extraction in billion Nm^3");
+     .text("Total amount of Earthquakes");
+}
+function tip_other2(id) {
+  data_refined = totDimsEarth.data_refined;
+  for (var i = 0; i < data_refined.length; i++) {
+    if (data_refined[i][0] == id) {
+      data = data_refined[i][1]
+    }
+  }
+  // set x location, can be determined using the id
+  x_pre = month.findIndex(function (element) {
+    return element == id;
+  })
+  x = x_pre * (totDimsEarth.w / month.length)
+  y = totDimsEarth.yScale(data)
+  var poly = [{"x":x, "y":y},
+              {"x":x - 4,"y":y - 7},
+              {"x":x + 4,"y":y - 7}];
+
+  var tip_extr =
+  d3.selectAll("#earth_total_month")
+    .append("g")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+    .attr("id", "toolExtra");
+
+  tip_extr.selectAll("polygon")
+            .data([poly])
+            .enter()
+            .append("polygon")
+            .attr("points",function(d) {
+              return d.map(function(d) {
+                return [(d.x),(d.y)].join(",");
+              }).join(" ");
+            })
+            .style("fill", "rgba(0, 0, 0, 0.6)")
+            .attr("transform", "translate(" + 67  + ",0)");
+  tip_extr.append("rect")
+    .attr("x", x)
+    .attr("y", y - 70)
+    .attr("height", 60)
+    .attr("width", 130)
+    .style("fill", "rgba(0, 0, 0, 0.6)");
+  tip_extr.append("text")
+    .attr("x", x + 5)
+    .attr("y", y - 50)
+    .style("fill", "white")
+    .style("font-size", "16px")
+    .text(function() {
+      return "Month: " + id + " ";
+    });
+    tip_extr.append("text")
+      .attr("x", x + 5)
+      .attr("y", y - 25)
+      .style("fill", "white")
+      .style("font-size", "16px")
+      .text(function() {
+        return "Earthquakes: " +
+               data + "";
+      });
+}
+function removeTipOther2() {
+  d3.selectAll("#toolExtra")
+    .remove()
+
 }

@@ -139,6 +139,8 @@ function barMakerMonth(data) {
   var yAxis = d3.axisLeft()
                 .scale(yScale)
                 .ticks(5);
+  // globalize yAxis
+  barDims.yAxis = yAxis
 
   // setting xAxis
   var xAxis = d3.axisBottom()
@@ -207,10 +209,13 @@ function set_year(year) {
                 });
 
   // updating the axis to addapt to the new yScale
+  // barDims.yAxis.scale(yScale)
   var yAxis = d3.axisLeft()
                 .scale(yScale)
                 .ticks(5);
 
   d3.selectAll("#month_y")
+    .transition()
+    .duration(750)
     .call(yAxis);
 }
