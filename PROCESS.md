@@ -93,6 +93,14 @@
 - added the tooltip to the linechart, layed the selection rectangle
   over it to ensure smooth functionality. Only problem is that both lines
   intersect at the same location of the graph.
+# Monday week 4
+- Implemented a slider for the map. Could improve on the colors. Made sure
+  that when selecting the year using the stacked bar chart the slider also
+  changes.
+- Adding checkboxes to the line graph which can be used to select/deselect different
+  magnitude ranges. Removing the  tooltip and adding all tooltip info to a
+  extra box for easy reading.
+
 
 # TD
 <!-- - Smooth transitions of axis bar_gas_month -->
@@ -100,10 +108,14 @@
 <!-- - Dual tooltip @ "investigating relations" + title names -->
 <!-- - Replace tooltip dynamically in line plot -->
 <!-- - set axis titles properly -->
-- Color scheme for all svgs
+<!-- - Add slider for the years and check box -->
+- Add info box
+<!-- - Color scheme for all svgs -->
 <!-- - set tick thing on bottom axis line plot -->
+- Scaling of the map chart so the slider fits underneath
 - add references bottom map.html page
 - make width of svgs column dependable?
 - code of linegraph, total barcharts
+- Add all elements to groups!
+- Names according to style guide
 - remove hardcoding
-- If any more time left, make checkbox to view all magnitude ranges of quakes

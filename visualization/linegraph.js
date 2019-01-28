@@ -29,13 +29,26 @@ function linePlot(data) {
     bottom: 20,
     left: 80
   };
+  lineDims.margin = margin;
 
   // collect the total amount of earthquakes per year
-  earth_data = []
-  earth_data.push({"year": data[0][0][3][0], "value": (data[0][0][3][3])})
+  var earth_data = [];
+  earth_data.push({"year": data[0][0][3][0], "value": (data[0][0][3][3])});
   for (var i = 1; i < data[0].length; i++) {
-    earth_data.push({"year": data[0][i][3][0], "value": (data[0][i][3][3] + earth_data[i - 1].value)})
+    earth_data.push({"year": data[0][i][3][0], "value": (data[0][i][3][3] + earth_data[i - 1].value)});
   }
+  lineDims[4] = earth_data;
+  // doing the same for each magnitude
+  for (var i = 0; i < 4; i++) {
+    var earth_data = [];
+    earth_data.push({"year": data[0][0][i][0], "value": (data[0][0][i][1])});
+    for (var j = 1; j < data[0].length; j++) {
+      earth_data.push({"year": data[0][j][i][0], "value": (data[0][j][i][1] + earth_data[j - 1].value)});
+    }
+    lineDims[i] = earth_data;
+  }
+
+  earth_data = lineDims[4];
 
   // collect the total amount of gas extracted per year
   extr_data = []
@@ -153,6 +166,7 @@ function linePlot(data) {
       .y(function(d) {
         return yScale1(d.value);
       });
+  lineDims.valueline1 = valueline1
 
   data = extr_data
   // define valueline, used for creating the points between which will be drawn
@@ -169,8 +183,8 @@ function linePlot(data) {
       .data([extr_data])
       .attr("class", "line")
       .attr("d", valueline2)
-      .attr("fill", "white")
-      .style("stroke", "green")
+      .attr("fill", "none")
+      .style("stroke", "purple")
       .style("stroke-width", 4)
       .attr("transform", "translate(" + margin.left + ", 0)");
 
@@ -179,54 +193,101 @@ function linePlot(data) {
       .data([earth_data])
       .attr("class", "line")
       .attr("d", valueline1)
-      .attr("fill", "white")
-      .style("stroke", "purple")
+      .attr("fill", "none")
+      .attr("id", "line"+4+"")
+      .style("stroke", "rgb(0,109,44)")
       .style("stroke-width", 4)
       .attr("transform", "translate(" + margin.left + ", 0)");
 
 
 
-    svg.append("circle").attr("id", "circle1").attr("r", 7);
-    svg.append("circle").attr("id", "circle2").attr("r", 7);
+  svg.append("circle").attr("id", "circle1").attr("r", 7);
+  svg.append("circle").attr("id", "circle2").attr("r", 7);
 
-    for (var i = 0; i < 2; i++) {
-      tip_extr = svg.append("g")
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
-      .attr("id", "toolExtra2");
+  for (var i = 0; i < 2; i++) {
+    tip_extr = svg.append("g")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 10)
+    .attr("id", "toolExtra2");
 
-      tip_extr.append("polygon")
-                .attr("id", "polymer"+i+"");
-      tip_extr.append("rect")
-              .attr("id", "tiprect"+i+"");
-      tip_extr.append("text")
-              .attr("id", "tiptext1"+i+"");
-      tip_extr.append("text")
-              .attr("id", "tiptext2"+i+"");
-    }
-    var bisectDate = d3.bisector(function(d) { return d; }).left;
+    tip_extr.append("polygon")
+              .attr("id", "polymer"+i+"");
+    tip_extr.append("rect")
+            .attr("id", "tiprect"+i+"");
+    tip_extr.append("text")
+            .attr("id", "tiptext1"+i+"");
+    tip_extr.append("text")
+            .attr("id", "tiptext2"+i+"");
+  }
+  var bisectDate = d3.bisector(function(d) { return d; }).left;
 //
 //     // create overlay rectange for movemove
-    var rect = svg.append("rect")
-                  .attr("width", w + margin.left + margin.right)
-                  .attr("height", h + margin.top + margin.bottom)
-                  .style("opacity", 0)
-                  .attr("transform", "translate(" + margin.left + ", 0)")
-                  .on("mousemove", function (){
-                    // convert pixel data to year data
-                    var year = xScale.invert(d3.mouse(rect.node())[0]);
-                    // try fitting the data between two existing points
-                    var i = bisectDate(yearValues, year, 1);
-                    // used to correct the use of margins
-                    i = i - 1;
-                    // draw tooltipline + display data of pointed to point
-                    toolTipLine(earth_data, yearValues[i], h, xScale, extr_data)
-                   })
-                  .on("mouseout", function() {
-                    // remove the tooltip + data
-                    removeTooltip()
-                  });
+  var rect = svg.append("rect")
+                .attr("width", w + margin.left + margin.right)
+                .attr("height", h + margin.top + margin.bottom)
+                .style("opacity", 0)
+                .attr("transform", "translate(" + margin.left + ", 0)")
+                .on("mousemove", function (){
+                  // convert pixel data to year data
+                  var year = xScale.invert(d3.mouse(rect.node())[0]);
+                  // try fitting the data between two existing points
+                  var i = bisectDate(yearValues, year, 1);
+                  // used to correct the use of margins
+                  i = i - 1;
+                  // draw tooltipline + display data of pointed to point
+                  toolTipLine(earth_data, yearValues[i], h, xScale, extr_data)
+                 })
+                .on("mouseout", function() {
+                  // remove the tooltip + data
+                  removeTooltip()
+                });
 
+  // checkboxes stuff
+  console.log("a");
+  d3.selectAll("#all").on("change", function () {
+    var x = document.getElementById("all");
+    if (x.checked) {
+      updateGraph(parseInt(x.value));
+    } else {
+      d3.selectAll("#line4").remove();
+    }
+  });
+  // checkboxes stuff
+  d3.selectAll("#mag15").on("change", function () {
+    var x = document.getElementById("mag15");
+    if (x.checked) {
+      updateGraph(parseInt(x.value));
+    } else {
+      d3.selectAll("#line0").remove();
+    }
+  });
+  // checkboxes stuff
+  d3.selectAll("#mag20").on("change", function () {
+    var x = document.getElementById("mag20");
+    if (x.checked) {
+      updateGraph(parseInt(x.value));
+    } else {
+      d3.selectAll("#line1").remove();
+    }
+  });
+  // checkboxes stuff
+  d3.selectAll("#mag25").on("change", function () {
+    var x = document.getElementById("mag25");
+    if (x.checked) {
+      updateGraph(parseInt(x.value));
+    } else {
+      d3.selectAll("#line2").remove();
+    }
+  });
+  // checkboxes stuff
+  d3.selectAll("#mag30").on("change", function () {
+    var x = document.getElementById("mag30");
+    if (x.checked) {
+      updateGraph(parseInt(x.value));
+    } else {
+      d3.selectAll("#line3").remove();
+    }
+  });
 
   function toolTipLine(earth_data, year, h, xScale, extr_data) {
         // update the data which is displayed
@@ -312,8 +373,21 @@ function linePlot(data) {
       function removeTooltip() {
         // d3.selectAll("#toolExtra2")
         //   .remove()
-        // console.log("a");
-
+        console.log("a");
     }
+}
 
+function updateGraph(value) {
+  var colorLine = ["rgb(199,233,192)", "rgb(186,228,179)", "rgb(116,196,118)",
+                   "rgb(49,163,84)", "rgb(0,109,44)"]
+
+  d3.selectAll("#lineplot").append("path")
+      .data([lineDims[value]])
+      .attr("class", "line")
+      .attr("d", lineDims.valueline1)
+      .attr("fill", "none")
+      .attr("id", "line"+value+"")
+      .style("stroke", colorLine[value])
+      .style("stroke-width", 4)
+      .attr("transform", "translate(" + lineDims.margin.left + ", 0)");
 }

@@ -49,7 +49,8 @@ function barMakerYear(data) {
                  .range([h, margin.top]);
 
   // creating the bars for the histogram
-  svg.selectAll("rect")
+  svg.append("g")
+     .selectAll("rect")
      .data(data)
      .enter()
      .append("rect")

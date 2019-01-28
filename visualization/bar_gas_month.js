@@ -28,7 +28,7 @@ function barMakerMonth(data) {
               .attr('class', 'd3-tip')
               .offset([-10, 0]);
 
-  barDims.tip = tip
+  barDims.tip = tip;
 
   // sizes and margins
   var w = 400;
@@ -82,7 +82,9 @@ function barMakerMonth(data) {
   barDims.yScale = yScale;
 
   // creating the bars for the histogram
-  svg.selectAll("rect")
+  svg.append("g")
+     .attr("id", "rectGroupMonth")
+     .selectAll("rect")
      .data(data)
      .enter()
      .append("rect")
@@ -140,7 +142,7 @@ function barMakerMonth(data) {
                 .scale(yScale)
                 .ticks(5);
   // globalize yAxis
-  barDims.yAxis = yAxis
+  barDims.yAxis = yAxis;
 
   // setting xAxis
   var xAxis = d3.axisBottom()
@@ -194,19 +196,19 @@ function set_year(year) {
   var yScale = barDims.yScale.domain([0, Math.max(...extraction_data)]);
 
   // select the correct svg
-  var svg = d3.selectAll("#month");
+  var rectGroup = d3.selectAll("#rectGroupMonth");
 
   // changing the rectangles to fit the new data
-  var rect = svg.selectAll("#rect")
-                .data(data)
-                .transition()
-                .duration(750)
-                .attr("height", function(d) {
-                  return barDims.h - yScale(d[1]);
-                })
-                .attr("y", function(d) {
-                  return yScale(d[1]);
-                });
+  var rect = rectGroup.selectAll("#rect")
+                      .data(data)
+                      .transition()
+                      .duration(750)
+                      .attr("height", function(d) {
+                        return barDims.h - yScale(d[1]);
+                      })
+                      .attr("y", function(d) {
+                        return yScale(d[1]);
+                      });
 
   // updating the axis to addapt to the new yScale
   // barDims.yAxis.scale(yScale)

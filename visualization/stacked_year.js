@@ -108,6 +108,9 @@ function stackedMakerYear(data) {
         .on("click", function(d) {
           // call function to update the map
           set_map(d[0]);
+          // update slider
+          // sl = d3.selectAll(".slider")
+          sliderStep.value(d[0]);
         });
 
   // set tip

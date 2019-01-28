@@ -93,7 +93,9 @@ function worldMaker(data) {
   data = data_refined;
 
   // draw circles based on the year, changed with updatefunction
-  svg.selectAll("circle")
+  svg.append("g")
+     .attr("id", "circleGroup")
+     .selectAll("circle")
      .data(data)
      .enter()
      .append("circle")
@@ -133,6 +135,28 @@ function worldMaker(data) {
 
   // save the year as a global variable for usage in magnitude selection
   mapDims.year = 2018;
+
+  // making the slider as global as possible for further use in stacked_year.js
+  sliderStep = d3
+      .sliderBottom()
+      .min(earthquakeYearInitial)
+      .max(earthquakeYearFinal - 1)
+      .width(w + margin.left )
+      .tickFormat(d3.format('.4'))
+      .ticks(10)
+      .step(1)
+      .default(earthquakeYearFinal)
+      .fill("black")
+      .on('onchange', val => {
+        d3.select('p#value-step').text(val);
+        set_map(val);
+      });
+
+  var gStep = svg
+    .append('g')
+    .attr("transform", "translate(25, "+ h * 1.2 +")");
+
+  gStep.call(sliderStep);
 }
 
 function set_map(year) {
@@ -162,7 +186,7 @@ function set_map(year) {
 
   // select choosen data
   var data = mapDims[year];
-
+  var circleGroup = d3.selectAll("#circleGroup");
   // wait function due to removing with transition
   setTimeout(function() {
     newCircle(data, year);
@@ -173,7 +197,7 @@ function set_map(year) {
     if (Object.keys(mapDims)
               .includes(String(year))) {
                 projection = mapDims.projection;
-                var circle = svg.selectAll("circle")
+                var circle = circleGroup.selectAll("circle")
                 .data(mapDims[year])
                 .enter()
                 .append("circle")
@@ -255,6 +279,7 @@ function set_map_mag_range(range) {
                   .duration(500)
                   .attr("r", 0)
                   .remove();
+  var circleGroup = svg.selectAll("#circleGroup");
 
   // wait function to prevent removal of newer circles
   setTimeout(function() {
@@ -266,7 +291,7 @@ function set_map_mag_range(range) {
     if (Object.keys(mapDims)
               .includes(String(year))) {
                 projection = mapDims.projection;
-                var circle = svg.selectAll("circle")
+                var circle = circleGroup.selectAll("circle")
                 .data(data)
                 .enter()
                 .append("circle")

@@ -75,8 +75,10 @@ function barMakerTot(data) {
   totDimsExtr.yScale = yScale
   // data = extraction_data
   data = data_refined;
+
   // creating the bars for the histogram
-  svg.selectAll("rect")
+  svg.append("g")
+     .selectAll("rect")
      .data(data)
      .enter()
      .append("rect")
