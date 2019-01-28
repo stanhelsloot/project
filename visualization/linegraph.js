@@ -189,7 +189,9 @@ function linePlot(data) {
       .attr("transform", "translate(" + margin.left + ", 0)");
 
   // path 2
-  svg.append("path")
+  svg.append("g")
+      .attr("id", "lineplotGroup")
+      .append("path")
       .data([earth_data])
       .attr("class", "line")
       .attr("d", valueline1)
@@ -200,9 +202,13 @@ function linePlot(data) {
       .attr("transform", "translate(" + margin.left + ", 0)");
 
 
+  circleGroupLine = svg.append("g")
+                       .attr("id", "circleGroupLine");
+  // make 5 circles and append them to the group
+  for (var i = 0; i < 6; i++) {
+    circleGroupLine.append("circle").attr("id", "tipCircle"+i+"").attr("r", 0);
+  }
 
-  svg.append("circle").attr("id", "circle1").attr("r", 7);
-  svg.append("circle").attr("id", "circle2").attr("r", 7);
 
   for (var i = 0; i < 2; i++) {
     tip_extr = svg.append("g")
@@ -243,12 +249,13 @@ function linePlot(data) {
                 });
 
   // checkboxes stuff
-  console.log("a");
+  lineDims.bool4 = true;
   d3.selectAll("#all").on("change", function () {
     var x = document.getElementById("all");
     if (x.checked) {
       updateGraph(parseInt(x.value));
     } else {
+      lineDims.bool4 = false;
       d3.selectAll("#line4").remove();
     }
   });
@@ -258,6 +265,7 @@ function linePlot(data) {
     if (x.checked) {
       updateGraph(parseInt(x.value));
     } else {
+      lineDims.bool0 = false;
       d3.selectAll("#line0").remove();
     }
   });
@@ -267,6 +275,7 @@ function linePlot(data) {
     if (x.checked) {
       updateGraph(parseInt(x.value));
     } else {
+      lineDims.bool1 = false;
       d3.selectAll("#line1").remove();
     }
   });
@@ -276,6 +285,7 @@ function linePlot(data) {
     if (x.checked) {
       updateGraph(parseInt(x.value));
     } else {
+      lineDims.bool2 = false;
       d3.selectAll("#line2").remove();
     }
   });
@@ -285,6 +295,7 @@ function linePlot(data) {
     if (x.checked) {
       updateGraph(parseInt(x.value));
     } else {
+      lineDims.bool3 = false;
       d3.selectAll("#line3").remove();
     }
   });
@@ -292,16 +303,7 @@ function linePlot(data) {
   function toolTipLine(earth_data, year, h, xScale, extr_data) {
         // update the data which is displayed
         // d3.selectAll("#updatableText").text(function (data) {
-          for (let i = 0; i < earth_data.length; i ++){
-            // compare with inputted year and select choosen value
-            if (earth_data[i].year == year) {
-              value = earth_data[i].value
-              break
-            }
-            else if (i == earth_data.length - 1) {
-              value = 0
-            }
-          }
+
           for (let i = 0; i < extr_data.length; i ++){
             // compare with inputted year and select choosen value
             if (extr_data[i].year == year) {
@@ -309,79 +311,100 @@ function linePlot(data) {
             }
           }
     // XXX:
-          d3.selectAll("#circle1")
+          // d3.selectAll("#circle1")
+          //   .attr("cx", xScale(year) + margin.left)
+          //   .attr("cy", lineDims.yScale2(value2))
+          circle1 = d3.selectAll("#tipCircle5")
+            .attr("r", 7)
             .attr("cx", xScale(year) + margin.left)
-            .attr("cy", lineDims.yScale2(value2))
-          circle1 = d3.selectAll("#circle2")
-            .attr("cx", xScale(year) + margin.left)
-            .attr("cy", lineDims.yScale1(value))
-
-          valueArray = [value, value2]
-          for (var i = 0; i < valueArray.length; i++) {
-            x = xScale(year) + margin.left
-            if (valueArray[i] == value){
-              y = yScale1(valueArray[i])
-              text = "Earthquakes"
-            } else {
-              y = yScale2(valueArray[i])
-              text = "M Nm^3 gas"
+            .attr("cy", lineDims.yScale2(value2));
+          for (var i = 0; i < 5; i++) {
+            for (let j = 0; j < lineDims[i].length; j ++){
+              // compare with inputted year and select choosen value
+              if (lineDims[i][j].year == year) {
+                value = lineDims[i][j].value
+                break;
+              }
+              else if (j == lineDims[i].length - 1) {
+                value = 0
+              }
             }
-            var poly = [{"x":x, "y":y},
-                        {"x":x - 4,"y":y - 7},
-                        {"x":x + 4,"y":y - 7}];
+            if (value != 0 && lineDims["bool"+i+""]) {
+              d3.selectAll("#tipCircle"+i+"")
+                .attr("r", 7)
+                .attr("cx", xScale(year) + margin.left)
+                .attr("cy", lineDims.yScale1(value));
+            } else {
+              d3.selectAll("#tipCircle"+i+"").attr("r", 0)
+            }
 
-                d3.selectAll("#polymer"+i+"")
-                .data([poly])
-                .enter()
-                .append("polygon")
-                .attr("points",function(d) {
-                    console.log(d);
-                        return d.map(function(d) {
-                          console.log(d);
-                          return [(d.x),(d.y)].join(",");
-                        }).join(" ");
-                      })
-                      .style("fill", "rgba(0, 0, 0, 0.6)")
-                      .attr("transform", "translate(0, -10)");
-            d3.selectAll("#tiprect"+i+"")
-              .attr("x", x - 65)
-              .attr("y", y - 80)
-              .attr("height", 60)
-              .attr("width", 135)
-              .style("fill", "rgba(0, 0, 0, 0.6)");
-  d3.selectAll("#tiptext1"+i+"")
-              .attr("x", x - 60)
-              .attr("y", y - 60)
-              .style("fill", "white")
-              .style("font-size", "16px")
-              .text(function() {
-                return "Year: " + year + " ";
-              });
-        d3.selectAll("#tiptext2"+i+"")
-                .attr("x", x  - 60)
-                .attr("y", y - 35)
-                .style("fill", "white")
-                .style("font-size", "16px")
-                .text(function() {
-                  return ""+ text +": " +
-                         Math.round(valueArray[i]) + "";
-                });
           }
+
+  //         valueArray = [value, value2]
+  //         for (var i = 0; i < valueArray.length; i++) {
+  //           x = xScale(year) + margin.left
+  //           if (valueArray[i] == value){
+  //             y = yScale1(valueArray[i])
+  //             text = "Earthquakes"
+  //           } else {
+  //             y = yScale2(valueArray[i])
+  //             text = "M Nm^3 gas"
+  //           }
+  //           var poly = [{"x":x, "y":y},
+  //                       {"x":x - 4,"y":y - 7},
+  //                       {"x":x + 4,"y":y - 7}];
+  //
+  //               d3.selectAll("#polymer"+i+"")
+  //               .data([poly])
+  //               .enter()
+  //               .append("polygon")
+  //               .attr("points",function(d) {
+  //                       return d.map(function(d) {
+  //                         return [(d.x),(d.y)].join(",");
+  //                       }).join(" ");
+  //                     })
+  //                     .style("fill", "rgba(0, 0, 0, 0.6)")
+  //                     .attr("transform", "translate(0, -10)");
+  //           d3.selectAll("#tiprect"+i+"")
+  //             .attr("x", x - 65)
+  //             .attr("y", y - 80)
+  //             .attr("height", 60)
+  //             .attr("width", 135)
+  //             .style("fill", "rgba(0, 0, 0, 0.6)");
+  // d3.selectAll("#tiptext1"+i+"")
+  //             .attr("x", x - 60)
+  //             .attr("y", y - 60)
+  //             .style("fill", "white")
+  //             .style("font-size", "16px")
+  //             .text(function() {
+  //               return "Year: " + year + " ";
+  //             });
+  //       d3.selectAll("#tiptext2"+i+"")
+  //               .attr("x", x  - 60)
+  //               .attr("y", y - 35)
+  //               .style("fill", "white")
+  //               .style("font-size", "16px")
+  //               .text(function() {
+  //                 return ""+ text +": " +
+  //                        Math.round(valueArray[i]) + "";
+  //               });
+  //         }
 
       }
 
       function removeTooltip() {
-        // d3.selectAll("#toolExtra2")
-        //   .remove()
-        console.log("a");
+        for (var i = 0; i < 6; i++) {
+          d3.selectAll("#tipCircle"+i+"")
+            .attr("r", 0)
+        }
     }
 }
 
 function updateGraph(value) {
   var colorLine = ["rgb(199,233,192)", "rgb(186,228,179)", "rgb(116,196,118)",
-                   "rgb(49,163,84)", "rgb(0,109,44)"]
+                   "rgb(49,163,84)", "rgb(0,109,44)"];
 
-  d3.selectAll("#lineplot").append("path")
+  d3.selectAll("#lineplotGroup").append("path")
       .data([lineDims[value]])
       .attr("class", "line")
       .attr("d", lineDims.valueline1)
@@ -390,4 +413,7 @@ function updateGraph(value) {
       .style("stroke", colorLine[value])
       .style("stroke-width", 4)
       .attr("transform", "translate(" + lineDims.margin.left + ", 0)");
+
+  // set bool for easy indentification
+  lineDims["bool"+value+""] = true;
 }

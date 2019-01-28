@@ -100,6 +100,9 @@
 - Adding checkboxes to the line graph which can be used to select/deselect different
   magnitude ranges. Removing the  tooltip and adding all tooltip info to a
   extra box for easy reading.
+- Added all elements (circles, bars etc. to groups)
+- 
+
 
 
 # TD
@@ -112,10 +115,10 @@
 - Add info box
 <!-- - Color scheme for all svgs -->
 <!-- - set tick thing on bottom axis line plot -->
-- Scaling of the map chart so the slider fits underneath
+- Scaling of the map chart so the slider fits underneath = not possible
 - add references bottom map.html page
 - make width of svgs column dependable?
 - code of linegraph, total barcharts
-- Add all elements to groups!
+<!-- - Add all elements to groups! -->
 - Names according to style guide
 - remove hardcoding
