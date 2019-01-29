@@ -57,27 +57,31 @@ function barMakerMonth(data) {
   var keys = Object.keys(data);
 
   // collect, process and save data of all years
+  var dataRefined = [];
   for (var j = gasYearInitial; j < gasYearFinal; j++) {
-    var data_refined = [];
+    // empty the dataRefined list
+    dataRefined = [];
     for (i = 0; i < keys.length; i++) {
       if (parseInt(keys[i]) == j) {
         // convert the numeric data to [data] billion m^3
-        data_refined.push([month[i % 12], data[keys[i]] / 1e9]);
+        dataRefined.push([month[i % 12], data[keys[i]] / 1e9]);
       }
-      barDims[j] = data_refined;
+      barDims[j] = dataRefined;
     }
   }
 
   // collect extraction data per year to obtain maximum value per year
-  var extraction_data = [];
+  var dataArray = [];
   for (i = 0; i < barDims[2018].length; i++) {
-    extraction_data.push(barDims[2018][i][1]);
+    dataArray.push(barDims[2018][i][1]);
   }
-  data = data_refined;
+
+  // setting data
+  data = dataRefined;
 
   // setting the yScale and making it global for use in update function
   var yScale = d3.scaleLinear()
-                 .domain([0, Math.max(...extraction_data)])
+                 .domain([0, Math.max(...dataArray)])
                  .range([h, margin.top]);
   barDims.yScale = yScale;
 
@@ -102,7 +106,6 @@ function barMakerMonth(data) {
      })
      .style("fill", "rgba(150,150,150, 1)")
      .on('mouseover', function(d) {
-
        // make a banner with the month and amount of gas extracted
        tip.html(function() {
          return "<strong>Month: </strong><span class='details'>" + d[0] +
@@ -110,6 +113,7 @@ function barMakerMonth(data) {
                 "<strong>Gas in billion Nm^3: </strong><span class='details'>" +
                 Math.round(d[1] * 100) / 100 + "</span>";
        });
+
        tip.show();
        d3.select(this)
        .style("fill", "rgba(123,50,148, 1)");
@@ -178,7 +182,7 @@ function barMakerMonth(data) {
 }
 
 // update function for the monthly extraction chart
-function set_year(year) {
+function setYear(year) {
   // select and update title with selected year
   d3.selectAll("#bar_month_title")
     .text("Monthly total of gas extracted in " + year + "");
@@ -187,13 +191,13 @@ function set_year(year) {
   data = barDims[year];
 
   // collecting extraction data of choosen year for use in setting yScale
-  var extraction_data = [];
+  var dataArray = [];
   for (i = 0; i < data.length; i++) {
-    extraction_data.push(data[i][1]);
+    dataArray.push(data[i][1]);
   }
 
-  // setting the yScale
-  var yScale = barDims.yScale.domain([0, Math.max(...extraction_data)]);
+  // setting the yScale (updating it because it is to be used in yAxis)
+  var yScale = barDims.yScale.domain([0, Math.max(...dataArray)]);
 
   // select the correct svg
   var rectGroup = d3.selectAll("#rectGroupMonth");

@@ -25,10 +25,12 @@ function linePlot(data) {
   var h = 400;
   var margin = {
     top: 80,
-    right: 80,
+    right: 280,
     bottom: 20,
     left: 80
   };
+  lineDims.w = w;
+  lineDims.h = h;
   lineDims.margin = margin;
 
   // collect the total amount of earthquakes per year
@@ -143,7 +145,7 @@ function linePlot(data) {
   svg.append("text")
      .attr("transform", "rotate(-90)")
      .attr("x", - h + 50)
-     .attr("y", w + margin.right * 2)
+     .attr("y", w + margin.right / 2)
      // .style("text-anchor", "middle")
      .text("Amount of Earthquakes")
      .style("font-size", "20px");
@@ -210,21 +212,21 @@ function linePlot(data) {
   }
 
 
-  for (var i = 0; i < 2; i++) {
-    tip_extr = svg.append("g")
-    .attr("font-family", "sans-serif")
-    .attr("font-size", 10)
-    .attr("id", "toolExtra2");
-
-    tip_extr.append("polygon")
-              .attr("id", "polymer"+i+"");
-    tip_extr.append("rect")
-            .attr("id", "tiprect"+i+"");
-    tip_extr.append("text")
-            .attr("id", "tiptext1"+i+"");
-    tip_extr.append("text")
-            .attr("id", "tiptext2"+i+"");
-  }
+  // for (var i = 0; i < 2; i++) {
+  //   tip_extr = svg.append("g")
+  //   .attr("font-family", "sans-serif")
+  //   .attr("font-size", 10)
+  //   .attr("id", "toolExtra2");
+  //
+  //   tip_extr.append("polygon")
+  //             .attr("id", "polymer"+i+"");
+  //   tip_extr.append("rect")
+  //           .attr("id", "tiprect"+i+"");
+  //   tip_extr.append("text")
+  //           .attr("id", "tiptext1"+i+"");
+  //   tip_extr.append("text")
+  //           .attr("id", "tiptext2"+i+"");
+  // }
   var bisectDate = d3.bisector(function(d) { return d; }).left;
 //
 //     // create overlay rectange for movemove
@@ -247,6 +249,16 @@ function linePlot(data) {
                   // remove the tooltip + data
                   removeTooltip()
                 });
+  // tooltip box for displaying data
+  var tipBox = svg.append("g")
+                  .attr("id", "tipBox");
+  tipBox.append("rect")
+        .attr("id", "tipRect");
+  tipBox.append("text").attr("id", "tipTextYear").attr("x", 760).attr("y", 180);
+  tipBox.append("text").attr("id", "tipTextExtr").attr("x", 760).attr("y", 200);
+  for (var i = 0; i < 5; i++){
+    tipBox.append("text").attr("id", "tipText"+i+"").attr("x", 760);
+  }
 
   // checkboxes stuff
   lineDims.bool4 = true;
@@ -300,20 +312,28 @@ function linePlot(data) {
     }
   });
 
+
+
+
   function toolTipLine(earth_data, year, h, xScale, extr_data) {
         // update the data which is displayed
         // d3.selectAll("#updatableText").text(function (data) {
-
+          var text = ["1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0 and above", "All Earthquakes"];
+          x = 200;
+          k = 0;
           for (let i = 0; i < extr_data.length; i ++){
             // compare with inputted year and select choosen value
             if (extr_data[i].year == year) {
               value2 = extr_data[i].value
             }
           }
-    // XXX:
-          // d3.selectAll("#circle1")
-          //   .attr("cx", xScale(year) + margin.left)
-          //   .attr("cy", lineDims.yScale2(value2))
+          d3.selectAll("#tipTextExtr")
+          .style("fill", "white")
+          .style("font-size", "16px")
+          .text(function() {
+            return "Gas extracted: " + Math.round(value2) + "";
+          });
+
           circle1 = d3.selectAll("#tipCircle5")
             .attr("r", 7)
             .attr("cx", xScale(year) + margin.left)
@@ -326,7 +346,7 @@ function linePlot(data) {
                 break;
               }
               else if (j == lineDims[i].length - 1) {
-                value = 0
+                value = 0;
               }
             }
             if (value != 0 && lineDims["bool"+i+""]) {
@@ -334,68 +354,38 @@ function linePlot(data) {
                 .attr("r", 7)
                 .attr("cx", xScale(year) + margin.left)
                 .attr("cy", lineDims.yScale1(value));
+              k++;
+              d3.selectAll("#tipText"+i+"")
+              .attr("y", x + k * 20)
+              .style("fill", "white")
+              .style("font-size", "16px")
+              .text(function() {
+                return ""+ text[i] +": " + value + "";
+              });
             } else {
-              d3.selectAll("#tipCircle"+i+"").attr("r", 0)
+              d3.selectAll("#tipCircle"+i+"").attr("r", 0);
+              d3.selectAll("#tipText"+i+"").text("");
             }
-
           }
+          tipRect = d3.select("#tipRect")
+                      .attr("x", 755)
+                      .attr("y", 155)
+                      .attr("height", 60 + k * 20)
+                      .attr("width", 155)
+                      .style("fill", "rgba(0, 0, 0, 0.6)");
 
-  //         valueArray = [value, value2]
-  //         for (var i = 0; i < valueArray.length; i++) {
-  //           x = xScale(year) + margin.left
-  //           if (valueArray[i] == value){
-  //             y = yScale1(valueArray[i])
-  //             text = "Earthquakes"
-  //           } else {
-  //             y = yScale2(valueArray[i])
-  //             text = "M Nm^3 gas"
-  //           }
-  //           var poly = [{"x":x, "y":y},
-  //                       {"x":x - 4,"y":y - 7},
-  //                       {"x":x + 4,"y":y - 7}];
-  //
-  //               d3.selectAll("#polymer"+i+"")
-  //               .data([poly])
-  //               .enter()
-  //               .append("polygon")
-  //               .attr("points",function(d) {
-  //                       return d.map(function(d) {
-  //                         return [(d.x),(d.y)].join(",");
-  //                       }).join(" ");
-  //                     })
-  //                     .style("fill", "rgba(0, 0, 0, 0.6)")
-  //                     .attr("transform", "translate(0, -10)");
-  //           d3.selectAll("#tiprect"+i+"")
-  //             .attr("x", x - 65)
-  //             .attr("y", y - 80)
-  //             .attr("height", 60)
-  //             .attr("width", 135)
-  //             .style("fill", "rgba(0, 0, 0, 0.6)");
-  // d3.selectAll("#tiptext1"+i+"")
-  //             .attr("x", x - 60)
-  //             .attr("y", y - 60)
-  //             .style("fill", "white")
-  //             .style("font-size", "16px")
-  //             .text(function() {
-  //               return "Year: " + year + " ";
-  //             });
-  //       d3.selectAll("#tiptext2"+i+"")
-  //               .attr("x", x  - 60)
-  //               .attr("y", y - 35)
-  //               .style("fill", "white")
-  //               .style("font-size", "16px")
-  //               .text(function() {
-  //                 return ""+ text +": " +
-  //                        Math.round(valueArray[i]) + "";
-  //               });
-  //         }
-
-      }
+            d3.selectAll("#tipTextYear")
+                        .style("fill", "white")
+                        .style("font-size", "16px")
+                        .text(function() {
+                          return "Year: " + year + " ";
+                        });
+        }
 
       function removeTooltip() {
         for (var i = 0; i < 6; i++) {
           d3.selectAll("#tipCircle"+i+"")
-            .attr("r", 0)
+            .attr("r", 0);
         }
     }
 }

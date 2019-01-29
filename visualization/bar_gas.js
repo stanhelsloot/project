@@ -39,13 +39,13 @@ function barMakerYear(data) {
   // merging extraction data for determination of maximum extraction
   var gasYearInitial = 1971;
   var gasYearFinal = 2019;
-  var extraction_data = [];
+  var dataArray = [];
   for (i = gasYearInitial; i < gasYearFinal; i++) {
-    extraction_data.push(data[-gasYearInitial + i][1]);
+    dataArray.push(data[-gasYearInitial + i][1]);
   }
   // setting the y-scale
   var yScale = d3.scaleLinear()
-                 .domain([0, Math.max(...extraction_data)])
+                 .domain([0, Math.max(...dataArray)])
                  .range([h, margin.top]);
 
   // creating the bars for the histogram
@@ -85,7 +85,7 @@ function barMakerYear(data) {
      })
      .on("click", function(d) {
        // update monthly map
-       set_year(d[0]);
+       setYear(d[0]);
      });
 
   // calling tip
@@ -142,13 +142,13 @@ function barMakerYear(data) {
 function convertData(data) {
   // converts the dict format to an array
   data = data[0];
-  data_refined = [];
+  dataRefined = [];
   for (i = 1971; i < 2019; i++) {
     j = data["" + i];
 
     // convert data to billion m^3
     j = (j / 1e9);
-    data_refined.push([i, j]);
+    dataRefined.push([i, j]);
   }
-  return data_refined;
+  return dataRefined;
 }

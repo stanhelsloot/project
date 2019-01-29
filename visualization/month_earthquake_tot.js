@@ -4,7 +4,7 @@
 var request_month_earth = [d3.json("../../data/data_refined/stacked_tot.json")];
 
 // for storage of global variables in update functions
-var totDimsEarth = {};
+var monthEarthDims = {};
 
 var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
              "Oct", "Nov", "Dec"];
@@ -34,29 +34,29 @@ function barMakerTotEarth(data) {
     bottom: 20,
     left: 50
   };
-  totDimsEarth.w = w;
+  monthEarthDims.w = w;
 
-  // creating a svg object and adding it to an specified element on the page
+  // creating a svg object and adding it to a specified element on the page
   var svg = d3.select("div#earth_total")
               .append("svg")
               .attr("id", "earth_total_month")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
-  // selecting the correct data and obtaining the keys
+  // selecting the correct data
   data = data[0];
-  var extraction_data = [];
-  // collect, process and save data of all years
+  var dataArray = [];
+  // combine data into an array to be used for setting the yScale
   for (var i = 0; i < data.length; i++) {
-     extraction_data.push(data[i][1]);
+     dataArray.push(data[i][1]);
   }
-  totDimsEarth.data_refined = data;
+  monthEarthDims.dataRefined = data;
 
-  // setting the yScale and making it global for use in update function
+  // setting the yScale and saving it for use in update functions
   var yScale = d3.scaleLinear()
-                 .domain([0, Math.max(...extraction_data)])
+                 .domain([0, Math.max(...dataArray)])
                  .range([h, margin.top]);
-  totDimsEarth.yScale = yScale;
+  monthEarthDims.yScale = yScale;
 
   // creating the bars for the histogram
   svg.append("g")
@@ -65,6 +65,7 @@ function barMakerTotEarth(data) {
      .enter()
      .append("rect")
      .attr("id", function (d) {
+       // setting id as the month for use in dual tooltip function
        return d[0];
      })
      .attr("width", w / data.length)
@@ -80,8 +81,7 @@ function barMakerTotEarth(data) {
      })
      .style("fill", "rgba(150,150,150, 1)")
      .on('mouseover', function(d) {
-
-       // make a banner with the month and amount of gas extracted
+       // set the HTML part of the tooltip with year and data
        tip.html(function() {
          return "<strong>Month: </strong><span class='details'>" + d[0] +
                 "<br></span>" +
@@ -89,16 +89,20 @@ function barMakerTotEarth(data) {
                 Math.round(d[1]) + "</span>";
        });
        tip.show();
-
-       id = this.id
-       tip_other(id);
+       // select the id of the selected bar so both month total bars can be
+       // highlighted
+       var id = this.id;
+       // span a banner at the other chart
+       newBannerExtraction(id);
+       // set colors of all bars with the same id
        d3.selectAll("#"+id+"")
        .style("fill", "rgba(123,50,148, 1)");
      })
      .on('mouseout', function(d) {
-       removeTipOther()
+       // remove both tooltip banners and set back the colors
+       removeNewBannerExtraction();
        tip.hide();
-       id = this.id
+       var id = this.id;
        d3.selectAll("#"+id+"")
        .style("fill", "rgba(150,150,150, 1)");
      });
@@ -157,67 +161,82 @@ function barMakerTotEarth(data) {
      .attr("y", margin.left / 3)
      .text("Total amount of Earthquakes");
 }
-function tip_other2(id) {
-  data_refined = totDimsEarth.data_refined;
-  for (var i = 0; i < data_refined.length; i++) {
-    if (data_refined[i][0] == id) {
-      data = data_refined[i][1]
+
+// function for creating the dual tooltip
+function newBannerEarth(id) {
+
+  dataRefined = monthEarthDims.dataRefined;
+  // select the correct data
+  for (var i = 0; i < dataRefined.length; i++) {
+    if (dataRefined[i][0] == id) {
+      data = dataRefined[i][1];
     }
   }
-  // set x location, can be determined using the id
-  x_pre = month.findIndex(function (element) {
+  // find index which can be determined using the id
+  var index = month.findIndex(function (element) {
     return element == id;
-  })
-  x = x_pre * (totDimsEarth.w / month.length)
-  y = totDimsEarth.yScale(data)
+  });
+
+  // setting the x and y positions of the new banner
+  var x = index * (monthEarthDims.w / month.length);
+  var y = monthEarthDims.yScale(data);
+  // setting the dimentions for the polygon
   var poly = [{"x":x, "y":y},
               {"x":x - 4,"y":y - 7},
               {"x":x + 4,"y":y - 7}];
 
-  var tip_extr =
-  d3.selectAll("#earth_total_month")
-    .append("g")
-    .attr("font-family", "sans-serif")
-    .attr("font-size", 10)
-    .attr("id", "toolExtra");
+  // create a group for adding all new banner functionalities
+  var tipExtra = d3.selectAll("#earth_total_month")
+                   .append("g")
+                   .attr("font-family", "sans-serif")
+                   .attr("font-size", 10)
+                   .attr("id", "toolExtra");
 
-  tip_extr.selectAll("polygon")
-            .data([poly])
-            .enter()
-            .append("polygon")
-            .attr("points",function(d) {
-              return d.map(function(d) {
-                return [(d.x),(d.y)].join(",");
-              }).join(" ");
-            })
-            .style("fill", "rgba(0, 0, 0, 0.6)")
-            .attr("transform", "translate(" + 67  + ",0)");
-  tip_extr.append("rect")
-    .attr("x", x)
-    .attr("y", y - 70)
-    .attr("height", 60)
-    .attr("width", 130)
-    .style("fill", "rgba(0, 0, 0, 0.6)");
-  tip_extr.append("text")
-    .attr("x", x + 5)
-    .attr("y", y - 50)
-    .style("fill", "white")
-    .style("font-size", "16px")
-    .text(function() {
-      return "Month: " + id + " ";
-    });
-    tip_extr.append("text")
-      .attr("x", x + 5)
-      .attr("y", y - 25)
-      .style("fill", "white")
-      .style("font-size", "16px")
-      .text(function() {
-        return "Earthquakes: " +
-               data + "";
-      });
+  // add polygon
+  tipExtra.selectAll("polygon")
+          .data([poly])
+          .enter()
+          .append("polygon")
+          .attr("points",function(d) {
+            return d.map(function(d) {
+              return [(d.x),(d.y)].join(",");
+            }).join(" ");
+          })
+          .style("fill", "rgba(0, 0, 0, 0.6)")
+          .attr("transform", "translate(" + 67  + ",0)");
+
+  // add the rectangle
+  tipExtra.append("rect")
+          .attr("x", x)
+          .attr("y", y - 70)
+          .attr("height", 60)
+          .attr("width", 130)
+          .style("fill", "rgba(0, 0, 0, 0.6)");
+
+  // add the first line of text
+  tipExtra.append("text")
+          .attr("x", x + 5)
+          .attr("y", y - 50)
+          .style("fill", "white")
+          .style("font-size", "16px")
+          .text(function() {
+            return "Month: " + id + " ";
+          });
+  // add the second line of text
+  tipExtra.append("text")
+          .attr("x", x + 5)
+          .attr("y", y - 25)
+          .style("fill", "white")
+          .style("font-size", "16px")
+          .text(function() {
+            return "Earthquakes: " +
+                   data + "";
+          });
 }
-function removeTipOther2() {
+
+// function for removing the banner
+function removeNewBannerEarth() {
   d3.selectAll("#toolExtra")
-    .remove()
+    .remove();
 
 }

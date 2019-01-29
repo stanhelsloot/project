@@ -4,7 +4,7 @@
 var request_bar_tot = [d3.json("../../data/data_refined/data_tot.json")];
 
 // for storage of global variables in update functions
-var totDimsExtr = {};
+var monthExtrDims = {};
 
 var gasYearInitial = 1971;
 var gasYearFinal = 2019;
@@ -24,10 +24,9 @@ var tot_month = function() {
 function barMakerTot(data) {
 
   // tooltip of bar_month
-  var tip_extr = d3.tip()
+  var tip = d3.tip()
               .attr('class', 'd3-tip')
               .offset([-10, 0]);
-
 
   // sizes and margins
   var w = 400;
@@ -38,14 +37,9 @@ function barMakerTot(data) {
     bottom: 20,
     left: 60
   };
-  totDimsExtr.w = w
-  totDimsExtr.h = h
-  totDimsExtr.margin = margin
-
-  // // adding the measurements to the global variable barDims
-  // barDims.w = w;
-  // barDims.h = h;
-  // barDims.margin = margin;
+  monthExtrDims.w = w;
+  monthExtrDims.h = h;
+  monthExtrDims.margin = margin;
 
   // creating a svg object and adding it to an specified element on the page
   var svg = d3.select("div#extraction_total")
@@ -56,25 +50,26 @@ function barMakerTot(data) {
 
   // selecting the correct data and obtaining the keys
   data = data[0];
-  var data_refined = [];
+  var dataRefined = [];
   var keys = Object.keys(data);
   var extraction_data = [];
-  // collect, process and save data of all years
+  // collect, process and save data of all months in arrays
   for (var i = 0; i < keys.length; i++) {
      // convert the numeric data to [data] billion m^3
      extraction_data.push(data[keys[i]] / 1e9);
-     data_refined.push([keys[i], data[keys[i]] / 1e9]);
+     dataRefined.push([keys[i], data[keys[i]] / 1e9]);
 
   }
-  totDimsExtr.data_refined = data_refined
+  monthExtrDims.dataRefined = dataRefined;
 
-  // setting the yScale and making it global for use in update function
+  // setting the yScale and saving it globally for use in update function
   var yScale = d3.scaleLinear()
                  .domain([0, Math.max(...extraction_data)])
                  .range([h, margin.top]);
-  totDimsExtr.yScale = yScale
-  // data = extraction_data
-  data = data_refined;
+  monthExtrDims.yScale = yScale;
+
+  // setting the data
+  data = dataRefined;
 
   // creating the bars for the histogram
   svg.append("g")
@@ -98,33 +93,37 @@ function barMakerTot(data) {
      })
      .style("fill", "rgba(150,150,150, 1)")
      .on('mouseover', function(d) {
-       tip_extr.html(function() {
+       // setting banner of currently selected bar
+       tip.html(function() {
         return "<strong>Month: </strong><span class='details'>" + d[0] +
                "<br></span>" +
                "<strong>Gas in M Nm^3: </strong><span class='details'>" +
                Math.round(d[1]) + "</span>";
       });
-      tip_extr.show();
-
-       id = this.id
-       tip_other2(id);
-       d3.selectAll("#"+id+"")
-       .style("fill", "rgba(123,50,148, 1)");
-     })
+      tip.show();
+      // select the id of the selected bar so both month total bars can be
+      // highlighted
+      var id = this.id;
+      // span banner at the other chart
+      newBannerEarth(id);
+      // color all selected elements
+      d3.selectAll("#"+id+"")
+        .style("fill", "rgba(123,50,148, 1)");
+      })
      .on('mouseout', function(d) {
-       tip_extr.hide()
-       removeTipOther2()
-       id = this.id
+       // remove all banners and set back the colors
+       tip.hide();
+       removeNewBannerEarth();
+       var id = this.id;
        d3.selectAll("#"+id+"")
        .style("fill", "rgba(150,150,150, 1)");
      });
 
   // activating the tooltip
-  svg.call(tip_extr);
+  svg.call(tip);
 
   // appending title
   svg.append("text")
-     .attr("id", "bar_extr_tot_title")
      .attr("class", "title")
      .attr("y", margin.top / 2)
      .attr("x", margin.left)
@@ -173,32 +172,39 @@ function barMakerTot(data) {
      .attr("y", margin.left / 3)
      .text("Gas extraction in billion Nm^3");
 }
-function tip_other(id) {
-  data_refined = totDimsExtr.data_refined;
-  for (var i = 0; i < data_refined.length; i++) {
-    if (data_refined[i][0] == id) {
-      data = data_refined[i][1]
+
+// function for making an extra banner
+function newBannerExtraction(id) {
+  // selecting the data
+  dataRefined = monthExtrDims.dataRefined;
+  for (var i = 0; i < dataRefined.length; i++) {
+    if (dataRefined[i][0] == id) {
+      data = dataRefined[i][1];
     }
   }
-  // set x location, can be determined using the id
-  x_pre = month.findIndex(function (element) {
-    return element == id;
-  })
-  x = x_pre * (totDimsExtr.w / month.length)
-  y = totDimsExtr.yScale(data)
 
+  // find index which can be determined using the id
+  var index = month.findIndex(function (element) {
+    return element == id;
+  });
+
+  // setting correct x and y positions of the new banner
+  var x = index * (monthExtrDims.w / month.length);
+  var y = monthExtrDims.yScale(data);
+  // setting dimensions of the arrow
   var poly = [{"x":x, "y":y},
               {"x":x - 4,"y":y - 7},
               {"x":x + 4,"y":y - 7}];
 
-  var tip_extr =
-  d3.selectAll("#month_total")
-    .append("g")
-    .attr("font-family", "sans-serif")
-    .attr("font-size", 10)
-    .attr("id", "toolExtra");
+  // creating group for adding the new banner
+  var tipExtra = d3.selectAll("#month_total")
+                   .append("g")
+                   .attr("font-family", "sans-serif")
+                   .attr("font-size", 10)
+                   .attr("id", "toolExtra");
 
-  tip_extr.selectAll("polygon")
+  // adding the arrow
+  tipExtra.selectAll("polygon")
           .data([poly])
           .enter()
           .append("polygon")
@@ -208,35 +214,40 @@ function tip_other(id) {
             }).join(" ");
           })
           .style("fill", "rgba(0, 0, 0, 0.6)")
-          // .attr("stroke-width",2)
           .attr("transform", "translate(" + 77  + ",0)");
 
-  tip_extr.append("rect")
-    .attr("x", x - 5)
-    .attr("y", y - 70)
-    .attr("height", 60)
-    .attr("width", 155)
-    .style("fill", "rgba(0, 0, 0, 0.6)")
-  tip_extr.append("text")
-    .attr("x", x)
-    .attr("y", y - 50)
-    .style("fill", "white")
-    .style("font-size", "16px")
-    .text(function() {
-      return "Month: " + id + " ";
-    });
-    tip_extr.append("text")
-      .attr("x", x)
-      .attr("y", y - 25)
-      .style("fill", "white")
-      .style("font-size", "16px")
-      .text(function() {
-        return "Gas in M Nm^3: " +
-               Math.round(data) + "";
-      });
-}
-function removeTipOther() {
-  d3.selectAll("#toolExtra")
-    .remove()
+  // adding a rectangle
+  tipExtra.append("rect")
+          .attr("x", x - 5)
+          .attr("y", y - 70)
+          .attr("height", 60)
+          .attr("width", 155)
+          .style("fill", "rgba(0, 0, 0, 0.6)");
 
+  // adding line 1
+  tipExtra.append("text")
+          .attr("x", x)
+          .attr("y", y - 50)
+          .style("fill", "white")
+          .style("font-size", "16px")
+          .text(function() {
+            return "Month: " + id + " ";
+          });
+
+  // adding line 2
+  tipExtra.append("text")
+          .attr("x", x)
+          .attr("y", y - 25)
+          .style("fill", "white")
+          .style("font-size", "16px")
+          .text(function() {
+            return "Gas in M Nm^3: " +
+                   Math.round(data) + "";
+          });
+}
+
+// function for removing the extra banner
+function removeNewBannerExtraction() {
+  d3.selectAll("#toolExtra")
+    .remove();
 }

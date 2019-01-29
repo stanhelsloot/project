@@ -11,7 +11,7 @@ var stacked_year = function() {
             });
   };
 
-// creates a stacked histogram
+// creates a stacked histogram of the earthquakes
 function stackedMakerYear(data) {
   // tooltip of stacked_year
   var tip = d3.tip()
@@ -36,16 +36,16 @@ function stackedMakerYear(data) {
               .attr("height", h + margin.top + margin.bottom);
 
   // collecting range data length for determining max values in yScale
-  var range_data = [];
+  var rangeData = [];
   for (var i = 0; i < data[0].length; i++) {
     len = (data[0][i][0][1] + data[0][i][1][1] + data[0][i][2][1] + data[0][i]
       [3][1]);
-    range_data.push(len);
+    rangeData.push(len);
   }
 
   // setting the yScale
   var yScale = d3.scaleLinear()
-                 .domain([0, Math.max(...range_data)])
+                 .domain([0, Math.max(...rangeData)])
                  .range([h, margin.top]);
 
   // setting color scale manually
@@ -95,11 +95,13 @@ function stackedMakerYear(data) {
             d[1] + "</span>";
           });
           tip.show();
+
           d3.select(this)
           .style("fill", "rgba(123,50,148, 0.6)");
         })
         .on('mouseout', function(d) {
           tip.hide();
+
           d3.select(this)
           .style("fill", function(d) {
             return (color[d[2]]);
@@ -107,15 +109,13 @@ function stackedMakerYear(data) {
         })
         .on("click", function(d) {
           // call function to update the map
-          set_map(d[0]);
+          setMap(d[0]);
           // update slider
-          // sl = d3.selectAll(".slider")
-          sliderStep.value(d[0]);
+          sliderMap.value(d[0]);
         });
 
   // set tip
   svg.call(tip);
-
 
   // appending title
   svg.append("text")
@@ -188,7 +188,7 @@ function stackedMakerYear(data) {
                       return "translate(0," + i * 20 + ")";
                     })
                     .on("click", function(d) {
-                      set_map_mag_range(d[2]);
+                      setMapMagRange(d[2]);
                     });
 
     //append legend colour blocks
