@@ -171,7 +171,7 @@ function stackedMakerYear(data) {
   // function for making the interactive legend
   function makeLegend(data) {
     // defining legend dimension
-    legendPadding = 20;
+    var legendPadding = 20;
 
     data = data[0][0];
 

@@ -27,7 +27,7 @@ function linePlot(data) {
     top: 80,
     right: 280,
     bottom: 20,
-    left: 80
+    left: 180
   };
   lineDims.w = w;
   lineDims.h = h;
@@ -136,7 +136,7 @@ function linePlot(data) {
 
   // append xAxis text
   svg.append("text")
-      .attr("x", (w + margin.left) / 2)
+      .attr("x", (w + margin.left) / 1.75)
       .attr("y",  h + margin.bottom * 3)
       // .style("text-anchor", "middle")
       .text("Year");
@@ -145,7 +145,7 @@ function linePlot(data) {
   svg.append("text")
      .attr("transform", "rotate(-90)")
      .attr("x", - h + 50)
-     .attr("y", w + margin.right / 2)
+     .attr("y", w + margin.right / 1.2)
      // .style("text-anchor", "middle")
      .text("Amount of Earthquakes")
      .style("font-size", "20px");
@@ -154,7 +154,7 @@ function linePlot(data) {
   svg.append("text")
      .attr("transform", "rotate(-90)")
      .attr("x", - h + 25)
-     .attr("y", margin.left / 2.2)
+     .attr("y", margin.left / 1.3)
      // .style("text-anchor", "middle")
      .text("Total gas extracted in billion Nm^3")
      .style("font-size", "20px");
@@ -211,22 +211,6 @@ function linePlot(data) {
     circleGroupLine.append("circle").attr("id", "tipCircle"+i+"").attr("r", 0);
   }
 
-
-  // for (var i = 0; i < 2; i++) {
-  //   tip_extr = svg.append("g")
-  //   .attr("font-family", "sans-serif")
-  //   .attr("font-size", 10)
-  //   .attr("id", "toolExtra2");
-  //
-  //   tip_extr.append("polygon")
-  //             .attr("id", "polymer"+i+"");
-  //   tip_extr.append("rect")
-  //           .attr("id", "tiprect"+i+"");
-  //   tip_extr.append("text")
-  //           .attr("id", "tiptext1"+i+"");
-  //   tip_extr.append("text")
-  //           .attr("id", "tiptext2"+i+"");
-  // }
   var bisectDate = d3.bisector(function(d) { return d; }).left;
 //
 //     // create overlay rectange for movemove
@@ -254,15 +238,58 @@ function linePlot(data) {
                   .attr("id", "tipBox");
   tipBox.append("rect")
         .attr("id", "tipRect");
-  tipBox.append("text").attr("id", "tipTextYear").attr("x", 760).attr("y", 180);
-  tipBox.append("text").attr("id", "tipTextExtr").attr("x", 760).attr("y", 200);
+  tipBox.append("text").attr("id", "tipTextYear").attr("x", 860).attr("y", 180);
+  tipBox.append("text").attr("id", "tipTextExtr").attr("x", 860).attr("y", 200);
   for (var i = 0; i < 5; i++){
-    tipBox.append("text").attr("id", "tipText"+i+"").attr("x", 760);
+    tipBox.append("text").attr("id", "tipText"+i+"").attr("x", 860);
   }
+  ex = svg.append("foreignObject")
+     .attr("x", margin.right * 0.20)
+     .attr("y", 105)
+     .attr("width", 20)
+     .attr("height", 200);
+
+  div = ex.append("xhtml:div")
+    .append("div")
+    .attr("class", "checkbox");
+
+  div.append("input")
+     .attr("type", "checkbox")
+     .attr("id", "all")
+     .attr("value", "4")
+     .attr("checked", "")
+     .attr("autocomplete", "off");
+  //
+  div.append("input")
+     .attr("type", "checkbox")
+     .attr("id", "mag15")
+     .attr("value", "0")
+     .attr("autocomplete", "off")
+     .html("mag15");
+  //
+  div.append("input")
+     .attr("type", "checkbox")
+     .attr("id", "mag20")
+     .attr("value", "1")
+     .attr("autocomplete", "off");
+  //
+  div.append("input")
+     .attr("type", "checkbox")
+     .attr("id", "mag25")
+     .attr("value", "2")
+     .attr("autocomplete", "off");
+  //
+  div.append("input")
+     .attr("type", "checkbox")
+     .attr("id", "mag30")
+     .attr("value", "3")
+     .attr("autocomplete", "off");
+
 
   // checkboxes stuff
   lineDims.bool4 = true;
   d3.selectAll("#all").on("change", function () {
+    console.log("aal");
     var x = document.getElementById("all");
     if (x.checked) {
       updateGraph(parseInt(x.value));
@@ -311,6 +338,46 @@ function linePlot(data) {
       d3.selectAll("#line3").remove();
     }
   });
+
+  var legendPadding = 20;
+  data = [0, 1, 2, 3, 4, 5];
+  var text = ["Gas", "1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0+", "All"];
+
+  var color = ["purple", "rgb(0,109,44)", "rgb(199,233,192)", "rgb(186,228,179)", "rgb(116,196,118)",
+                   "rgb(49,163,84)"];
+
+
+  var legend = svg.append("g")
+                  .attr("font-family", "sans-serif")
+                  .attr("font-size", 10)
+                  .attr("text-anchor", "end")
+                  .selectAll("g")
+                  .data(data)
+                  .enter()
+                  .append("g")
+                  .attr("transform", function(d, i) {
+                    return "translate(0," + i * 24 + ")";
+                  });
+
+  //append legend colour blocks
+  legend.append("rect")
+      .attr("x", margin.right * 0.3 - 5)
+      .attr("y", margin.top + 3)
+      .attr("width", legendPadding)
+      .attr("height", legendPadding)
+      .style("fill", function(d) {
+        console.log(d);
+        return color[d];
+      });
+
+  //append legend texts
+  legend.append("text")
+        .attr("x", margin.right * 0.17)
+        .attr("y", margin.top + 5)
+        .attr("dy", "1em")
+        .text(function(d) {
+          return text[d];
+        });
 
 
 
@@ -368,7 +435,7 @@ function linePlot(data) {
             }
           }
           tipRect = d3.select("#tipRect")
-                      .attr("x", 755)
+                      .attr("x", 855)
                       .attr("y", 155)
                       .attr("height", 60 + k * 20)
                       .attr("width", 155)

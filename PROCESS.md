@@ -103,7 +103,7 @@
 - Added all elements (circles, bars etc. to groups)
 # Tuesday week 4
 - Cleaned up code of everything except linegraph.js
-
+- Added the checkboxes to the linegraph using foreignobject
 
 
 # TD
