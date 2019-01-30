@@ -1,7 +1,7 @@
 // Stan Helsloot, 10762388
 
 // Renders a histogram of the yearly gas extraction by NAM
-var requests_bar_month = [d3.json("../../data/data_refined/data_months.json")];
+var requestsBarMonth = [d3.json("../../data/data_refined/data_months.json")];
 
 // for storage of global variables in update functions
 var barDims = {};
@@ -13,8 +13,8 @@ var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
              "Oct", "Nov", "Dec"];
 
 // main function for making monthly gas extraction histogram.
-var bar_month = function() {
-  Promise.all(requests_bar_month)
+var barMonth = function() {
+  Promise.all(requestsBarMonth)
          .then(function(response) {
            var draw = barMakerMonth(response);
          });
@@ -46,7 +46,7 @@ function barMakerMonth(data) {
   barDims.margin = margin;
 
   // creating a svg object and adding it to an specified element on the page
-  var svg = d3.select("div#extraction_month")
+  var svg = d3.select("div#extrMonth")
               .append("svg")
               .attr("id", "month")
               .attr("width", w + margin.left + margin.right)

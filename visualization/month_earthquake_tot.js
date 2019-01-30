@@ -1,7 +1,7 @@
 // Stan Helsloot, 10762388
 
 // Renders a histogram of the yearly gas extraction by NAM
-var request_month_earth = [d3.json("../../data/data_refined/stacked_tot.json")];
+var requestsMonthEarth = [d3.json("../../data/data_refined/stacked_tot.json")];
 
 // for storage of global variables in update functions
 var monthEarthDims = {};
@@ -10,8 +10,8 @@ var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
              "Oct", "Nov", "Dec"];
 
 // main function for making monthly gas extraction histogram.
-var tot_month_earth = function() {
-  Promise.all(request_month_earth)
+var totMonthEarth = function() {
+  Promise.all(requestsMonthEarth)
          .then(function(response) {
            var draw = barMakerTotEarth(response);
          });
@@ -37,9 +37,9 @@ function barMakerTotEarth(data) {
   monthEarthDims.w = w;
 
   // creating a svg object and adding it to a specified element on the page
-  var svg = d3.select("div#earth_total")
+  var svg = d3.select("div#earthTotal")
               .append("svg")
-              .attr("id", "earth_total_month")
+              .attr("id", "earthTotalMonth")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
@@ -186,7 +186,7 @@ function newBannerEarth(id) {
               {"x":x + 4,"y":y - 7}];
 
   // create a group for adding all new banner functionalities
-  var tipExtra = d3.selectAll("#earth_total_month")
+  var tipExtra = d3.selectAll("#earthTotalMonth")
                    .append("g")
                    .attr("font-family", "sans-serif")
                    .attr("font-size", 10)

@@ -1,6 +1,6 @@
 // Stan Helsloot, 10762388
 // renders a map of the Netherlands with earthquakes as circles
-var requests_map = [d3.json("../../data/data_refined/nederland.json"), d3.json(
+var requestsMap = [d3.json("../../data/data_refined/nederland.json"), d3.json(
                     "../../data/data_refined/data.json")];
 
 var mapDims = {};
@@ -10,7 +10,7 @@ var earthquakeYearFinal = 2019;
 
 // main function for creating the map
 var map = function() {
-  Promise.all(requests_map)
+  Promise.all(requestsMap)
          .then(function(response) {
            var draw = worldMaker(response);
          });
@@ -37,7 +37,7 @@ function worldMaker(data) {
   mapDims.margin = margin;
 
   // create svg canvas
-  var svg = d3.select("div#earthquake_map")
+  var svg = d3.select("div#earthquakeMap")
               .append("svg")
               .attr("id", "map")
               .attr("width", w + margin.left + margin.right)

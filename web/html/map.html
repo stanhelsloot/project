@@ -1,310 +1,320 @@
+<!-- Stan Helsloot  -->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Induced earthquakes in the Netherlands</title>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="http://d3js.org/queue.v1.min.js"></script>
-    <script src="http://d3js.org/topojson.v1.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://unpkg.com/d3-simple-slider"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="../../visualization/d3-tooltip.js"></script>
-    <script src="../../visualization/map.js" charset="utf-8"></script>
-    <script src="../../visualization/bar_gas_month.js" charset="utf-8"></script>
-    <script src="../../visualization/bar_gas.js" charset="utf-8"></script>
-    <script src="../../visualization/stacked_year.js" charset="utf-8"></script>
-    <script src="../../visualization/month_total_extr.js" charset="utf-8"></script>
-    <script src="../../visualization/month_earthquake_tot.js" charset="utf-8"></script>
-    <script src="../../visualization/linegraph.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="../css/navigation.css">
-    <link rel="stylesheet" href="../css/tip.css">
-    <link rel="stylesheet" href="../css/info.css">
-  </head>
-  <body>
-    <!-- calls the banner for navigation   -->
-    <div id="navigation_bar">
-    </div>
-
-    <script>
-    $(function(){
-      $("#navigation_bar").load("navigation.html");
-    });
-    </script>
-
-    <div class="container">
-      <h1>Induced earthquakes in the Netherlands as a result of gas extraction</h1>
-      <p>By Stan Helsloot</p>
-      <p>Any questions on usage of the page? Click on the <button type="button" class="btn btn-info btn-lg">Info</button>
-         buttons for more information on the visualizations. Links to the data, plugins and my Github page can be found on the
-         <a href="about.html">about</a> page!</p>
-        <h3>Gasfield</h3>
-        <p>In 1959 one of the worlds largest gas reserves was discovered in
-          Groningen, a province in the
-          northeast of the Netherlands. Four years after its discovery, gas
-          extraction begun. Earthquakes have since causes large amounts of
-          structural damages.[1] This page touch on all gas extracted from Dutch
-          soil. The numbers for amount of gas extracted are rounden to billion (M)
-          cubic meters (m^3) and are all measured at standard (N) conditions
-          (0 degrees C and 1 atmosphere). All magnitudes of the earthquakes are
-          on the Richter Scale. To show the relation between the earthquakes and
-          the gas extraction, this page provides several visualizations to
-          clarify the situation.</p>
-    </div>
-    <div class="container">
-      <h3>Extraction</h3>
-      <p>Over the past "two decades" gas extraction has been heavily reduced
-        due to demages caused by induced earthquakes.[2] The current goal is to
-        keep reducing gas extraction and to lower the total extraction to
-        less then five billion Nm^3 in 2023. Several measures are taken
-        to speed up the reduction, such as limiting export to neighbouring
-        countries and building a nitrogen factory which can be used to convert
-        highly caloric types of gas to the low caloric type, which is used for
-        coocking and heating appliances. To show the current trend of decreasing
-        gas extraction, two plots have been made. On the right, a plot showing the
-        yearly totals of gas extracted, and to the left a plot showing the total
-        amounts of gas extracted per month. Clicking on the bars of the plot on
-        the right will change the year of which the months are displayed.</p>
-        <div class="row">
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#extr_month">Info</button>
-            <div id="extr_month" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Monthly extraction per year</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>This graph displays the extraction per month for the selected year.
-                      Years can be selected by using the slider or by clicking on the chart displaying
-                      all years.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#extr_year">Info</button>
-            <div id="extr_year" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Yearly extraction totals</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>This graph shows the total amount of gas extracted per year.
-                      Clicking on one of the bars will update the monthly graph!</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-        </div>
-        <div class="row">
-          <div class="col" id="extraction_month"></div>
-          <div class="col" id="extraction_year"></div>
-        </div>
-    </div>
-    <div class="container">
-      <h3>Earthquakes</h3>
-      <p>Starting in 1911, the KNMI (Royal Netherlands Meteorological Institute)
-        has been keeping a record of earthquakes occuring or affecting the
-        Netherlands. The first earthquake caused by gas extraction, a so called
-        induced earthquake, was
-        detected in Assen in 1986 and had a magnitude of 2.8 on the Richter
-        scale.[3] After this, the amount of earthquakes per year has increased
-        significantly in quantity as can be seen in figure to the right. These
-        induced earthquakes differ from tectonic earthquakes
-        mainly in the depth of occurence. Induced earthquakes have an approximate
-        depth of 3 km, whilst naturally occuring earthquake occur between
-        20 and 100 km depth.
-        In 2015 extra seismographs have been installed throughout the Netherlands,
-        allowing for detection of earthquakes with magnitudes of below 1.5 on
-        the Richter scale. These earthquakes were not used in the visualizations
-        on this page. To the right is a visualization of the amount of earthquakes
-        occuring in a certain range on the Richter scale. Clicking on one of the bars
-        will show the selected year on the left, which is a map
-        of the Netherlands on which the earthquakes are visualized.</p>
-        <div class="row">
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#earth_map">Info</button>
-            <div id="earth_map" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Earthquake Map</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>In the map below induced earthquakes in the Netherlands are
-                      displayed. The radii of the circles are relative to their respective magnitudes.
-                      Hovering over the circles will display the date, magnitude and location
-                      of the earthquake. Using the slider on the map a different year can be selected.
-                      The years can also be selected by clicking on the bars of the stacked
-                      bar chart. A magnitude range can be selected by clicking on one of the
-                      elements of the legend of said stacked bar chart.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#stacked">Info</button>
-            <div id="stacked" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Stacked Bar Chart</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>This figure shows the total amount of earthquakes per year,
-                      as well as the amount of earthquakes per magnitude range.
-                      The groups range from 1.5 - 2.0, 2.0 - 2.5, 2.5 - 3.0 and 3.0+.
-                      Hovering over the bars shows information the amount of earthquakes
-                      of that year in the selected magnitude range. By clicking on the bars
-                      the map to the left will be updated; by clicking on one of the
-                      elements of the legend the map will display all earthquakes of the
-                      currently selected year in that range.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-        </div>
-        <div class="row">
-          <div class="col" id="earthquake_map"></div>
-          <div class="col" id="earthquake_stacked"></div>
-        </div>
-    </div>
-    <div class="container">
-      <h3>Investigating relations</h3>
-      <p>The two figures above show a clear increase in the total amount of earthquakes
-        occuring each year. Whilst there are years pre 2010 were many earthquakes
-        were detected, these earthquakes are scattered throughout the Netherlands. 
-        Now some insight has been provided on the amounts of gas extracted and
-         the occur
-        Now that we have some insight on the amounts of gas extracted and the
-        locations and magnitudes of the earthquakes we can investigate this
-        problem more excessive. The data on monthly gas extraction shows
-        that most gas is extracted between October and March. Do most earthquakes
-        also occur in this time period?</p>
-        <div class="row">
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#extr_tot">Info</button>
-            <div id="extr_tot" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Monthly total extraction</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>This graph displays the extraction per month for the selected
-                      month from 1971 to 2018. Hovering over the bars displays
-                      data on both charts.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#earth_tot">Info</button>
-            <div id="earth_tot" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Monthly total earthquakes</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>This graph displays the earthquakes per month for the selected
-                      month from 1986 to 2018. Hovering over the bars displays
-                      data on both charts.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-        </div>
-        <div class="row">
-          <div class="col" id="extraction_total"></div>
-            <div class="col" id="earth_total"></div>
-        </div>
-    </div>
-    <div class="container">
-      <h3>Conclusion</h3>
-      <p>As can be seen in the charts above, there is no clear correlation
-        between the time of extraction and the time at which earthquakes occur.
-        </p>
-        <div class="row">
-          <!-- start of modal  -->
-          <div class="col">
-            <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#line">Info</button>
-            <div id="line" class="modal fade" role="dialog">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h4 class="modal-title">Lineplot</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                  </div>
-                  <div class="modal-body">
-                    <p>The lineplot shows the trend the total accumulated earthquakes follow.
-                      Hovering over the chart will display the year and all selected information
-                      on the right. Different ranges of magnitudes can be selected using
-                      the checkboxes.</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- end of modal  -->
-        </div>
-        <div class="col" id="line_plot"></div>
-    </div>
-
-    <!-- loading multiple charts -->
-    <script>
-    window.onload = function() {
-       map()
-       bar_year()
-       bar_month()
-       stacked_year()
-       tot_month()
-       tot_month_earth()
-       line()
-    }
-    </script>
-
-    <div class="container">
-      <h4>References</h4>
-      <p>List of references</p>
-      <ul>
-        <li><a href="https://www.rtlnieuws.nl/nederland/artikel/3818822/nam-er-18-miljard-euro-voor-bevingsschade-groningen">1: Damage from earthquakes.</a></li>
-
-        <li><a href="https://www.rijksoverheid.nl/onderwerpen/gaswinning-in-groningen/nieuws/2018/12/03/afbouw-gaswinning-groningen-op-koers">2: Reduction of gas extraction.</a></li>
-        <li><a href="https://www.knmi.nl/kennis-en-datacentrum/uitleg/aardbevingen-door-gaswinning">4: Information on earthquakes in the Netherlands.</a></li>
-      </ul>
-
-    </div>
-
-  </body>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Induced earthquakes in the Netherlands</title>
+		<script src="https://d3js.org/d3.v5.min.js"></script>
+		<script src="http://d3js.org/queue.v1.min.js"></script>
+		<script src="http://d3js.org/topojson.v1.min.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<script src="https://unpkg.com/d3-simple-slider"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<script src="../../visualization/d3-tooltip.js"></script>
+		<script src="../../visualization/map.js" charset="utf-8"></script>
+		<script src="../../visualization/bar_gas_month.js" charset="utf-8"></script>
+		<script src="../../visualization/bar_gas.js" charset="utf-8"></script>
+		<script src="../../visualization/stacked_year.js" charset="utf-8"></script>
+		<script src="../../visualization/month_total_extr.js" charset="utf-8"></script>
+		<script src="../../visualization/month_earthquake_tot.js" charset="utf-8"></script>
+		<script src="../../visualization/linegraph.js" charset="utf-8"></script>
+		<link rel="stylesheet" href="../css/navigation.css">
+		<link rel="stylesheet" href="../css/tip.css">
+		<link rel="stylesheet" href="../css/info.css">
+	</head>
+	<body>
+		<!-- calls the banner for navigation   -->
+		<div id="navigation_bar">
+		</div>
+		<script>
+			$(function(){
+			  $("#navigation_bar").load("navigation.html");
+			});
+		</script>
+		<div class="container">
+			<h1>Induced earthquakes in the Netherlands as a result of gas extraction</h1>
+			<p>By Stan Helsloot</p>
+			<p>Any questions on usage of the page? Click on the <button type="button" class="btn btn-info btn-lg">Info</button>
+				buttons for more information on the visualizations. Links to the data, plugins and my Github page can be found on the
+				<a href="about.html">about</a> page!
+			</p>
+			<h3>Gasfield</h3>
+			<p>In 1959 one of the worlds largest gas reserves was discovered in
+				Groningen, a province in the
+				northeast of the Netherlands. Four years after its discovery, gas
+				extraction begun. Earthquakes have since causes large amounts of
+				structural damages.[1] This page touch on all gas extracted from Dutch
+				soil. The numbers for amount of gas extracted are rounden to billion (M)
+				cubic meters (m^3) and are all measured at standard (N) conditions
+				(0 degrees C and 1 atmosphere). All magnitudes of the earthquakes are
+				on the Richter Scale. To show the relation between the earthquakes and
+				the gas extraction, this page provides several visualizations to
+				clarify the situation.
+			</p>
+		</div>
+		<div class="container">
+			<h3>Extraction</h3>
+			<p>Over the past "two decades" gas extraction has been heavily reduced
+				due to demages caused by induced earthquakes.[2] The current goal is to
+				keep reducing gas extraction and to lower the total extraction to
+				less then five billion Nm^3 in 2023. Several measures are taken
+				to speed up the reduction, such as limiting export to neighbouring
+				countries and building a nitrogen factory which can be used to convert
+				highly caloric types of gas to the low caloric type, which is used for
+				coocking and heating appliances. To show the current trend of decreasing
+				gas extraction, two plots have been made. On the right, a plot showing the
+				yearly totals of gas extracted, and to the left a plot showing the total
+				amounts of gas extracted per month. Clicking on the bars of the plot on
+				the right will change the year of which the months are displayed.
+			</p>
+			<div class="row">
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#extr_month">Info</button>
+					<div id="extr_month" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Monthly extraction per year</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>This graph displays the extraction per month for the selected year.
+										Years can be selected by using the slider or by clicking on the chart displaying
+										all years.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#extr_year">Info</button>
+					<div id="extr_year" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Yearly extraction totals</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>This graph shows the total amount of gas extracted per year.
+										Clicking on one of the bars will update the monthly graph!
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+			</div>
+			<div class="row">
+				<div class="col" id="extrMonth"></div>
+				<div class="col" id="extrYear"></div>
+			</div>
+		</div>
+		<div class="container">
+			<h3>Earthquakes</h3>
+			<p>Starting in 1911, the KNMI (Royal Netherlands Meteorological Institute)
+				has been keeping a record of earthquakes occuring or affecting the
+				Netherlands. The first earthquake caused by gas extraction, a so called
+				induced earthquake, was
+				detected in Assen in 1986 and had a magnitude of 2.8 on the Richter
+				scale.[3] After this, the amount of earthquakes per year has increased
+				significantly in quantity as can be seen in figure to the right. These
+				induced earthquakes differ from tectonic earthquakes
+				mainly in the depth of occurence. Induced earthquakes have an approximate
+				depth of 3 km, whilst naturally occuring earthquake occur between
+				20 and 100 km depth.
+				In 2015 extra seismographs have been installed throughout the Netherlands,
+				allowing for detection of earthquakes with magnitudes of below 1.5 on
+				the Richter scale. These earthquakes were not used in the visualizations
+				on this page. To the right is a visualization of the amount of earthquakes
+				occuring in a certain range on the Richter scale. Clicking on one of the bars
+				will show the selected year on the left, which is a map
+				of the Netherlands on which the earthquakes are visualized.
+			</p>
+			<div class="row">
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#earth_map">Info</button>
+					<div id="earth_map" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Earthquake Map</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>In the map below induced earthquakes in the Netherlands are
+										displayed. The radii of the circles are relative to their respective magnitudes.
+										Hovering over the circles will display the date, magnitude and location
+										of the earthquake. Using the slider on the map a different year can be selected.
+										The years can also be selected by clicking on the bars of the stacked
+										bar chart. A magnitude range can be selected by clicking on one of the
+										elements of the legend of said stacked bar chart.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#stacked">Info</button>
+					<div id="stacked" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Stacked Bar Chart</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>This figure shows the total amount of earthquakes per year,
+										as well as the amount of earthquakes per magnitude range.
+										The groups range from 1.5 - 2.0, 2.0 - 2.5, 2.5 - 3.0 and 3.0+.
+										Hovering over the bars shows information the amount of earthquakes
+										of that year in the selected magnitude range. By clicking on the bars
+										the map to the left will be updated; by clicking on one of the
+										elements of the legend the map will display all earthquakes of the
+										currently selected year in that range.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+			</div>
+			<div class="row">
+				<div class="col" id="earthquakeMap"></div>
+				<div class="col" id="earthquakeStacked"></div>
+			</div>
+		</div>
+		<div class="container">
+			<h3>Investigating relations</h3>
+			<p>The two figures above show a clear increase in the total amount of earthquakes
+				occuring each year. When looking at the locations of the earthquakes,
+        a major increase in earthquakes originating in Groningen can be seen,
+        whilst most provinces have a sharp decrease in earthquakes over time.
+				Now that we have some insight on the amounts of gas extracted and the
+				locations and magnitudes of the earthquakes we can investigate this
+				problem more thouroughly. The data on monthly gas extraction, plotted
+        on the bottom left, shows	that most gas is extracted between October and March. Do most earthquakes
+				also occur in this time period?
+			</p>
+			<div class="row">
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#extr_tot">Info</button>
+					<div id="extr_tot" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Monthly total extraction</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>This graph displays the extraction per month for the selected
+										month from 1971 to 2018. Hovering over the bars displays
+										data on both charts.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#earth_tot">Info</button>
+					<div id="earth_tot" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Monthly total earthquakes</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>This graph displays the earthquakes per month for the selected
+										month from 1986 to 2018. Hovering over the bars displays
+										data on both charts.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+			</div>
+			<div class="row">
+				<div class="col" id="extractionTotal"></div>
+				<div class="col" id="earthTotal"></div>
+			</div>
+		</div>
+		<div class="container">
+			<h3>Conclusion</h3>
+			<p>As can be seen in the charts above, there is no clear correlation
+				between the time of extraction and the time at which earthquakes occur.
+        However, there is a sharp overall increment in the amount of earthquakes.
+        In the following figures the total accumulative amount of gas has been
+        plotted against the total amount of earthquakes. This shows a very clear
+        relation between gas extraction and the occurence of earthquakes..
+			</p>
+			<div class="row">
+				<!-- start of modal  -->
+				<div class="col">
+					<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#line">Info</button>
+					<div id="line" class="modal fade" role="dialog">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">Lineplot</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="modal-body">
+									<p>The lineplot shows the trend the total accumulated earthquakes follow.
+										Hovering over the chart will display the year and all selected information
+										on the right. Different ranges of magnitudes can be selected using
+										the checkboxes.
+									</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end of modal  -->
+			</div>
+			<div class="col" id="linePlot"></div>
+		</div>
+		<!-- loading multiple charts -->
+		<script>
+			window.onload = function() {
+			   map()
+			   barYear()
+			   barMonth()
+			   stackedYear()
+			   totMonthExtr()
+			   totMonthEarth()
+			   line()
+			}
+		</script>
+		<div class="container">
+			<h4>References</h4>
+			<p>List of references</p>
+			<ul>
+				<li><a href="https://www.rtlnieuws.nl/nederland/artikel/3818822/nam-er-18-miljard-euro-voor-bevingsschade-groningen">1: Damage from earthquakes.</a></li>
+				<li><a href="https://www.rijksoverheid.nl/onderwerpen/gaswinning-in-groningen/nieuws/2018/12/03/afbouw-gaswinning-groningen-op-koers">2: Reduction of gas extraction.</a></li>
+				<li><a href="https://www.knmi.nl/kennis-en-datacentrum/uitleg/aardbevingen-door-gaswinning">3: Information on earthquakes in the Netherlands.</a></li>
+			</ul>
+		</div>
+	</body>
 </html>

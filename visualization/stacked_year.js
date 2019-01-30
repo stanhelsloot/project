@@ -1,11 +1,11 @@
 // Stan Helsloot, 10762388
 // makes a stacked barchart for each year
 
-var requests_stacked = [d3.json("../../data/data_refined/stacked_data.json")];
+var requestsStacked = [d3.json("../../data/data_refined/stacked_data.json")];
 
 // main function for drawing the stacked barchart
-var stacked_year = function() {
-    Promise.all(requests_stacked)
+var stackedYear = function() {
+    Promise.all(requestsStacked)
             .then(function(response) {
               var draw = stackedMakerYear(response);
             });
@@ -29,9 +29,9 @@ function stackedMakerYear(data) {
     };
 
   // creating a svg object
-  var svg = d3.select("div#earthquake_stacked")
+  var svg = d3.select("div#earthquakeStacked")
               .append("svg")
-              .attr("id", "stacked_year")
+              .attr("id", "stackedYear")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 

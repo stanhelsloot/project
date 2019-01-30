@@ -1,68 +1,65 @@
+<!-- Stan Helsloot -->
+
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>About</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <link rel="stylesheet" href="../css/navigation.css">
-    <link rel="stylesheet" href="../css/about.css">
-  </head>
-  <body>
-    <!--navigation bar-->
-    <div id="navigation_bar">
-    </div>
-
-    <script>
-    $(function(){
-      $("#navigation_bar").load("navigation.html");
-    });
-    </script>
-
-    <div class="container">
-      <div class="row">
-        <div class="col" id="about_css">
-          <h3>Data was acquired from:</h3>
-            <ul>
-              <li><a href="https://data.knmi.nl/datasets/aardbevingen_catalogus/1?bbox=53.7,7.4,50.6,3.2&dtend=2018-11-24T22:59Z&dtstart=2018-11-17T23:00Z">KNMI seismic data</a></li>
-              <li><a href="https://www.nam.nl/feiten-en-cijfers/gaswinning.html#iframe=L2VtYmVkL2NvbXBvbmVudC8/aWQ9Z2Fzd2lubmluZyN0YWItdGFiLWluZm8tOGNkN2RlOGRmMTg4NDU3YTk0NzFhYzVkZGZmMThlMmU=">NAM gas extraction</a></li>
-              <li><a href="https://nl.wikipedia.org/wiki/Lijst_van_Nederlandse_plaatsen">Wikipedia list of cities/villages in Netherlands</a></li>
-            </ul>
-         </div>
-         <div class="col" id="about_css">
-          <h3>APIs and D3 Plugins:</h3>
-          <ul>
-            <li><a href="https://d3js.org/">D3</a></li>
-            <li><a href="https://github.com/d3/d3-queue">D3 queue</a></li>
-            <li><a href="https://github.com/topojson/topojson">D3 topojson</a></li>
-            <li><a href="https://getbootstrap.com/">Bootstrap 4</a></li>
-            <li><a href="https://jquery.com/">jQuery</a></li>
-            <li><a href="https://popper.js.org/">Popper JS</a></li>
-            <li><a href="https://github.com/johnwalley/d3-simple-slider">d3Slider</a></li>
-          </ul>
-        </div>
-        <div class="col" id="about_css">
-          <h3>Contact</h3>
-          <ul>
-            <li>Made by: Stan Helsloot</li>
-            <li>Student number: 10762388</li>
-            <li>Github repository: <a href="https://github.com/stanhelsloot/project/">Github</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    <div class="container" id="about_css">
-      <h3>Usage</h3>
-      <p>Clicking on a bar of either of the yearly graphs will update the visualization
-      on the left, so for the extraction data the chosen year will be displayed
-      in months and clicking on a year of the stacked histogram will display
-      the locations of the corresponding earthquakes on the map of the Netherlands.
-      Clicking on one of the blocks of the legend of the stacked histogram will
-      display all earthquakes in the chosen magnitude range of the currently
-      selected year.</p>
-
-    </div>
-  </body>
+	<head>
+		<meta charset="utf-8">
+		<title>About</title>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="../css/navigation.css">
+		<link rel="stylesheet" href="../css/about.css">
+		<link rel="stylesheet" href="../css/info.css">
+	</head>
+	<body>
+		<!--navigation bar-->
+		<div id="navigation_bar">
+		</div>
+		<script>
+			$(function(){
+			  $("#navigation_bar").load("navigation.html");
+			});
+		</script>
+		<div class="container">
+			<div class="row">
+				<div class="col" id="about_css">
+					<h3>Data was acquired from:</h3>
+					<ul>
+						<li><a href="https://data.knmi.nl/datasets/aardbevingen_catalogus/1?bbox=53.7,7.4,50.6,3.2&dtend=2018-11-24T22:59Z&dtstart=2018-11-17T23:00Z">KNMI seismic data</a></li>
+						<li><a href="https://www.nam.nl/feiten-en-cijfers/gaswinning.html#iframe=L2VtYmVkL2NvbXBvbmVudC8/aWQ9Z2Fzd2lubmluZyN0YWItdGFiLWluZm8tOGNkN2RlOGRmMTg4NDU3YTk0NzFhYzVkZGZmMThlMmU=">NAM gas extraction</a></li>
+						<li><a href="https://nl.wikipedia.org/wiki/Lijst_van_Nederlandse_plaatsen">Wikipedia list of cities/villages in Netherlands</a></li>
+					</ul>
+				</div>
+				<div class="col" id="about_css">
+					<h3>APIs and D3 Plugins:</h3>
+					<ul>
+						<li><a href="https://d3js.org/">D3</a></li>
+						<li><a href="https://github.com/d3/d3-queue">D3 queue</a></li>
+						<li><a href="https://github.com/topojson/topojson">D3 topojson</a></li>
+						<li><a href="https://getbootstrap.com/">Bootstrap 4</a></li>
+						<li><a href="https://jquery.com/">jQuery</a></li>
+						<li><a href="https://popper.js.org/">Popper JS</a></li>
+						<li><a href="https://github.com/johnwalley/d3-simple-slider">d3Slider</a></li>
+					</ul>
+				</div>
+				<div class="col" id="about_css">
+					<h3>Contact</h3>
+					<ul>
+						<li>Made by: Stan Helsloot</li>
+						<li>Student number: 10762388</li>
+						<li>Github repository: <a href="https://github.com/stanhelsloot/project/">Github</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="container" id="about_css">
+			<h3>Usage</h3>
+			<p>All information on the usage of the visualizations page can be found
+				on the page itself by clicking on the <button type="button" class="btn btn-info btn-lg">Info</button>
+				buttons.
+			</p>
+		</div>
+	</body>
 </html>

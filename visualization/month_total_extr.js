@@ -1,7 +1,7 @@
 // Stan Helsloot, 10762388
 
 // Renders a histogram of the yearly gas extraction by NAM
-var request_bar_tot = [d3.json("../../data/data_refined/data_tot.json")];
+var requestBarExtr = [d3.json("../../data/data_refined/data_tot.json")];
 
 // for storage of global variables in update functions
 var monthExtrDims = {};
@@ -13,8 +13,8 @@ var month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep",
              "Oct", "Nov", "Dec"];
 
 // main function for making monthly gas extraction histogram.
-var tot_month = function() {
-  Promise.all(request_bar_tot)
+var totMonthExtr = function() {
+  Promise.all(requestBarExtr)
          .then(function(response) {
            var draw = barMakerTot(response);
          });
@@ -42,9 +42,9 @@ function barMakerTot(data) {
   monthExtrDims.margin = margin;
 
   // creating a svg object and adding it to an specified element on the page
-  var svg = d3.select("div#extraction_total")
+  var svg = d3.select("div#extractionTotal")
               .append("svg")
-              .attr("id", "month_total")
+              .attr("id", "monthTotal")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
@@ -197,7 +197,7 @@ function newBannerExtraction(id) {
               {"x":x + 4,"y":y - 7}];
 
   // creating group for adding the new banner
-  var tipExtra = d3.selectAll("#month_total")
+  var tipExtra = d3.selectAll("#monthTotal")
                    .append("g")
                    .attr("font-family", "sans-serif")
                    .attr("font-size", 10)

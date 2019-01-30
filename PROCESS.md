@@ -104,6 +104,13 @@
 # Tuesday week 4
 - Cleaned up code of everything except linegraph.js
 - Added the checkboxes to the linegraph using foreignobject
+# Wednesday week 4
+- Added info boxes
+- Changed text and added references
+- Added legend to linegraph
+- Did not make colomn width dependable, the figures are now displayed
+  underneath one another when zooming in/decreasing screen size.
+-
 
 
 # TD
@@ -113,14 +120,14 @@
 <!-- - Replace tooltip dynamically in line plot -->
 <!-- - set axis titles properly -->
 <!-- - Add slider for the years and check box -->
-- Add info box
+<!-- - Add info box -->
 <!-- - Color scheme for all svgs -->
 <!-- - set tick thing on bottom axis line plot -->
 <!-- - Scaling of the map chart so the slider fits underneath = not possible -->
-- add references bottom map.html page
-- make width of svgs column dependable??
-- code of linegraph, total barcharts
-- adding legend
+<!-- - add references bottom map.html page -->
+<!-- - make width of svgs column dependable?? -->
+<!-- - code of linegraph, total barcharts -->
+<!-- - adding legend -->
 <!-- - Add all elements to groups! -->
 - Names according to style guide
 - remove hardcoding

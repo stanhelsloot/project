@@ -1,6 +1,6 @@
 // Stan Helsloot, 10762388
 // renders a map of the Netherlands with earthquakes as circles
-var requests_line = [d3.json("../../data/data_refined/stacked_data.json"),
+var requestsLine = [d3.json("../../data/data_refined/stacked_data.json"),
                      d3.json("../../data/data_refined/data_years.json")];
 
 var lineDims = {};
@@ -12,7 +12,7 @@ var gasYearFinal = 2019;
 
 // main function for creating the map
 var line = function() {
-  Promise.all(requests_line)
+  Promise.all(requestsLine)
          .then(function(response) {
            var draw = linePlot(response);
          });
@@ -33,48 +33,50 @@ function linePlot(data) {
   lineDims.h = h;
   lineDims.margin = margin;
 
-  // collect the total amount of earthquakes per year
-  var earth_data = [];
-  earth_data.push({"year": data[0][0][3][0], "value": (data[0][0][3][3])});
+  // collect the total accumulated amount of earthquakes per year
+  var earthData = [];
+  earthData.push({"year": data[0][0][3][0], "value": (data[0][0][3][3])});
   for (var i = 1; i < data[0].length; i++) {
-    earth_data.push({"year": data[0][i][3][0], "value": (data[0][i][3][3] + earth_data[i - 1].value)});
+    earthData.push({"year": data[0][i][3][0], "value": (data[0][i][3][3] + earthData[i - 1].value)});
   }
-  lineDims[4] = earth_data;
+  lineDims[4] = earthData;
+
   // doing the same for each magnitude
-  for (var i = 0; i < 4; i++) {
-    var earth_data = [];
-    earth_data.push({"year": data[0][0][i][0], "value": (data[0][0][i][1])});
+  for (i = 0; i < 4; i++) {
+    earthData = [];
+    earthData.push({"year": data[0][0][i][0], "value": (data[0][0][i][1])});
     for (var j = 1; j < data[0].length; j++) {
-      earth_data.push({"year": data[0][j][i][0], "value": (data[0][j][i][1] + earth_data[j - 1].value)});
+      earthData.push({"year": data[0][j][i][0], "value": (data[0][j][i][1] + earthData[j - 1].value)});
     }
-    lineDims[i] = earth_data;
+    lineDims[i] = earthData;
   }
 
-  earth_data = lineDims[4];
+  earthData = lineDims[4];
 
-  // collect the total amount of gas extracted per year
-  extr_data = []
-  keys = Object.keys(data[1])
-  extr_data.push({"year": keys[0], "value": data[1][keys[0]] / 10e9})
-  for (var i = 1; i < keys.length; i++) {
-    extr_data.push({"year": keys[i], "value": (data[1][keys[i]] / 10e9 + extr_data[i - 1].value)})
+  // collect the total amount of gas extracted per year and saving as dict
+  extractionData = [];
+  keys = Object.keys(data[1]);
+  extractionData.push({"year": keys[0], "value": data[1][keys[0]] / 10e9});
+  for (i = 1; i < keys.length; i++) {
+    extractionData.push({"year": keys[i], "value": (data[1][keys[i]] / 10e9 + extractionData[i - 1].value)});
   }
 
-  // setting the y-scale
+  // setting the y-scale with the last instance of the dictionary
   var yScale1 = d3.scaleLinear()
-                .domain([0, earth_data[earth_data.length - 1].value])
+                .domain([0, earthData[earthData.length - 1].value])
                 .range([h, margin.top]);
-  lineDims.yScale1 = yScale1
+  lineDims.yScale1 = yScale1;
 
+  // setting the y-scale with the last instance of the dictionary
   var yScale2 = d3.scaleLinear()
-                  .domain([0, extr_data[extr_data.length - 1].value])
-                  .range([h, margin.top])
-  lineDims.yScale2 = yScale2
+                  .domain([0, extractionData[extractionData.length - 1].value])
+                  .range([h, margin.top]);
+  lineDims.yScale2 = yScale2;
 
   // create svg canvas
-  var svg = d3.select("div#line_plot")
+  var svg = d3.select("div#linePlot")
               .append("svg")
-              .attr("id", "lineplot")
+              .attr("id", "linePlot")
               .attr("width", w + margin.left + margin.right)
               .attr("height", h + margin.top + margin.bottom);
 
@@ -83,24 +85,26 @@ function linePlot(data) {
      .attr("x", w / 2 - margin.left)
      .attr("class", "title")
      .attr("y", margin.top / 2)
-     .text("Lineplot of earthquake and extraction totals");
+     .text("linePlot of earthquake and extraction totals");
 
   // creating a function to transform numeric values to date values
-  var parseTime = d3.timeParse("%Y")
+  var parseTime = d3.timeParse("%Y");
 
   // append the converted dates to a list for use in axii and scales
-  var yearValues = []
-  for (var i = gasYearInitialLine; i < gasYearFinal; i++){
+  var yearValues = [];
+  for (i = gasYearInitialLine; i < gasYearFinal; i++){
     yearValues.push(i);
   }
 
   // set data to yearValues for use in unnamed functions
-  data = yearValues
+  data = yearValues;
 
-  // setting the xScale (timescale)
+  // setting the xScale
   var xScale = d3.scaleLinear()
                  .range([0, w])
-                 .domain(d3.extent(yearValues, function(d) { return d }));
+                 .domain(d3.extent(yearValues, function(d) {
+                   return d;
+                  }));
 
   // setting y axis for earthquakes
   var yAxis1 = d3.axisRight()
@@ -115,7 +119,7 @@ function linePlot(data) {
   // setting x xAxis
   var xAxis = d3.axisBottom()
                 .scale(xScale)
-                .ticks(10)
+                .ticks(10);
 
   // appending axis
   svg.append("g")
@@ -138,7 +142,6 @@ function linePlot(data) {
   svg.append("text")
       .attr("x", (w + margin.left) / 1.75)
       .attr("y",  h + margin.bottom * 3)
-      // .style("text-anchor", "middle")
       .text("Year");
 
   // Append yAxis1 text
@@ -146,7 +149,6 @@ function linePlot(data) {
      .attr("transform", "rotate(-90)")
      .attr("x", - h + 50)
      .attr("y", w + margin.right / 1.2)
-     // .style("text-anchor", "middle")
      .text("Amount of Earthquakes")
      .style("font-size", "20px");
 
@@ -155,34 +157,31 @@ function linePlot(data) {
      .attr("transform", "rotate(-90)")
      .attr("x", - h + 25)
      .attr("y", margin.left / 1.3)
-     // .style("text-anchor", "middle")
      .text("Total gas extracted in billion Nm^3")
      .style("font-size", "20px");
 
-     data = earth_data
   // define valueline, used for creating the points between which will be drawn
   var valueline1 = d3.line()
-      .x(function(d) {
-        return xScale(d.year);
-      })
-      .y(function(d) {
-        return yScale1(d.value);
-      });
-  lineDims.valueline1 = valueline1
+                     .x(function(d) {
+                       return xScale(d.year);
+                     })
+                     .y(function(d) {
+                       return yScale1(d.value);
+                     });
+  lineDims.valueline1 = valueline1;
 
-  data = extr_data
   // define valueline, used for creating the points between which will be drawn
   var valueline2 = d3.line()
-      .x(function(d) {
-        return xScale(d.year);
-      })
-      .y(function(d) {
-        return yScale2(d.value);
-      });
+                     .x(function(d) {
+                       return xScale(d.year);
+                     })
+                     .y(function(d) {
+                       return yScale2(d.value);
+                     });
 
-  // draw it
+  // draw line 1
   svg.append("path")
-      .data([extr_data])
+      .data([extractionData])
       .attr("class", "line")
       .attr("d", valueline2)
       .attr("fill", "none")
@@ -192,9 +191,9 @@ function linePlot(data) {
 
   // path 2
   svg.append("g")
-      .attr("id", "lineplotGroup")
+      .attr("id", "linePlotGroup")
       .append("path")
-      .data([earth_data])
+      .data([earthData])
       .attr("class", "line")
       .attr("d", valueline1)
       .attr("fill", "none")
@@ -206,14 +205,20 @@ function linePlot(data) {
 
   circleGroupLine = svg.append("g")
                        .attr("id", "circleGroupLine");
-  // make 5 circles and append them to the group
-  for (var i = 0; i < 6; i++) {
-    circleGroupLine.append("circle").attr("id", "tipCircle"+i+"").attr("r", 0);
+
+  // make 5 circles and append them to the group of circles
+  for (i = 0; i < 6; i++) {
+    circleGroupLine.append("circle")
+                   .attr("id", "tipCircle"+i+"")
+                   .attr("r", 0);
   }
 
-  var bisectDate = d3.bisector(function(d) { return d; }).left;
-//
-//     // create overlay rectange for movemove
+  // set bisector for finding the closest data point in the data
+  var bisectDate = d3.bisector(function(d) {
+                                 return d;
+                              }).left;
+
+  // create overlay rectange for mousemove
   var rect = svg.append("rect")
                 .attr("width", w + margin.left + margin.right)
                 .attr("height", h + margin.top + margin.bottom)
@@ -227,66 +232,92 @@ function linePlot(data) {
                   // used to correct the use of margins
                   i = i - 1;
                   // draw tooltipline + display data of pointed to point
-                  toolTipLine(earth_data, yearValues[i], h, xScale, extr_data)
-                 })
+                  toolTipLine(earthData, yearValues[i], h, xScale, extractionData);
+                })
                 .on("mouseout", function() {
                   // remove the tooltip + data
-                  removeTooltip()
+                  removeTooltip();
                 });
+
+  // tooltip margins
+  var toolMargins = {};
+  toolMargins.x = 860;
+  toolMargins.y = 180;
+  toolMargins.padding = 20;
+
   // tooltip box for displaying data
   var tipBox = svg.append("g")
                   .attr("id", "tipBox");
+
   tipBox.append("rect")
         .attr("id", "tipRect");
-  tipBox.append("text").attr("id", "tipTextYear").attr("x", 860).attr("y", 180);
-  tipBox.append("text").attr("id", "tipTextExtr").attr("x", 860).attr("y", 200);
-  for (var i = 0; i < 5; i++){
-    tipBox.append("text").attr("id", "tipText"+i+"").attr("x", 860);
+
+  tipBox.append("text")
+        .attr("id", "tipTextYear")
+        .attr("x", toolMargins.x)
+        .attr("y", toolMargins.y);
+
+  tipBox.append("text")
+        .attr("id", "tipTextExtr")
+        .attr("x", toolMargins.x)
+        .attr("y", toolMargins.y + toolMargins.padding);
+
+  for (i = 0; i < 5; i++){
+    tipBox.append("text").attr("id", "tipText"+i+"").attr("x", toolMargins.x);
   }
-  ex = svg.append("foreignObject")
-     .attr("x", margin.right * 0.20)
-     .attr("y", 105)
-     .attr("width", 20)
-     .attr("height", 200);
 
-  div = ex.append("xhtml:div")
-    .append("div")
-    .attr("class", "checkbox");
+  // creating a foreignObject for holding the checkboxes
+  var obj = svg.append("foreignObject")
+               .attr("x", margin.right * 0.20)
+               .attr("y", 105)
+               .attr("width", toolMargins.padding)
+               .attr("height", toolMargins.y + toolMargins.padding);
 
+  // adding a div in the object to the html page
+  div = obj.append("xhtml:div")
+           .append("div")
+           .attr("class", "checkbox");
+
+  // add a checkbox
   div.append("input")
      .attr("type", "checkbox")
      .attr("id", "all")
      .attr("value", "4")
      .attr("checked", "")
      .attr("autocomplete", "off");
-  //
+
+  // add a checkbox
   div.append("input")
      .attr("type", "checkbox")
      .attr("id", "mag15")
      .attr("value", "0")
      .attr("autocomplete", "off")
      .html("mag15");
-  //
+
+  // add a checkbox
   div.append("input")
      .attr("type", "checkbox")
      .attr("id", "mag20")
      .attr("value", "1")
      .attr("autocomplete", "off");
-  //
+
+  // add a checkbox
   div.append("input")
      .attr("type", "checkbox")
      .attr("id", "mag25")
      .attr("value", "2")
      .attr("autocomplete", "off");
-  //
+
+  // add a checkbox
   div.append("input")
      .attr("type", "checkbox")
      .attr("id", "mag30")
      .attr("value", "3")
      .attr("autocomplete", "off");
 
-
-  // checkboxes stuff
+  // this checkbox is always checked upon loading and therefor always true in
+  // the first instance. When a box is clicked, it goes through these blocks
+  // to determine the action (either plot the line or remove the line)
   lineDims.bool4 = true;
   d3.selectAll("#all").on("change", function () {
     var x = document.getElementById("all");
@@ -297,7 +328,8 @@ function linePlot(data) {
       d3.selectAll("#line4").remove();
     }
   });
-  // checkboxes stuff
+
+  // second checkbox
   d3.selectAll("#mag15").on("change", function () {
     var x = document.getElementById("mag15");
     if (x.checked) {
@@ -307,7 +339,8 @@ function linePlot(data) {
       d3.selectAll("#line0").remove();
     }
   });
-  // checkboxes stuff
+
+  // third checkbox
   d3.selectAll("#mag20").on("change", function () {
     var x = document.getElementById("mag20");
     if (x.checked) {
@@ -317,7 +350,8 @@ function linePlot(data) {
       d3.selectAll("#line1").remove();
     }
   });
-  // checkboxes stuff
+
+  // fourth checkbox
   d3.selectAll("#mag25").on("change", function () {
     var x = document.getElementById("mag25");
     if (x.checked) {
@@ -327,7 +361,8 @@ function linePlot(data) {
       d3.selectAll("#line2").remove();
     }
   });
-  // checkboxes stuff
+
+  // fifth checkbox
   d3.selectAll("#mag30").on("change", function () {
     var x = document.getElementById("mag30");
     if (x.checked) {
@@ -338,14 +373,18 @@ function linePlot(data) {
     }
   });
 
+  // set the dimentions, data, text and color gradients for the legend
   var legendPadding = 20;
   data = [0, 1, 2, 3, 4, 5];
   var text = ["Gas", "All", "1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0+"];
+  var color = ["purple",
+               "rgb(0,109,44)",
+               "rgb(199,233,192)",
+               "rgb(186,228,179)",
+               "rgb(116,196,118)",
+               "rgb(49,163,84)"];
 
-  var color = ["purple", "rgb(0,109,44)", "rgb(199,233,192)", "rgb(186,228,179)", "rgb(116,196,118)",
-                   "rgb(49,163,84)"];
-
-
+  // append legend group
   var legend = svg.append("g")
                   .attr("font-family", "sans-serif")
                   .attr("font-size", 10)
@@ -358,7 +397,7 @@ function linePlot(data) {
                     return "translate(0," + i * 24 + ")";
                   });
 
-  //append legend colour blocks
+  // append legend colour blocks
   legend.append("rect")
       .attr("x", margin.right * 0.3 - 5)
       .attr("y", margin.top + 3)
@@ -378,97 +417,113 @@ function linePlot(data) {
           return text[d];
         });
 
+  // function for adding the tooltip information
+  function toolTipLine(earthData, year, h, xScale, extractionData) {
+    // text to be plotted in the toolbox
+    var text = ["1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0 and above", "All Earthquakes"];
+    yDistance = 200;
+    paddingFactor = 0;
 
+    // set the value of the selected year
+    for (var i = 0; i < extractionData.length; i ++){
+      // compare with inputted year and select choosen value
+      if (extractionData[i].year == year) {
+        value2 = extractionData[i].value;
+      }
+    }
 
+    // set the first text
+    d3.selectAll("#tipTextExtr")
+      .style("fill", "white")
+      .style("font-size", "16px")
+      .text(function() {
+        return "Gas extracted: " + Math.round(value2) + "";
+      });
 
-  function toolTipLine(earth_data, year, h, xScale, extr_data) {
-        // update the data which is displayed
-        // d3.selectAll("#updatableText").text(function (data) {
-          var text = ["1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0 and above", "All Earthquakes"];
-          x = 200;
-          k = 0;
-          for (let i = 0; i < extr_data.length; i ++){
-            // compare with inputted year and select choosen value
-            if (extr_data[i].year == year) {
-              value2 = extr_data[i].value
-            }
-          }
-          d3.selectAll("#tipTextExtr")
+    // set the first circle, doing this seperately due to the different yScale
+    circle1 = d3.selectAll("#tipCircle5")
+                .attr("r", 7)
+                .attr("cx", xScale(year) + margin.left)
+                .attr("cy", lineDims.yScale2(value2));
+
+    for (i = 0; i < 5; i++) {
+      for (var j = 0; j < lineDims[i].length; j ++){
+        // compare with inputted year and select choosen value
+        if (lineDims[i][j].year == year) {
+          value = lineDims[i][j].value;
+          // break if the correct value has been found
+          break;
+        }
+        else if (j == lineDims[i].length - 1) {
+          value = 0;
+        }
+      }
+      // draw the circles and text
+      if (value != 0 && lineDims["bool"+i+""]) {
+        d3.selectAll("#tipCircle"+i+"")
+          .attr("r", 7)
+          .attr("cx", xScale(year) + margin.left)
+          .attr("cy", lineDims.yScale1(value));
+        k++;
+        // text is added according to how many checkboxes are filled
+        d3.selectAll("#tipText"+i+"")
+          .attr("y", yDistance + paddingFactor * 20)
           .style("fill", "white")
           .style("font-size", "16px")
           .text(function() {
-            return "Gas extracted: " + Math.round(value2) + "";
+            return ""+ text[i] +": " + value + "";
           });
-
-          circle1 = d3.selectAll("#tipCircle5")
-            .attr("r", 7)
-            .attr("cx", xScale(year) + margin.left)
-            .attr("cy", lineDims.yScale2(value2));
-          for (var i = 0; i < 5; i++) {
-            for (let j = 0; j < lineDims[i].length; j ++){
-              // compare with inputted year and select choosen value
-              if (lineDims[i][j].year == year) {
-                value = lineDims[i][j].value
-                break;
-              }
-              else if (j == lineDims[i].length - 1) {
-                value = 0;
-              }
-            }
-            if (value != 0 && lineDims["bool"+i+""]) {
-              d3.selectAll("#tipCircle"+i+"")
-                .attr("r", 7)
-                .attr("cx", xScale(year) + margin.left)
-                .attr("cy", lineDims.yScale1(value));
-              k++;
-              d3.selectAll("#tipText"+i+"")
-              .attr("y", x + k * 20)
-              .style("fill", "white")
-              .style("font-size", "16px")
-              .text(function() {
-                return ""+ text[i] +": " + value + "";
-              });
-            } else {
-              d3.selectAll("#tipCircle"+i+"").attr("r", 0);
-              d3.selectAll("#tipText"+i+"").text("");
-            }
-          }
-          tipRect = d3.select("#tipRect")
-                      .attr("x", 855)
-                      .attr("y", 155)
-                      .attr("height", 60 + k * 20)
-                      .attr("width", 155)
-                      .style("fill", "rgba(0, 0, 0, 0.6)");
-
-            d3.selectAll("#tipTextYear")
-                        .style("fill", "white")
-                        .style("font-size", "16px")
-                        .text(function() {
-                          return "Year: " + year + " ";
-                        });
-        }
-
-      function removeTooltip() {
-        for (var i = 0; i < 6; i++) {
-          d3.selectAll("#tipCircle"+i+"")
-            .attr("r", 0);
-        }
+      } else {
+        // remove text & circle
+        d3.selectAll("#tipCircle"+i+"")
+          .attr("r", 0);
+        d3.selectAll("#tipText"+i+"")
+          .text("");
+      }
     }
+
+    // create rectangle for text
+    tipRect = d3.select("#tipRect")
+                .attr("x", 855)
+                .attr("y", 155)
+                .attr("height", 60 + k * 20)
+                .attr("width", 155)
+                .style("fill", "rgba(0, 0, 0, 0.6)");
+
+    // Add text
+    d3.selectAll("#tipTextYear")
+      .style("fill", "white")
+      .style("font-size", "16px")
+      .text(function() {
+        return "Year: " + year + " ";
+      });
+  }
+
+  // function for removing tooltip of linegraph
+  function removeTooltip() {
+    for (var i = 0; i < 6; i++) {
+      d3.selectAll("#tipCircle"+i+"")
+        .attr("r", 0);
+    }
+  }
 }
 
+// function for updating the line plot
 function updateGraph(value) {
+  // setting color scheme
   var colorLine = ["rgb(199,233,192)", "rgb(186,228,179)", "rgb(116,196,118)",
                    "rgb(49,163,84)", "rgb(0,109,44)"];
 
-  d3.selectAll("#lineplotGroup").append("path")
-      .data([lineDims[value]])
-      .attr("class", "line")
-      .attr("d", lineDims.valueline1)
-      .attr("fill", "none")
-      .attr("id", "line"+value+"")
-      .style("stroke", colorLine[value])
-      .style("stroke-width", 4)
-      .attr("transform", "translate(" + lineDims.margin.left + ", 0)");
+  // adding path
+  d3.selectAll("#linePlotGroup").append("path")
+    .data([lineDims[value]])
+    .attr("class", "line")
+    .attr("d", lineDims.valueline1)
+    .attr("fill", "none")
+    .attr("id", "line"+value+"")
+    .style("stroke", colorLine[value])
+    .style("stroke-width", 4)
+    .attr("transform", "translate(" + lineDims.margin.left + ", 0)");
 
   // set bool for easy indentification
   lineDims["bool"+value+""] = true;
