@@ -7,7 +7,7 @@ var lineDims = {};
 
 var earthquakeYearInitial = 1986;
 var earthquakeYearFinal = 2019;
-var gasYearInitial = 1963;
+var gasYearInitialLine = 1963;
 var gasYearFinal = 2019;
 
 // main function for creating the map
@@ -90,7 +90,7 @@ function linePlot(data) {
 
   // append the converted dates to a list for use in axii and scales
   var yearValues = []
-  for (var i = gasYearInitial; i < gasYearFinal; i++){
+  for (var i = gasYearInitialLine; i < gasYearFinal; i++){
     yearValues.push(i);
   }
 
@@ -289,7 +289,6 @@ function linePlot(data) {
   // checkboxes stuff
   lineDims.bool4 = true;
   d3.selectAll("#all").on("change", function () {
-    console.log("aal");
     var x = document.getElementById("all");
     if (x.checked) {
       updateGraph(parseInt(x.value));
@@ -341,7 +340,7 @@ function linePlot(data) {
 
   var legendPadding = 20;
   data = [0, 1, 2, 3, 4, 5];
-  var text = ["Gas", "1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0+", "All"];
+  var text = ["Gas", "All", "1.5 to 2.0", "2.0 to 2.5", "2.5 to 3.0", "3.0+"];
 
   var color = ["purple", "rgb(0,109,44)", "rgb(199,233,192)", "rgb(186,228,179)", "rgb(116,196,118)",
                    "rgb(49,163,84)"];

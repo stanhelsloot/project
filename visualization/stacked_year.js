@@ -171,7 +171,7 @@ function stackedMakerYear(data) {
   // function for making the interactive legend
   function makeLegend(data) {
     // defining legend dimension
-    var legendPadding = 20;
+    legendPadding = 20;
 
     data = data[0][0];
 
@@ -185,7 +185,7 @@ function stackedMakerYear(data) {
                     .enter()
                     .append("g")
                     .attr("transform", function(d, i) {
-                      return "translate(0," + i * 20 + ")";
+                      return "translate(0," + i * 25 + ")";
                     })
                     .on("click", function(d) {
                       setMapMagRange(d[2]);

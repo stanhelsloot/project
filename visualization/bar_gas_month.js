@@ -179,6 +179,29 @@ function barMakerMonth(data) {
      .attr("x", -h)
      .attr("y", margin.left / 3)
      .text("Gas extraction in billion Nm^3");
+
+ // making the slider as global as possible for further use in stacked_year.js
+ // taken from https://github.com/johnwalley/d3-simple-slider
+ sliderBar = d3.sliderBottom()
+               .min(gasYearInitial)
+               .max(gasYearFinal - 1)
+               .width(w)
+               .tickFormat(d3.format('.4'))
+               .ticks(10)
+               .step(1)
+               .default(gasYearFinal)
+               .fill("black")
+               .on('onchange', val => {
+                 d3.select('p#value-step').text(val);
+                 setYear(val);
+               });
+
+ // setting location for the slider
+ var g = svg.append('g')
+            .attr("transform", "translate("+margin.left+", "+ h * 1.21 +")");
+
+ // activate the slider
+ g.call(sliderBar);
 }
 
 // update function for the monthly extraction chart

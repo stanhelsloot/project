@@ -86,6 +86,7 @@ function barMakerYear(data) {
      .on("click", function(d) {
        // update monthly map
        setYear(d[0]);
+       sliderBar.value(d[0]);
      });
 
   // calling tip
