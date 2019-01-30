@@ -404,7 +404,6 @@ function linePlot(data) {
       .attr("width", legendPadding)
       .attr("height", legendPadding)
       .style("fill", function(d) {
-        console.log(d);
         return color[d];
       });
 

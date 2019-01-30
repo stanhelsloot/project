@@ -18,7 +18,9 @@ https://stanhelsloot.github.io/project/web/html/index.html
 Home:
 This page shows some general information of myself and has a nice picture
 on display.
+
 ![](https://github.com/stanhelsloot/project/blob/master/doc/screenshots/home.png)
+
 Visualization:
 This part of the page contains the visualizations and the story. There are 4 main
 parts of the page. The first part (Extraction) contains 2 visualizations about the gas extraction,
@@ -32,10 +34,13 @@ The final part (Conclusion) describes total accumulative earthquakes/gas extract
 and can be altered by clicking on the checkboxes.
 Furthermore, all visualizations contain an "info" button which shows additional
 info on the usage.
+
 ![](https://github.com/stanhelsloot/project/blob/master/doc/screenshots/map.png)
+
 About:
 The final page contains all links to plugins, APIs and the data plus some additonal
 info on my contact information.
+
 ![](https://github.com/stanhelsloot/project/blob/master/doc/screenshots/about.png)
 
 # Data
@@ -59,7 +64,6 @@ https://dutchreview.com/wp-content/uploads/GasGroningen-1.jpg
 Made by Stan Helsloot
 Student number 10762388
 https://github.com/stanhelsloot
-
 
 # License
 Copyright © 2019, Stan Helsloot. Released under the MIT License.
