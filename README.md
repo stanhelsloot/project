@@ -39,19 +39,19 @@ info on my contact information.
 ![](https://github.com/stanhelsloot/project/blob/master/doc/screenshots/about.png)
 
 # Data
-Data on earthquakes was taken from the KNMI: https://data.knmi.nl/datasets/aardbevingen_catalogus/1?bbox=53.7,7.4,50.6,3.2&dtend=2018-11-24T22:59Z&dtstart=2018-11-17T23:00Z
-Data on gas extraction was taken from NAM: https://www.nam.nl/feiten-en-cijfers/gaswinning.html#iframe=L2VtYmVkL2NvbXBvbmVudC8/aWQ9Z2Fzd2lubmluZyN0YWItdGFiLWluZm8tOGNkN2RlOGRmMTg4NDU3YTk0NzFhYzVkZGZmMThlMmU=
-Data on Dutch place names was taken from Wikipedia: https://nl.wikipedia.org/wiki/Lijst_van_Nederlandse_plaatsen
+- Data on earthquakes was taken from the KNMI: https://data.knmi.nl/datasets/aardbevingen_catalogus/1?bbox=53.7,7.4,50.6,3.2&dtend=2018-11-24T22:59Z&dtstart=2018-11-17T23:00Z
+- Data on gas extraction was taken from NAM: https://www.nam.nl/feiten-en-cijfers/gaswinning.html#iframe=L2VtYmVkL2NvbXBvbmVudC8/aWQ9Z2Fzd2lubmluZyN0YWItdGFiLWluZm8tOGNkN2RlOGRmMTg4NDU3YTk0NzFhYzVkZGZmMThlMmU=
+- Data on Dutch place names was taken from Wikipedia: https://nl.wikipedia.org/wiki/Lijst_van_Nederlandse_plaatsen
 
 # External sources
-D3: library License: BSD 3-Clause "New" or "Revised" License Source: https://github.com/d3/d3
-Pandas: License: BSD 3-Clause "New" or "Revised" License Source: https://github.com/pandas-dev/pandas
-jQuery: License: MIT License Source: https://github.com/jquery/jquery
-Bootstrap: License: MIT license Source: https://getbootstrap.com
-Popper: License: MIT license, Code and documentation copyright 2016 Federico Zivolo, Source: https://popper.js.org/
-D3 slider: BSD 3-Clause "New" or "Revised", Copyright 2017-2018 John Walley Source: https://github.com/johnwalley/d3-simple-slider
-Font Awesome: License: MIT license Source: https://origin.fontawesome.com/
-
+- D3: library License: BSD 3-Clause "New" or "Revised" License, Source: https://github.com/d3/d3
+- Pandas: License: BSD 3-Clause "New" or "Revised" License, Source: https://github.com/pandas-dev/pandas
+- jQuery: License: MIT License, Source: https://github.com/jquery/jquery
+- Bootstrap: License: MIT license, Source: https://getbootstrap.com
+- Popper: License: MIT license, Code and documentation copyright 2016 Federico Zivolo, Source: https://popper.js.org/
+- D3 slider: BSD 3-Clause "New" or "Revised", Copyright 2017-2018 John Walley Source: https://github.com/johnwalley/d3-simple-slider
+- Font Awesome: License: MIT license, Source: https://origin.fontawesome.com/
+- D3 tooltip: License: MIT license, Copyright (c) 2013 Justin Palmer, Source: https://github.com/Caged/d3-tip
 # Image source
 https://dutchreview.com/wp-content/uploads/GasGroningen-1.jpg
 
