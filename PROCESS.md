@@ -110,24 +110,4 @@
 - Added legend to linegraph
 - Did not make colomn width dependable, the figures are now displayed
   underneath one another when zooming in/decreasing screen size.
--
-
-
-# TD
-<!-- - Smooth transitions of axis bar_gas_month -->
-<!-- - Match smooth transitions of map titles ?not going to do this. -->
-<!-- - Dual tooltip @ "investigating relations" + title names -->
-<!-- - Replace tooltip dynamically in line plot -->
-<!-- - set axis titles properly -->
-<!-- - Add slider for the years and check box -->
-<!-- - Add info box -->
-<!-- - Color scheme for all svgs -->
-<!-- - set tick thing on bottom axis line plot -->
-<!-- - Scaling of the map chart so the slider fits underneath = not possible -->
-<!-- - add references bottom map.html page -->
-<!-- - make width of svgs column dependable?? -->
-<!-- - code of linegraph, total barcharts -->
-<!-- - adding legend -->
-<!-- - Add all elements to groups! -->
-- Names according to style guide
-- remove hardcoding
+- Added license, readme, proposal, fixed all remaining code
