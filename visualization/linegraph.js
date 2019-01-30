@@ -464,7 +464,7 @@ function linePlot(data) {
           .attr("r", 7)
           .attr("cx", xScale(year) + margin.left)
           .attr("cy", lineDims.yScale1(value));
-        k++;
+        paddingFactor++;
         // text is added according to how many checkboxes are filled
         d3.selectAll("#tipText"+i+"")
           .attr("y", yDistance + paddingFactor * 20)
@@ -486,7 +486,7 @@ function linePlot(data) {
     tipRect = d3.select("#tipRect")
                 .attr("x", 855)
                 .attr("y", 155)
-                .attr("height", 60 + k * 20)
+                .attr("height", 60 + paddingFactor * 20)
                 .attr("width", 155)
                 .style("fill", "rgba(0, 0, 0, 0.6)");
 
