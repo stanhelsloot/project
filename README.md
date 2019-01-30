@@ -20,4 +20,4 @@ https://stanhelsloot.github.io/project/web/html/index.html
 Home:
 This page shows some general information of myself and has a nice picture
 on display.
-![alt text](/doc/screenshot/home.png)
+![](https://github.com/stanhelsloot/project/blob/master/doc/screenshots/about.png)
