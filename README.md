@@ -57,8 +57,12 @@ info on my contact information.
 - D3 slider: BSD 3-Clause "New" or "Revised", Copyright 2017-2018 John Walley Source: https://github.com/johnwalley/d3-simple-slider
 - Font Awesome: License: MIT license, Source: https://origin.fontawesome.com/
 - D3 tooltip: License: MIT license, Copyright (c) 2013 Justin Palmer, Source: https://github.com/Caged/d3-tip
+
 # Image source
 https://dutchreview.com/wp-content/uploads/GasGroningen-1.jpg
+
+# Link to demo
+https://www.youtube.com/watch?v=ieikPk1lP2o&feature=youtu.be
 
 # Author
 Made by Stan Helsloot
