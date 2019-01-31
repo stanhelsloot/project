@@ -1,3 +1,4 @@
+# Intro
 The website I have made here was build with the intention of informing
 users on gas extraction and induced earthquakes in the Netherlands.
 ![](https://github.com/stanhelsloot/project/blob/master/doc/screenshots/map.png)
@@ -5,6 +6,8 @@ users on gas extraction and induced earthquakes in the Netherlands.
 The purpose of each chapter is to tell a part of the story. The text of each
 paragraph adds to the information in the visualizations, which are interactive
 with one another.
+
+# Functionalities and Implementation
 The first two visualizations represent data from the same
 source; one on the yearly totals of gas extraction and one on the monthly totals.
 They are interactive by clicking on the bars of the yearly chart. When clicking
@@ -25,10 +28,8 @@ plugin. It functions similar to the update function.
 Next up are the visualizations of the earthquakes, which are again interactive
 by clicking on the bars in the right chart. These two plots differ more extensively,
 foremost by being a totally different type of visualization.
-The stacked bar chart has several important components:
-- The bars
-- The legend
-- The axii
+The stacked bar chart has several important components, such as the axis, the bars
+and the legend.
 The bars are made by inputting data into a group based on their magnitude,
 followed by the making of the rectangles per magnitude. This results in several
 groups embedded in one another which might be confusing at first, but they employ
@@ -93,7 +94,8 @@ Also, the NC-file of the KNMI contained many earthquakes originating
 in Germany and Belgium. Therefore, a list of places was scraped form Wikipedia
 to select only domestically originating induced earthquakes.
 
-Challenges:
+# Challenges & Design Choices
+
 Understanding the code. I had a hard time using Javascript and understanding
 D3 before I started this course. Many of my entries into the PROCESS were
 related to not understanding the code.
@@ -133,6 +135,8 @@ In my first sketch I was planning on making the map one of the most prominent
 aspects of my page. Whilst designing I felt that it did not add enough value
 to the story, and therefore it was sized down to match the other figures.
 My initial plan deviates from the actual product mainly in the amount of interactions and the location of the plots.
+
+# Defending my design choices
 
 The first plan was to make a very intricate system of interactions but my main
 problem with this approach was a severe lack of readability of the page, meaning
